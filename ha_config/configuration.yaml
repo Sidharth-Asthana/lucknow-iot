@@ -11,7 +11,7 @@ homeassistant:
   currency: INR
   country: IN
   time_zone: Asia/Kolkata
-  external_url: "http://10.0.0.10:8123"
+  # external_url: "http://10.0.0.10:8123"  # uncomment on Mac Mini production
 
 # ── Core integrations loaded by default ──────────────────────────────────────
 default_config:          # includes frontend, history, logbook, map, mobile_app, etc.
@@ -22,116 +22,13 @@ mqtt:   !include mqtt_sensors.yaml
 automation: !include_dir_merge_list automations/
 script:     !include scripts.yaml
 
-# ── KNX (wired backbone — Weinzierl KNX IP Router 750) ───────────────────────
-knx:
-  tunneling:
-    host: "10.0.0.20"    # static IP of Weinzierl KNX IP Router on LAN
-    port: 3671
-    local_ip: "10.0.0.10"
-
-# ── Konnected Alarm Panels ────────────────────────────────────────────────────
-# Konnected Pro #1: PIR × 8 + IR beam-break × 4 + siren + gate relay
-# Konnected Pro #2: Elevator reed switches × 3 + door + fault + call relays × 3
-konnected:
-  - id: "panel_1_security"
-    host: "10.0.0.30"    # static IP of Konnected Pro #1
-    port: 6437
-    binarysensors:
-      - zone: "1"
-        type: motion
-        name: PIR Gate
-        device_class: motion
-      - zone: "2"
-        type: motion
-        name: PIR Driveway
-        device_class: motion
-      - zone: "3"
-        type: motion
-        name: PIR Front Door
-        device_class: motion
-      - zone: "4"
-        type: motion
-        name: PIR Living Room
-        device_class: motion
-      - zone: "5"
-        type: motion
-        name: PIR Dining
-        device_class: motion
-      - zone: "6"
-        type: motion
-        name: PIR Terrace
-        device_class: motion
-      - zone: "7"
-        type: motion
-        name: PIR Garage
-        device_class: motion
-      - zone: "8"
-        type: motion
-        name: PIR Master Bedroom
-        device_class: motion
-      - zone: "9"
-        type: opening
-        name: IR Beam West Gate
-        device_class: door
-      - zone: "10"
-        type: opening
-        name: IR Beam West Driveway
-        device_class: door
-      - zone: "11"
-        type: opening
-        name: IR Beam NE Perimeter
-        device_class: door
-      - zone: "12"
-        type: opening
-        name: IR Beam SW Perimeter
-        device_class: door
-    switches:
-      - zone: "alarm1"
-        name: Siren
-      - zone: "alarm2"
-        name: Gate Lock Relay
-
-  - id: "panel_2_elevator"
-    host: "10.0.0.31"    # static IP of Konnected Pro #2
-    port: 6437
-    binarysensors:
-      - zone: "1"
-        type: opening
-        name: Elevator At Ground
-        device_class: occupancy
-      - zone: "2"
-        type: opening
-        name: Elevator At First
-        device_class: occupancy
-      - zone: "3"
-        type: opening
-        name: Elevator At Terrace
-        device_class: occupancy
-      - zone: "4"
-        type: opening
-        name: Elevator Door Open
-        device_class: door
-      - zone: "5"
-        type: problem
-        name: Elevator Fault
-        device_class: problem
-    switches:
-      - zone: "alarm1"
-        name: Elevator Call Ground
-      - zone: "alarm2"
-        name: Elevator Call First
-      - zone: "alarm3"
-        name: Elevator Call Terrace
-
-# ── NUT (UPS — APC Back-UPS 1500VA on USB) ───────────────────────────────────
-nut:
-  host: localhost
-  resources:
-    - battery.charge
-    - battery.runtime
-    - ups.load
-    - ups.status
-  alias: "apc_1500"
+# ── Hardware integrations (configured via UI, not YAML) ──────────────────────
+# These integrations moved to UI-only in recent HA versions.
+# Add them via Settings → Devices & Services → + Add Integration when hardware is present.
+#
+# KNX:       search "KNX" → Tunneling → host 10.0.0.20 port 3671
+# Konnected: search "Konnected" → host 10.0.0.30 (security) + 10.0.0.31 (elevator)
+# NUT (UPS): search "Network UPS Tools" → host localhost
 
 # ── Alarm Control Panel ───────────────────────────────────────────────────────
 alarm_control_panel:
