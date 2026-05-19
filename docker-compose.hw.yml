@@ -1,0 +1,33 @@
+# docker-compose.hw.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Mac Mini A (production) hardware override.
+# Adds USB device pass-through for physical peripherals.
+#
+# Usage (Mac Mini A only):
+#   docker compose -f docker-compose.yml -f docker-compose.hw.yml up -d
+#
+# Verify device paths before running:
+#   ls /dev/tty.usbserial*        (ConBee II, SDM630, Wiegand)
+#   ls /dev/bus/usb               (Coral TPU, if fitted)
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  homeassistant:
+    network_mode: host            # required for KNX multicast + mDNS on LAN
+    privileged: true
+    devices:
+      - /dev/tty.usbserial-ConBee:/dev/ttyUSB0    # ConBee II Zigbee coordinator
+      - /dev/tty.usbserial-SDM630:/dev/ttyUSB1    # Eastron SDM630 RS485 grid meter
+
+  frigate:
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb                  # Coral USB TPU (optional)
+
+  wiegand_bridge:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile.wiegand
+    restart: unless-stopped
+    devices:
+      - /dev/tty.usbserial-Wiegand:/dev/ttyUSB2   # ZKTeco SF100 fingerprint reader

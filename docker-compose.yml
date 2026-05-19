@@ -10,8 +10,6 @@
 #   - ConBee II plugged into USB-A port (check device path with: ls /dev/tty.usbserial*)
 #   - Eastron SDM630 USB adapter plugged in
 
-version: "3.8"
-
 services:
 
   # ─────────────────────────────────────────────────────────────
@@ -28,11 +26,9 @@ services:
     volumes:
       - ./volumes/ha_config:/config         # persistent HA config
       - /etc/localtime:/etc/localtime:ro
-    devices:
-      # ConBee II Zigbee stick — verify path: ls /dev/tty.usbserial*
-      - /dev/tty.usbserial-ConBee:/dev/ttyUSB0
-      # Eastron SDM630 RS485→USB adapter (Modbus RTU grid meter)
-      - /dev/tty.usbserial-SDM630:/dev/ttyUSB1
+    # devices: — added by docker-compose.hw.yml on the real Mac Mini
+    #   /dev/tty.usbserial-ConBee:/dev/ttyUSB0  (ConBee II Zigbee)
+    #   /dev/tty.usbserial-SDM630:/dev/ttyUSB1  (SDM630 Modbus RTU)
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8123/api/"]
       interval: 60s
@@ -76,7 +72,7 @@ services:
     volumes:
       - ./volumes/frigate/config:/config
       - ./volumes/frigate/media:/media/frigate   # 30-day recording storage (use 4TB SSD on Mini B)
-      - /dev/bus/usb:/dev/bus/usb           # Coral TPU (optional, for local AI object detection)
+      # /dev/bus/usb:/dev/bus/usb  — Coral TPU, added by docker-compose.hw.yml
     environment:
       - TZ=Asia/Kolkata
       - FRIGATE_RTSP_PASSWORD=changeme      # used in config.yml camera URLs
@@ -96,9 +92,8 @@ services:
       context: ./scripts
       dockerfile: Dockerfile.wiegand        # see scripts/Dockerfile.wiegand
     restart: unless-stopped
-    devices:
-      # ZKTeco SF100 Wiegand→RS485 bridge adapter
-      - /dev/tty.usbserial-Wiegand:/dev/ttyUSB2
+    # devices: — added by docker-compose.hw.yml on the real Mac Mini
+    #   /dev/tty.usbserial-Wiegand:/dev/ttyUSB2
     environment:
       - MQTT_HOST=mosquitto
       - MQTT_PORT=1883

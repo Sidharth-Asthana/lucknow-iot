@@ -1,43 +1,34 @@
 # docker-compose.dev.yml
 # ─────────────────────────────────────────────────────────────────────────────
 # Windows / local dev override — NO hardware required.
-# Runs only HA + Mosquitto. No Frigate, no USB devices, no host networking.
+# Runs only HA + Mosquitto. Frigate and wiegand_bridge are no-ops.
 #
 # Usage:
 #   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 #
 # HA will be at:   http://localhost:8123
 # MQTT broker at:  localhost:1883
-#
-# After the stack is up, feed it fake sensor data:
-#   bash scripts/simulate.sh
 # ─────────────────────────────────────────────────────────────────────────────
-
-version: "3.8"
 
 services:
 
   homeassistant:
-    # Override: drop host networking (doesn't work on Windows Docker Desktop)
-    # and use explicit port mapping instead.
-    network_mode: ""                  # clear the host-mode override
+    # Drop host networking — doesn't work on Windows Docker Desktop.
+    # Explicit port mapping works everywhere.
+    network_mode: ""
     ports:
       - "8123:8123"
-    # Override: remove all USB device mounts (no hardware on dev machine)
-    devices: []
-    # Override: HA only needs Mosquitto for dev; drop Frigate dependency
+    # HA only needs Mosquitto for dev; no Frigate dependency
     depends_on:
       - mosquitto
     environment:
       - TZ=Asia/Kolkata
-      # Tell HA to trust the Docker internal network so the API is accessible
-      - TRUSTED_PROXIES=172.16.0.0/12
 
-  # Mosquitto is unchanged — port 1883 is already exposed in docker-compose.yml
+  # Mosquitto is unchanged — ports already exposed in base file
   mosquitto: {}
 
-  # Disable Frigate and wiegand_bridge in dev — they need cameras / serial port.
-  # Achieved by overriding their image to a no-op placeholder that exits immediately.
+  # Frigate and wiegand_bridge need cameras/serial port — replace with
+  # a busybox container that exits immediately (no-op, no errors).
   frigate:
     image: busybox
     command: ["true"]
@@ -45,12 +36,12 @@ services:
     ports: []
     volumes: []
     environment: []
+    shm_size: "1mb"
 
   wiegand_bridge:
     image: busybox
     command: ["true"]
     restart: "no"
-    devices: []
     volumes: []
     environment: []
     depends_on: []
