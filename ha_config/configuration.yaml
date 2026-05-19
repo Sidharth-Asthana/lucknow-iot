@@ -20,6 +20,7 @@ default_config:          # includes frontend, history, logbook, map, mobile_app,
 modbus: !include modbus.yaml
 mqtt:   !include mqtt_sensors.yaml
 automation: !include_dir_merge_list automations/
+script:     !include scripts.yaml
 
 # ── KNX (wired backbone — Weinzierl KNX IP Router 750) ───────────────────────
 knx:

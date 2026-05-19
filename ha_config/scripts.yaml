@@ -1,0 +1,270 @@
+# ha_config/scripts.yaml
+# Test scenario scripts — callable from the Test Lab dashboard view.
+# Each script uses HA's built-in mqtt.publish service, so no terminal is needed.
+# Trigger from dashboard → Test Lab, or via Developer Tools → Services.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Normal — hot summer afternoon
+# Fan speed ~70%, dampers open, all systems nominal
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_normal:
+  alias: "🌞 Test: Normal Summer"
+  icon: mdi:weather-sunny
+  description: "Hot Lucknow afternoon. Cooling active, tank 68%, PV 4.2 kW."
+  sequence:
+    # PV + Battery
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/power_w",       payload: '{"value": 4200}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/battery_soc",   payload: '{"value": 76}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/grid_import_w", payload: '{"value": 0}',    retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/grid_export_w", payload: '{"value": 500}',  retain: true}
+    # Rainwater
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/level",         payload: '{"value": 68}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/domestic_flow", payload: '{"value": 3.2}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/beehive_flow",  payload: '{"value": 1.8}', retain: true}
+    # Cooling sensors
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_temp", payload: '{"value": 44}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_rh",   payload: '{"value": 35}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_temp",  payload: '{"value": 31}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_rh",    payload: '{"value": 52}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/inlet_temp",   payload: '{"value": 30}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_e",       payload: '{"value": 35}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_s",       payload: '{"value": 42}', retain: true}
+    # Actuator state
+    - service: mqtt.publish
+      data: {topic: "homeassistant/fan/beehive/fan_e/state", payload: "ON",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/fan/beehive/fan_e/speed", payload: "70",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/fan/beehive/fan_s/state", payload: "ON",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/fan/beehive/fan_s/speed", payload: "70",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/switch/beehive/damper_e/state", payload: "ON", retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/switch/beehive/damper_s/state", payload: "ON", retain: true}
+    # Systems
+    - service: mqtt.publish
+      data: {topic: "homeassistant/lock/server_panel",            payload: '{"state": "LOCKED"}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/console/cpu_pct_a",     payload: '{"value": 8}',    retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/ups/battery_charge",    payload: '{"value": 100}',  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/ups/status",            payload: '{"value": "OL"}', retain: true}
+    # Elevator — ground floor
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_g/state",  payload: "on",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_f1/state", payload: "off", retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_t/state",  payload: "off", retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_fault/state",    payload: "off", retain: true}
+    # Notify
+    - service: persistent_notification.create
+      data:
+        title: "🌞 Test: Normal Summer"
+        message: "Sensors loaded. Cooling active at ~70% fan speed. Check Overview and Cooling views."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Monsoon — indoor RH 72%, will trigger bypass in 3 minutes
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_monsoon:
+  alias: "🌧️ Test: Monsoon Bypass"
+  icon: mdi:weather-rainy
+  description: "Indoor RH 72% — monsoon bypass automation fires in ~3 min."
+  sequence:
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/power_w",       payload: '{"value": 2400}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/battery_soc",   payload: '{"value": 88}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/level",        payload: '{"value": 70}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_temp", payload: '{"value": 32}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_rh",   payload: '{"value": 80}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_temp",  payload: '{"value": 29}', retain: true}
+    # This value (72) is above the bypass threshold (65) — automation fires in 3 min
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_rh",    payload: '{"value": 72}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/inlet_temp",   payload: '{"value": 28}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_e",       payload: '{"value": 55}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_s",       payload: '{"value": 60}', retain: true}
+    - service: persistent_notification.create
+      data:
+        title: "🌧️ Monsoon Bypass Scenario"
+        message: >
+          Indoor RH set to 72% (above 65% threshold).
+          The cooling_monsoon_bypass_on automation will fire in 3 minutes.
+          Watch: Cooling view → Mode will change to 'monsoon_bypass'.
+          Also check: Settings → Automations → Logbook.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Winter bypass — outdoor T 12°C, triggers after 30 min
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_winter:
+  alias: "❄️ Test: Winter Bypass"
+  icon: mdi:snowflake
+  description: "Outdoor 12°C — winter bypass fires after 30 min. Drip also triggers (dry soil)."
+  sequence:
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/power_w",       payload: '{"value": 900}',  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/battery_soc",   payload: '{"value": 60}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/level",        payload: '{"value": 85}',   retain: true}
+    # Outdoor below 18°C threshold — winter bypass automation fires after 30 min
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_temp", payload: '{"value": 12}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_rh",   payload: '{"value": 45}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_temp",  payload: '{"value": 18}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_rh",    payload: '{"value": 40}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/inlet_temp",   payload: '{"value": 13}', retain: true}
+    # Dry soil will also trigger beehive drip automation
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_e", payload: '{"value": 20}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_s", payload: '{"value": 18}', retain: true}
+    - service: persistent_notification.create
+      data:
+        title: "❄️ Winter Bypass Scenario"
+        message: >
+          Outdoor T set to 12°C (below 18°C threshold).
+          Winter bypass fires after 30 min sustained reading.
+          Soil moisture also low (18–20%) — beehive drip automation
+          will open the beehive valve IF tank level > 15%.
+          To test immediately: Settings → Automations → 'Cooling: Enter winter bypass' → ▶ Run.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Low water — tank 10%, cuts beehive supply + sends alert
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_low_water:
+  alias: "💧 Test: Low Water Alert"
+  icon: mdi:water-alert
+  description: "Tank 10% — beehive valve cut automation fires immediately."
+  sequence:
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/power_w",       payload: '{"value": 5500}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/pv/battery_soc",   payload: '{"value": 98}',   retain: true}
+    # Tank below 15% beehive cut threshold — fires immediately
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/level",        payload: '{"value": 10}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/domestic_flow", payload: '{"value": 0}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/rwh/beehive_flow",  payload: '{"value": 0}',   retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/outdoor_temp", payload: '{"value": 44}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/indoor_rh",    payload: '{"value": 40}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_e",       payload: '{"value": 15}', retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/sensor/beehive/soil_s",       payload: '{"value": 12}', retain: true}
+    - service: persistent_notification.create
+      data:
+        title: "💧 Low Water Scenario"
+        message: >
+          Tank set to 10% (below 15% cut threshold).
+          The rwh_beehive_valve_cut automation fires immediately:
+          → Beehive valve closes
+          → Push notification sent
+          Watch: Water view → Beehive Valve turns OFF. Check Logbook.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Security alert — simulates a PIR trigger in armed_away mode
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_security_alert:
+  alias: "🚨 Test: Security Alert"
+  icon: mdi:alarm-light
+  description: "Simulates PIR zone 1 trigger while armed_away."
+  sequence:
+    # Arm the system first
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.main_alarm
+    - delay: "00:00:02"
+    # Trigger PIR zone 1
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/pir_zone_1/state", payload: "on", retain: false}
+    - service: persistent_notification.create
+      data:
+        title: "🚨 Security Alert Scenario"
+        message: >
+          System armed, PIR Zone 1 triggered.
+          Expected: alarm_control_panel → triggered state.
+          Floodlights ON. Push notification sent.
+          To reset: Security view → Disarm (code: 1234).
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Elevator — move through floors
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_elevator_f1:
+  alias: "🛗 Test: Elevator → First Floor"
+  icon: mdi:elevator
+  sequence:
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_g/state",  payload: "off", retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_f1/state", payload: "on",  retain: true}
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_floor_t/state",  payload: "off", retain: true}
+
+scenario_elevator_fault:
+  alias: "⚠️ Test: Elevator Fault"
+  icon: mdi:elevator-alert
+  sequence:
+    - service: mqtt.publish
+      data: {topic: "homeassistant/binary_sensor/elevator_fault/state", payload: "on", retain: false}
+    - service: persistent_notification.create
+      data:
+        title: "⚠️ Elevator Fault Scenario"
+        message: "Fault triggered. Check Systems view → elevator fault badge turns red. Check Logbook for push notification."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCENARIO: Fingerprint unlock — simulates a scan
+# ─────────────────────────────────────────────────────────────────────────────
+scenario_fingerprint_unlock:
+  alias: "🔓 Test: Fingerprint Scan"
+  icon: mdi:fingerprint
+  description: "Simulates user 'Sidharth' scanning finger. Auto-relocks after 5 s."
+  sequence:
+    - service: mqtt.publish
+      data:
+        topic: "homeassistant/lock/server_panel"
+        payload: '{"state": "UNLOCKED", "user": "Sidharth", "card_id": 1001}'
+        retain: true
+    - delay: "00:00:05"
+    - service: mqtt.publish
+      data:
+        topic: "homeassistant/lock/server_panel"
+        payload: '{"state": "LOCKED"}'
+        retain: true
+    - service: persistent_notification.create
+      data:
+        title: "🔓 Panel Unlock Simulated"
+        message: "Panel unlocked by 'Sidharth' (card 1001). Auto-relocked after 5 s. Check Systems view."

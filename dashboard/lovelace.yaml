@@ -676,3 +676,341 @@ views:
         entities:
           - entity: input_select.cooling_mode
             name: "Cooling Mode"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 8 — TEST LAB
+# One-click scenario buttons. Uses HA's mqtt.publish service internally —
+# no terminal or mosquitto_pub needed.
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Test Lab
+    icon: mdi:flask
+    path: testlab
+    type: masonry
+    cards:
+
+      - type: markdown
+        content: |
+          ## 🧪 Test Lab
+          Click a scenario button to inject realistic fake sensor data into all 6
+          subsystems at once. No hardware or terminal needed — data is published
+          via HA's internal MQTT service.
+
+          A **notification** pops up after each scenario explaining what to watch for.
+          Check **Logbook** (History → Logbook) to see automations firing in real time.
+
+      # ── Scenario buttons ────────────────────────────────────────────────────
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "### 🌡️ Environment Scenarios"
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: "🌞 Normal Summer"
+                icon: mdi:weather-sunny
+                tap_action:
+                  action: call-service
+                  service: script.scenario_normal
+              - type: button
+                name: "🌧️ Monsoon Bypass"
+                icon: mdi:weather-rainy
+                tap_action:
+                  action: call-service
+                  service: script.scenario_monsoon
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: "❄️ Winter Bypass"
+                icon: mdi:snowflake
+                tap_action:
+                  action: call-service
+                  service: script.scenario_winter
+              - type: button
+                name: "💧 Low Water"
+                icon: mdi:water-alert
+                tap_action:
+                  action: call-service
+                  service: script.scenario_low_water
+
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "### 🔒 Security & Access Scenarios"
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: "🚨 Security Alert"
+                icon: mdi:alarm-light
+                tap_action:
+                  action: call-service
+                  service: script.scenario_security_alert
+              - type: button
+                name: "🔓 Fingerprint Scan"
+                icon: mdi:fingerprint
+                tap_action:
+                  action: call-service
+                  service: script.scenario_fingerprint_unlock
+
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "### 🛗 Elevator Scenarios"
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: "→ Ground Floor"
+                icon: mdi:numeric-0-box
+                tap_action:
+                  action: call-service
+                  service: script.scenario_elevator_f1
+                  service_data:
+                    variables:
+                      floor: ground
+              - type: button
+                name: "→ First Floor"
+                icon: mdi:numeric-1-box
+                tap_action:
+                  action: call-service
+                  service: script.scenario_elevator_f1
+              - type: button
+                name: "⚠️ Elevator Fault"
+                icon: mdi:elevator-alert
+                tap_action:
+                  action: call-service
+                  service: script.scenario_elevator_fault
+
+      # ── What each scenario tests ────────────────────────────────────────────
+      - type: markdown
+        content: |
+          ### What each scenario tests
+
+          | Scenario | Automation triggered | Delay |
+          |----------|---------------------|-------|
+          | 🌞 Normal Summer | Fan speed update (every 5 min) | ~5 min |
+          | 🌧️ Monsoon Bypass | `cooling_monsoon_bypass_on` | **3 min** |
+          | ❄️ Winter Bypass | `cooling_winter_bypass_on` | 30 min (or run manually) |
+          | 💧 Low Water | `rwh_beehive_valve_cut` | **Immediate** |
+          | 🚨 Security Alert | `security_pir_trigger_away` | **Immediate** |
+          | 🔓 Fingerprint | Lock state changes | **Immediate, relocks in 5 s** |
+          | ⚠️ Elevator Fault | `elevator_fault_alert` | **Immediate** |
+
+          **Tip — to skip the 3/30-min wait:** Go to
+          Settings → Automations → find the automation → click ▶ Run.
+
+      # ── Live notification log ───────────────────────────────────────────────
+      - type: markdown
+        content: "### 📋 Recent test notifications"
+      - type: entities
+        entities:
+          - entity: persistent_notification.scenario_normal
+            name: "Last scenario"
+        show_header_toggle: false
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 9 — GUIDE
+# Built-in reference: software requirements, navigation, and per-system notes.
+# Uses only markdown cards — no HACS required.
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Guide
+    icon: mdi:book-open-variant
+    path: guide
+    type: panel
+    cards:
+      - type: markdown
+        content: |
+          # Lucknow Smart Residence — Dashboard Guide
+
+          ---
+
+          ## 🖥️ Software you need to run this locally
+
+          | Software | Why | Install |
+          |----------|-----|---------|
+          | **Docker Desktop** | Runs HA + Mosquitto inside containers | [docker.com/products/docker-desktop](https://docker.com/products/docker-desktop) — enable WSL2 backend on Windows |
+          | **Git** | Clone the repo | Likely already installed; or [git-scm.com](https://git-scm.com) |
+          | That's it | Everything else (Python, Node.js, Mosquitto) runs inside Docker | — |
+
+          **Optional but useful:**
+          | Tool | Why |
+          |------|-----|
+          | **MQTT Explorer** (free app) | Visual MQTT debugger — see every topic live | [mqtt-explorer.com](http://mqtt-explorer.com) |
+          | **VS Code** | Edit YAML configs | Already installed |
+
+          ---
+
+          ## 🚀 First-time setup (5 commands)
+
+          ```bash
+          git clone https://github.com/Sidharth-Asthana/lucknow-iot.git
+          cd lucknow-iot
+          bash scripts/setup.sh
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+          # then open http://localhost:8123 and complete the HA wizard
+          ```
+
+          After onboarding, copy the configs and restart:
+          ```bash
+          cp -r ha_config/. volumes/ha_config/
+          docker compose restart homeassistant
+          ```
+
+          Then paste `dashboard/lovelace.yaml` into:
+          **HA → Settings → Dashboards → your dashboard → Edit → Raw Config Editor**
+
+          ---
+
+          ## 🗂️ Dashboard views
+
+          | Tab | What it shows |
+          |-----|--------------|
+          | 🏠 Overview | Single-screen status: PV yield, battery %, tank level, cooling mode, alarm state, elevator floor |
+          | ⚡ Energy | Animated power-flow diagram (PV → battery ↔ grid), 48-hr history chart, daily kWh totals |
+          | 💧 Water | Tank gauge (out of 18,000 L), pump + valve on/off, domestic vs beehive daily flow |
+          | 🌬️ Cooling | Mode badge, indoor/outdoor temp + RH gauges, ΔT readout, fan speed sliders, damper toggles |
+          | 🔒 Security | Alarm panel (arm/disarm), 7-camera grid, PIR + IR beam zone status, siren + flood controls |
+          | ⚙️ Systems | Server health, UPS status, fingerprint access log, elevator floor indicator + call buttons |
+          | 🤖 Automations | Enable/disable each automation, adjust all thresholds, manual mode override |
+          | 🧪 Test Lab | One-click scenario buttons to inject fake sensor data — no hardware needed |
+          | 📖 Guide | This page |
+
+          ---
+
+          ## 🌬️ System 1 — Beehive Passive Cooling
+
+          **How it works:** Two terracotta beehive panels (east + south faces) drip rainwater
+          over hollow cones. Evaporation cools incoming air by ~14°C. EC fans pull cooled air
+          through the living space; the central stair void acts as a stack, exhausting through
+          the burjeel wind catcher on the roof.
+
+          **Four operating modes:**
+
+          | Mode | Trigger | What happens |
+          |------|---------|-------------|
+          | `cooling` | RH < 65%, T > 26°C | Dampers open, fans run (speed ∝ ΔT) |
+          | `monsoon_bypass` | Indoor RH > 65% for 3 min | Dampers closed, fans off, dehumidifier on |
+          | `winter_bypass` | Outdoor T < 18°C for 30 min | Everything off, passive solar mode |
+          | `off` | Manual | All actuators off |
+
+          **Fan speed formula:** `speed% = clamp((outdoor_T − inlet_T) / 14 × 100, 20, 100)`
+          At a 14°C delta → 100% speed. At 2.8°C delta → minimum 20%.
+
+          **To test:** Test Lab → 🌧️ Monsoon Bypass. Watch Cooling view in 3 minutes.
+
+          ---
+
+          ## ☀️ System 2 — PV + Battery
+
+          **Hardware:** 15 × 400W panels (6 kWp) on terrace pergola at 25° south tilt.
+          12 kWh LFP battery (2 × 6 kWh). 5 kW hybrid inverter with SunSpec Modbus TCP.
+          Eastron SDM630 meters grid import/export.
+
+          **Key entities:**
+          - `sensor.pv_power_w` — live generation (W)
+          - `sensor.battery_soc_pct` — battery % (Modbus reg 40058)
+          - `sensor.grid_import_w` / `sensor.grid_export_w` — from SDM630
+
+          **Energy view** shows the animated flow card: PV → battery ↔ grid → home.
+          When PV > load + battery full, excess exports to grid (~10% of yield).
+
+          **Critical loads** (security cameras, HA servers, fans) are on an isolated
+          microgrid circuit — they stay up during grid outages using battery alone.
+
+          **To test:** Run Normal Summer scenario. Energy view → animated arrows appear.
+
+          ---
+
+          ## 💧 System 3 — Rainwater Harvest
+
+          **Tank:** 18,000 L underground RCC tank (4 × 3 × 1.5 m) under the west driveway.
+          Level sensor: MaxBotix MB7389 ultrasonic, reads mm depth over UART.
+          `level% = (1 − sensor_mm / 1500) × 100`
+
+          **Two supply lines:**
+          - **Domestic:** UV + sediment filtered → house taps
+          - **Beehive:** Unfiltered → drip lines on the cone panels (closed when tank < 15%)
+
+          **Automation thresholds** (adjustable in Automations view):
+          - Pump ON when level < 80%, OFF when > 97%
+          - Beehive valve cut + alert when level < 15%
+          - Low-level push notification when level < 10%
+
+          **To test:** Run 💧 Low Water scenario. Water view → Beehive Valve turns red immediately.
+
+          ---
+
+          ## 🔒 System 4 — Security
+
+          **Cameras:** 7 × Reolink RLC-810A PoE (4K). Processed by Frigate NVR.
+          Frigate runs AI object detection (person/vehicle) per camera zone.
+          30-day encrypted recording. Camera feeds show in Security view.
+
+          **Wired sensors:** 8 PIR + 4 IR beam-break → Konnected Alarm Panel Pro → HA.
+          These are standard wired alarm sensors (12V NC), same as any burglar alarm.
+
+          **Alarm states:** `disarmed` / `armed_home` / `armed_away` / `triggered`
+          - In `armed_away`: any PIR → alarm triggered → siren + floodlights + push notification
+          - In `armed_home`: only perimeter sensors active (PIR in bedrooms disabled)
+
+          **No offensive deterrents** — siren + floodlights + gate auto-lock + smartphone alert only.
+
+          **To test:** Test Lab → 🚨 Security Alert. Watch Security view → alarm panel turns red.
+
+          ---
+
+          ## ⚙️ System 5 — Central Console + Access
+
+          **Fingerprint reader:** ZKTeco SF100 (capacitive, Wiegand-26 output).
+          Biometric template stored on the reader chip only — not transmitted.
+          Bridge script (`wiegand_bridge.py`) decodes Wiegand-26 frames over USB serial,
+          looks up card ID in local SQLite DB, publishes UNLOCKED to MQTT for 5 seconds.
+
+          **Pre-seeded test users (card IDs):** 1001, 1002, 1003
+
+          **To test:** Test Lab → 🔓 Fingerprint Scan. Systems view → panel unlocks then relocks in 5 s.
+
+          ---
+
+          ## 🛗 System 6 — Elevator
+
+          **Brand-agnostic interface:** 3 reed switches (one per floor: G / F1 / Terrace),
+          door-state switch, fault relay. All dry-contact NO/NC — works with any elevator
+          controller. Connected via Konnected Panel #2.
+
+          **Dashboard:** Systems view → floor indicator updates as elevator moves.
+          Call buttons (G / F1 / Terrace) pulse the relay for 500 ms, simulating pressing
+          the physical call button on the elevator controller.
+
+          **Fault handling:** Fault relay ON → immediate push notification (time-sensitive priority).
+
+          **To test:** Test Lab → 🛗 First Floor / ⚠️ Elevator Fault.
+
+          ---
+
+          ## 🔌 HACS custom cards (Energy + Overview views)
+
+          The Energy and Overview views use custom cards that need HACS:
+
+          | Card | View | Install via HACS |
+          |------|------|-----------------|
+          | `power-flow-card-plus` | Energy | ✅ |
+          | `mushroom-cards` | Overview, Cooling | ✅ |
+          | `apexcharts-card` | Energy, Water | ✅ |
+          | `button-card` | Cooling, Water, Security | ✅ |
+          | `frigate-hass-card` | Security (cameras) | ✅ (needs Frigate running) |
+
+          **Test Lab and Guide views use zero HACS cards** — they work immediately after
+          HA onboarding. Install HACS only when you're ready to set up the full dashboard.
+
+          HACS install: [hacs.xyz/docs/setup/download](https://hacs.xyz/docs/setup/download)
+
+          ---
+
+          ## 🐛 Troubleshooting
+
+          | Symptom | Likely cause | Fix |
+          |---------|-------------|-----|
+          | HA not at localhost:8123 | Using production compose (network_mode:host) | Add `-f docker-compose.dev.yml` to docker compose command |
+          | Sensors show "unavailable" | Config copied but HA not restarted | `docker compose restart homeassistant` |
+          | Automations don't fire | Sensor entity names don't match config | Check Developer Tools → States for actual entity IDs |
+          | HACS cards show "custom element not found" | HACS cards not installed | Install via HACS, clear browser cache |
+          | Mosquitto not reachable | mosquitto.conf missing | Re-run `bash scripts/setup.sh` |
