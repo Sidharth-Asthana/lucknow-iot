@@ -1,0 +1,132 @@
+# Automation: Rainwater Harvesting — Pump & Valve Control
+# Lucknow Smart Residence — System 2
+
+# ── AUTO: Turn pump ON when tank is refillable ───────────────────────────────
+- id: "rwh_pump_on"
+  alias: "RWH: Pump ON — tank above 20%"
+  description: >
+    Starts the submersible pump when the tank drops below 80% of capacity.
+    Protects against unnecessary cycling with a 20% lower bound.
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      below: 80
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_rwh_enabled
+      state: "on"
+    - condition: state
+      entity_id: switch.rwh_pump
+      state: "off"
+    - condition: numeric_state    # pump only if tank is not critically low
+      entity_id: sensor.rwh_level_pct
+      above: 5
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.rwh_pump
+
+# ── AUTO: Turn pump OFF when tank is full ────────────────────────────────────
+- id: "rwh_pump_off_full"
+  alias: "RWH: Pump OFF — tank full (>97%)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      above: 97
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.rwh_pump
+
+# ── AUTO: Turn pump OFF when tank critically low ─────────────────────────────
+- id: "rwh_pump_off_critical"
+  alias: "RWH: Pump OFF — tank critically low (<5%)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      below: 5
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.rwh_pump
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "⛽ RWH Pump Stopped"
+        message: "Tank below 5%. Pump disabled to protect motor."
+
+# ── AUTO: Cut beehive valve at low level ─────────────────────────────────────
+- id: "rwh_beehive_valve_cut"
+  alias: "RWH: Cut beehive supply — tank below 15%"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      below: input_number.rwh_beehive_cut_threshold
+  condition:
+    - condition: state
+      entity_id: switch.rwh_valve_beehive
+      state: "on"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.rwh_valve_beehive
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🐝 Beehive Drip Suspended"
+        message: >
+          RWH tank at {{ states('sensor.rwh_level_pct') }}%.
+          Beehive supply closed to conserve domestic water.
+
+# ── AUTO: Low-level alert ────────────────────────────────────────────────────
+- id: "rwh_low_level_alert"
+  alias: "RWH: Low level alert (<10%)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      below: input_number.rwh_low_level_threshold
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_rwh_enabled
+      state: "on"
+  action:
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "⚠️ Rainwater Tank Low"
+        message: >
+          Tank level: {{ states('sensor.rwh_level_litres') }} L
+          ({{ states('sensor.rwh_level_pct') }}%).
+          Consider activating mains supply backup.
+    - service: persistent_notification.create
+      data:
+        title: "RWH Low Level Warning"
+        message: >
+          Tank at {{ states('sensor.rwh_level_pct') }}% —
+          {{ states('sensor.rwh_level_litres') }} L remaining.
+        notification_id: "rwh_low_level"
+
+# ── AUTO: Dismiss low-level notification when level recovers ─────────────────
+- id: "rwh_low_level_dismiss"
+  alias: "RWH: Dismiss low level notification"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.rwh_level_pct
+      above: 20
+  action:
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: "rwh_low_level"
+
+# ── AUTO: Daily usage report (midnight) ─────────────────────────────────────
+- id: "rwh_daily_report"
+  alias: "RWH: Daily usage report at midnight"
+  trigger:
+    - platform: time
+      at: "23:59:00"
+  action:
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "💧 Daily Water Report"
+        message: >
+          Domestic: {{ states('sensor.daily_domestic_water') }} L
+          | Beehive: {{ states('sensor.daily_beehive_water') }} L
+          | Tank: {{ states('sensor.rwh_level_pct') }}%
+          ({{ states('sensor.rwh_level_litres') }} L remaining)

@@ -1,0 +1,229 @@
+# Automation: Beehive Cooling Mode State Machine
+# Lucknow Smart Residence — System 3
+
+# ── AUTO: Enter monsoon bypass (RH > threshold) ──────────────────────────────
+- id: "cooling_monsoon_bypass_on"
+  alias: "Cooling: Enter monsoon bypass"
+  description: >
+    When indoor RH exceeds the set threshold, close dampers, stop fans,
+    switch on dehumidifier, and set input_select to monsoon_bypass.
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.indoor_rh_pct
+      above: input_number.cooling_rh_bypass_threshold
+      for:
+        minutes: 3           # must persist 3 min to avoid transient spikes
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_cooling_enabled
+      state: "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: input_select.cooling_mode
+          state: "monsoon_bypass"
+  action:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.cooling_mode
+      data:
+        option: "monsoon_bypass"
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.damper_e
+          - switch.damper_s
+    - service: fan.turn_off
+      target:
+        entity_id:
+          - fan.beehive_fan_e
+          - fan.beehive_fan_s
+    - service: switch.turn_on
+      target:
+        entity_id: switch.dehumidifier
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🌧️ Monsoon Bypass Active"
+        message: >
+          Indoor RH {{ states('sensor.indoor_rh_pct') }}% > threshold.
+          Beehive fans stopped. Dehumidifier ON.
+
+# ── AUTO: Exit monsoon bypass (RH drops below threshold) ────────────────────
+- id: "cooling_monsoon_bypass_off"
+  alias: "Cooling: Exit monsoon bypass"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.indoor_rh_pct
+      below: input_number.cooling_rh_bypass_threshold
+      for:
+        minutes: 10          # 10 min below threshold before resuming cooling
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_cooling_enabled
+      state: "on"
+    - condition: state
+      entity_id: input_select.cooling_mode
+      state: "monsoon_bypass"
+    - condition: numeric_state   # don't re-enter cooling if it's winter
+      entity_id: sensor.outdoor_temp_c
+      above: input_number.cooling_min_temp_threshold
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.dehumidifier
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.cooling_mode
+      data:
+        option: "cooling"
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.damper_e
+          - switch.damper_s
+    # Fan speed = proportional to cooling delta, clamped 20–100%
+    - service: fan.set_percentage
+      target:
+        entity_id:
+          - fan.beehive_fan_e
+          - fan.beehive_fan_s
+      data:
+        percentage: >
+          {{ [20, [(states('sensor.outdoor_temp_c') | float(30) -
+               states('sensor.beehive_inlet_temp_c') | float(25)) / 14 * 100,
+               100] | min] | max | round(0) | int }}
+
+# ── AUTO: Enter winter bypass (outdoor T < threshold) ────────────────────────
+- id: "cooling_winter_bypass_on"
+  alias: "Cooling: Enter winter bypass"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.outdoor_temp_c
+      below: input_number.cooling_min_temp_threshold
+      for:
+        minutes: 30
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_cooling_enabled
+      state: "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: input_select.cooling_mode
+          state: "winter_bypass"
+  action:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.cooling_mode
+      data:
+        option: "winter_bypass"
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.damper_e
+          - switch.damper_s
+          - switch.dehumidifier
+    - service: fan.turn_off
+      target:
+        entity_id:
+          - fan.beehive_fan_e
+          - fan.beehive_fan_s
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "❄️ Winter Bypass Active"
+        message: >
+          Outdoor T {{ states('sensor.outdoor_temp_c') }}°C.
+          Beehive bypassed. Passive solar mode.
+
+# ── AUTO: Exit winter bypass ──────────────────────────────────────────────────
+- id: "cooling_winter_bypass_off"
+  alias: "Cooling: Exit winter bypass"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.outdoor_temp_c
+      above: input_number.cooling_min_temp_threshold
+      for:
+        minutes: 60
+  condition:
+    - condition: state
+      entity_id: input_boolean.automation_cooling_enabled
+      state: "on"
+    - condition: state
+      entity_id: input_select.cooling_mode
+      state: "winter_bypass"
+    - condition: numeric_state   # only if RH is also OK
+      entity_id: sensor.indoor_rh_pct
+      below: input_number.cooling_rh_bypass_threshold
+  action:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.cooling_mode
+      data:
+        option: "cooling"
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.damper_e
+          - switch.damper_s
+    - service: fan.set_percentage
+      target:
+        entity_id:
+          - fan.beehive_fan_e
+          - fan.beehive_fan_s
+      data:
+        percentage: 40     # conservative start speed after winter
+
+# ── AUTO: Adaptive fan speed update (every 5 minutes in cooling mode) ─────────
+- id: "cooling_fan_speed_update"
+  alias: "Cooling: Update fan speed to match ΔT"
+  description: >
+    Adjusts EC fan speed proportionally to the outdoor→inlet temperature
+    differential. Runs every 5 min while in cooling mode.
+  trigger:
+    - platform: time_pattern
+      minutes: "/5"
+  condition:
+    - condition: state
+      entity_id: input_select.cooling_mode
+      state: "cooling"
+    - condition: state
+      entity_id: input_boolean.automation_cooling_enabled
+      state: "on"
+  action:
+    - service: fan.set_percentage
+      target:
+        entity_id:
+          - fan.beehive_fan_e
+          - fan.beehive_fan_s
+      data:
+        percentage: >
+          {% set outdoor = states('sensor.outdoor_temp_c') | float(30) %}
+          {% set inlet   = states('sensor.beehive_inlet_temp_c') | float(26) %}
+          {% set delta   = outdoor - inlet %}
+          {{ [20, [delta / 14 * 100, 100] | min] | max | round(0) | int }}
+
+# ── AUTO: Beehive drip — open valve when soil moisture low ───────────────────
+- id: "cooling_beehive_drip_on"
+  alias: "Cooling: Start beehive drip (soil dry)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.soil_moisture_e_pct
+      below: 40
+    - platform: numeric_state
+      entity_id: sensor.soil_moisture_s_pct
+      below: 40
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.rwh_level_pct
+      above: 15              # don't drip if tank is low
+    - condition: state
+      entity_id: switch.rwh_valve_beehive
+      state: "off"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.rwh_valve_beehive
+    - delay: "00:10:00"      # drip for 10 minutes
+    - service: switch.turn_off
+      target:
+        entity_id: switch.rwh_valve_beehive

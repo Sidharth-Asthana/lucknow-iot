@@ -1,0 +1,678 @@
+# Home Assistant — Lovelace Dashboard
+# Lucknow Smart Residence · 7-view interactive dashboard
+#
+# Paste into: HA → Settings → Dashboards → Edit → Raw Config Editor
+# Required HACS cards: power-flow-card-plus, mini-graph-card, button-card,
+#   mushroom-cards, apexcharts-card, frigate-hass-card, lovelace-card-mod
+#
+# Theme: Home Assistant Dark with accent #C8935A
+
+title: "Lucknow Smart Residence"
+background: "var(--primary-background-color)"
+views:
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 1 — OVERVIEW
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Overview
+    icon: mdi:home-lightning-bolt
+    path: overview
+    type: masonry
+    cards:
+
+      # ── Header chip row ────────────────────────────────────────────────────
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: sensor.pv_power_w
+            icon: mdi:solar-panel
+            icon_color: amber
+            content_info: state
+          - type: entity
+            entity: sensor.battery_soc_pct
+            icon: mdi:battery-charging-80
+            icon_color: green
+            content_info: state
+          - type: entity
+            entity: sensor.rwh_level_pct
+            icon: mdi:water
+            icon_color: blue
+            content_info: state
+          - type: entity
+            entity: input_select.cooling_mode
+            icon: mdi:air-filter
+            icon_color: cyan
+            content_info: state
+          - type: alarm-control-panel
+            entity: alarm_control_panel.main_alarm
+          - type: entity
+            entity: sensor.elevator_floor
+            icon: mdi:elevator
+            content_info: state
+
+      # ── PV + Battery quick stats ────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.pv_power_w') | int }} W"
+            secondary: "PV Generation"
+            icon: mdi:solar-power
+            icon_color: amber
+            badge_icon: >
+              {% if states('sensor.pv_power_w') | int > 0 %}mdi:trending-up{% else %}mdi:moon-waning-crescent{% endif %}
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.battery_soc_pct') | float | round(0) }}%"
+            secondary: "Battery SOC"
+            icon: mdi:battery-high
+            icon_color: >
+              {% set soc = states('sensor.battery_soc_pct') | float %}
+              {% if soc > 50 %}green{% elif soc > 20 %}amber{% else %}red{% endif %}
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.rwh_level_litres') | int }} L"
+            secondary: "Tank Level"
+            icon: mdi:water-percent
+            icon_color: blue
+
+      # ── Cooling + Alarm + Elevator status row ──────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: input_select.cooling_mode
+            name: "Cooling Mode"
+            icon: mdi:air-filter
+            show_state: true
+            styles:
+              card:
+                - background: >
+                    [[[ if (entity.state === 'cooling') return '#1a3a2a';
+                        if (entity.state === 'monsoon_bypass') return '#1a2a3a';
+                        if (entity.state === 'winter_bypass') return '#2a2a3a';
+                        return '#2a2a2a'; ]]]
+          - type: alarm-panel
+            entity: alarm_control_panel.main_alarm
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.elevator_floor') }}"
+            secondary: "Elevator"
+            icon: mdi:elevator-passenger
+            icon_color: >
+              {% if is_state('binary_sensor.elevator_fault', 'on') %}red{% else %}blue{% endif %}
+            badge_icon: >
+              {% if is_state('binary_sensor.elevator_fault', 'on') %}mdi:alert{% endif %}
+
+      # ── Indoor climate summary ──────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.indoor_temp_c') }}°C"
+            secondary: "Indoor"
+            icon: mdi:thermometer
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.indoor_rh_pct') }}%"
+            secondary: "Indoor RH"
+            icon: mdi:water-percent
+            icon_color: >
+              {% set rh = states('sensor.indoor_rh_pct') | float %}
+              {% if rh > 65 %}orange{% else %}cyan{% endif %}
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.cooling_delta_c') }}°C"
+            secondary: "Cooling ΔT"
+            icon: mdi:thermometer-lines
+            icon_color: green
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 2 — ENERGY
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Energy
+    icon: mdi:lightning-bolt-circle
+    path: energy
+    type: masonry
+    cards:
+
+      # ── Animated power flow ────────────────────────────────────────────────
+      - type: custom:power-flow-card-plus
+        entities:
+          home:
+            entity: sensor.inverter_ac_output_w
+          solar:
+            entity: sensor.pv_power_w
+          battery:
+            entity: sensor.battery_power_w
+            state_of_charge: sensor.battery_soc_pct
+          grid:
+            entity: sensor.grid_import_w
+            secondary_info:
+              entity: sensor.grid_export_w
+        watt_threshold: 100
+        min_flow_rate: 0.75
+        max_flow_rate: 6
+
+      # ── 48-hr PV + battery + grid chart ────────────────────────────────────
+      - type: custom:apexcharts-card
+        header:
+          title: "48-hour Energy Overview"
+          show: true
+        graph_span: 48h
+        span:
+          end: now
+        series:
+          - entity: sensor.pv_power_w
+            name: PV Generation
+            color: "#f59e0b"
+            type: area
+            fill_raw: "0"
+          - entity: sensor.battery_soc_pct
+            name: Battery SOC
+            color: "#22c55e"
+            type: line
+            unit: "%"
+            yaxis_id: "soc"
+          - entity: sensor.grid_import_w
+            name: Grid Import
+            color: "#ef4444"
+            type: area
+            fill_raw: "0"
+          - entity: sensor.grid_export_w
+            name: Grid Export
+            color: "#3b82f6"
+            type: area
+            fill_raw: "0"
+        yaxis:
+          - id: "default"
+            min: 0
+          - id: "soc"
+            opposite: true
+            min: 0
+            max: 100
+            decimals: 0
+
+      # ── Daily totals ────────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: stat-card
+            entity: sensor.daily_pv_energy
+            name: "Today PV"
+          - type: stat-card
+            entity: sensor.daily_grid_import
+            name: "Grid Import"
+          - type: entity
+            entity: sensor.inverter_temperature_c
+            name: "Inverter Temp"
+
+      # ── Battery detail ──────────────────────────────────────────────────────
+      - type: gauge
+        entity: sensor.battery_soc_pct
+        name: "Battery State of Charge"
+        min: 0
+        max: 100
+        needle: true
+        segments:
+          - from: 0
+            color: "#ef4444"
+          - from: 20
+            color: "#f59e0b"
+          - from: 50
+            color: "#22c55e"
+
+      # ── Grid export toggle ──────────────────────────────────────────────────
+      - type: custom:button-card
+        entity: switch.grid_export_enable
+        name: "Grid Export"
+        icon: mdi:transmission-tower-export
+        tap_action:
+          action: toggle
+        styles:
+          card:
+            - background: >
+                [[[ return entity.state === 'on' ? '#1a3a1a' : '#2a2a2a' ]]]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 3 — WATER
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Water
+    icon: mdi:water
+    path: water
+    type: masonry
+    cards:
+
+      # ── Tank level gauge ────────────────────────────────────────────────────
+      - type: gauge
+        entity: sensor.rwh_level_pct
+        name: "Rainwater Tank (18,000 L)"
+        min: 0
+        max: 100
+        needle: true
+        segments:
+          - from: 0
+            color: "#ef4444"
+          - from: 10
+            color: "#f59e0b"
+          - from: 25
+            color: "#3b82f6"
+          - from: 75
+            color: "#22c55e"
+
+      - type: custom:mushroom-template-card
+        primary: "{{ states('sensor.rwh_level_litres') | int }} litres"
+        secondary: "{{ states('sensor.rwh_level_pct') | float | round(1) }}% of 18,000 L tank"
+        icon: mdi:water-well
+
+      # ── Pump + valve controls ───────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: switch.rwh_pump
+            name: "Pump"
+            icon: mdi:pump
+            tap_action:
+              action: toggle
+            hold_action:
+              action: none
+          - type: custom:button-card
+            entity: switch.rwh_valve_domestic
+            name: "Domestic Valve"
+            icon: mdi:pipe-valve
+            tap_action:
+              action: toggle
+          - type: custom:button-card
+            entity: switch.rwh_valve_beehive
+            name: "Beehive Valve"
+            icon: mdi:water-boiler
+            tap_action:
+              action: toggle
+
+      # ── Daily flow chart ────────────────────────────────────────────────────
+      - type: custom:apexcharts-card
+        header:
+          title: "24-hour Flow Rates"
+          show: true
+        graph_span: 24h
+        series:
+          - entity: sensor.rwh_domestic_flow_lpm
+            name: Domestic (L/min)
+            color: "#3b82f6"
+          - entity: sensor.rwh_beehive_flow_lpm
+            name: Beehive (L/min)
+            color: "#22c55e"
+
+      # ── Daily totals ────────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: stat-card
+            entity: sensor.daily_domestic_water
+            name: "Domestic Today"
+          - type: stat-card
+            entity: sensor.daily_beehive_water
+            name: "Beehive Today"
+
+      # ── Automation threshold control ────────────────────────────────────────
+      - type: entities
+        title: "RWH Thresholds"
+        entities:
+          - entity: input_number.rwh_low_level_threshold
+          - entity: input_number.rwh_beehive_cut_threshold
+          - entity: input_boolean.automation_rwh_enabled
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 4 — COOLING
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Cooling
+    icon: mdi:air-filter
+    path: cooling
+    type: masonry
+    cards:
+
+      # ── Mode selector ───────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: input_select.cooling_mode
+            name: "Cooling"
+            icon: mdi:snowflake
+            state:
+              - value: "cooling"
+                color: cyan
+                icon: mdi:air-filter
+              - value: "monsoon_bypass"
+                color: blue
+                icon: mdi:weather-rainy
+              - value: "winter_bypass"
+                color: purple
+                icon: mdi:snowflake
+              - value: "off"
+                color: grey
+                icon: mdi:power
+
+      # ── Live temperature + RH gauges ────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.indoor_temp_c
+            name: "Indoor °C"
+            min: 15
+            max: 50
+            needle: false
+            segments:
+              - from: 15
+                color: "#3b82f6"
+              - from: 26
+                color: "#22c55e"
+              - from: 35
+                color: "#ef4444"
+          - type: gauge
+            entity: sensor.outdoor_temp_c
+            name: "Outdoor °C"
+            min: 15
+            max: 50
+            needle: false
+          - type: gauge
+            entity: sensor.indoor_rh_pct
+            name: "Indoor RH %"
+            min: 0
+            max: 100
+            needle: false
+            segments:
+              - from: 0
+                color: "#22c55e"
+              - from: 65
+                color: "#f59e0b"
+              - from: 80
+                color: "#ef4444"
+
+      # ── Cooling delta readout ───────────────────────────────────────────────
+      - type: custom:mushroom-template-card
+        primary: "ΔT = {{ states('sensor.cooling_delta_c') }}°C"
+        secondary: >
+          Outdoor {{ states('sensor.outdoor_temp_c') }}°C →
+          Inlet {{ states('sensor.beehive_inlet_temp_c') }}°C →
+          Indoor {{ states('sensor.indoor_temp_c') }}°C
+        icon: mdi:thermometer-lines
+        icon_color: >
+          {% set dt = states('sensor.cooling_delta_c') | float %}
+          {% if dt > 12 %}green{% elif dt > 6 %}amber{% else %}red{% endif %}
+
+      # ── Fan speed sliders ───────────────────────────────────────────────────
+      - type: entities
+        title: "Fan Speed Control"
+        entities:
+          - type: custom:slider-entity-row
+            entity: fan.beehive_fan_e
+            name: "Fan East (%)"
+          - type: custom:slider-entity-row
+            entity: fan.beehive_fan_s
+            name: "Fan South (%)"
+
+      # ── Damper status + manual override ────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: switch.damper_e
+            name: "Damper East"
+            icon: mdi:air-filter
+            tap_action:
+              action: toggle
+          - type: custom:button-card
+            entity: switch.damper_s
+            name: "Damper South"
+            icon: mdi:air-filter
+            tap_action:
+              action: toggle
+          - type: custom:button-card
+            entity: switch.dehumidifier
+            name: "Dehumidifier"
+            icon: mdi:air-humidifier-off
+            tap_action:
+              action: toggle
+
+      # ── Soil moisture ───────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.soil_moisture_e_pct
+            name: "Soil Moisture E"
+            min: 0
+            max: 100
+          - type: gauge
+            entity: sensor.soil_moisture_s_pct
+            name: "Soil Moisture S"
+            min: 0
+            max: 100
+
+      # ── Threshold controls ──────────────────────────────────────────────────
+      - type: entities
+        title: "Cooling Thresholds"
+        entities:
+          - entity: input_number.cooling_rh_bypass_threshold
+          - entity: input_number.cooling_min_temp_threshold
+          - entity: input_boolean.automation_cooling_enabled
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 5 — SECURITY
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Security
+    icon: mdi:shield-home
+    path: security
+    type: masonry
+    cards:
+
+      # ── Alarm panel ─────────────────────────────────────────────────────────
+      - type: alarm-panel
+        entity: alarm_control_panel.main_alarm
+        states:
+          - arm_away
+          - arm_home
+
+      # ── Camera grid (7 cameras) ─────────────────────────────────────────────
+      - type: grid
+        columns: 3
+        square: false
+        cards:
+          - type: custom:frigate-card
+            camera_entity: camera.cam_gate
+            title: Gate
+          - type: custom:frigate-card
+            camera_entity: camera.cam_driveway
+            title: Driveway
+          - type: custom:frigate-card
+            camera_entity: camera.cam_frontdoor
+            title: Front Door
+          - type: custom:frigate-card
+            camera_entity: camera.cam_ne
+            title: NE Perimeter
+          - type: custom:frigate-card
+            camera_entity: camera.cam_sw
+            title: SW Perimeter
+          - type: custom:frigate-card
+            camera_entity: camera.cam_terrace
+            title: Terrace
+          - type: custom:frigate-card
+            camera_entity: camera.cam_garage
+            title: Garage
+
+      # ── PIR + beam-break zone status ────────────────────────────────────────
+      - type: entities
+        title: "Perimeter Sensor Zones"
+        entities:
+          - entity: binary_sensor.pir_gate
+          - entity: binary_sensor.pir_driveway
+          - entity: binary_sensor.pir_front_door
+          - entity: binary_sensor.pir_living_room
+          - entity: binary_sensor.pir_dining
+          - entity: binary_sensor.pir_terrace
+          - entity: binary_sensor.pir_garage
+          - entity: binary_sensor.pir_master_bedroom
+          - entity: binary_sensor.ir_beam_west_gate
+          - entity: binary_sensor.ir_beam_west_driveway
+          - entity: binary_sensor.ir_beam_ne_perimeter
+          - entity: binary_sensor.ir_beam_sw_perimeter
+
+      # ── Manual deterrent controls ───────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: switch.siren
+            name: "Siren"
+            icon: mdi:alarm-light
+            tap_action:
+              action: toggle
+            confirmation:
+              text: "Activate siren?"
+          - type: custom:button-card
+            entity: switch.gate_lock_relay
+            name: "Gate Lock"
+            icon: mdi:gate
+            tap_action:
+              action: toggle
+          - type: custom:button-card
+            entity: light.floodlight_ne
+            name: "All Floods"
+            tap_action:
+              action: call-service
+              service: light.toggle
+              service_data:
+                entity_id:
+                  - light.floodlight_ne
+                  - light.floodlight_nw
+                  - light.floodlight_se
+                  - light.floodlight_sw
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 6 — SYSTEMS
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Systems
+    icon: mdi:server
+    path: systems
+    type: masonry
+    cards:
+
+      # ── Server health ───────────────────────────────────────────────────────
+      - type: entities
+        title: "Mac Mini A (10.0.0.10) — HA Server"
+        entities:
+          - entity: sensor.mac_mini_a_cpu_temp_c
+            name: "CPU Temp"
+          - entity: sensor.mac_mini_a_disk_used_pct
+            name: "Disk Used"
+
+      - type: entities
+        title: "Mac Mini B (10.0.0.11) — Flexible"
+        entities:
+          - entity: sensor.mac_mini_b_cpu_temp_c
+            name: "CPU Temp"
+
+      # ── UPS status ──────────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.ups_battery_charge_pct
+            name: "UPS Charge"
+            min: 0
+            max: 100
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.ups_runtime_remaining_min') | int }} min"
+            secondary: "UPS Runtime"
+            icon: mdi:battery-clock
+            icon_color: >
+              {% if is_state('binary_sensor.ups_on_battery', 'on') %}orange{% else %}green{% endif %}
+
+      # ── Server panel lock ───────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: lock.server_panel
+            name: "Server Room Panel"
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.panel_access_last_user') }}"
+            secondary: "Last Access"
+            icon: mdi:fingerprint
+
+      # ── Elevator status ─────────────────────────────────────────────────────
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: "{{ states('sensor.elevator_floor') }}"
+            secondary: "Current Floor"
+            icon: mdi:elevator
+            icon_color: >
+              {% if is_state('binary_sensor.elevator_fault', 'on') %}red{% else %}green{% endif %}
+          - type: custom:button-card
+            name: "Call Ground"
+            icon: mdi:numeric-0-box
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.elevator_call_g
+          - type: custom:button-card
+            name: "Call F1"
+            icon: mdi:numeric-1-box
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.elevator_call_f1
+          - type: custom:button-card
+            name: "Call Terrace"
+            icon: mdi:numeric-2-box
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.elevator_call_t
+
+      # ── KNX bus status ──────────────────────────────────────────────────────
+      - type: entities
+        title: "Infrastructure Status"
+        entities:
+          - entity: binary_sensor.elevator_fault
+            name: "Elevator Fault"
+          - entity: binary_sensor.elevator_door_open
+            name: "Elevator Door"
+          - entity: binary_sensor.inverter_fault
+            name: "Inverter Fault"
+          - entity: binary_sensor.rwh_low_level
+            name: "RWH Low Level"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VIEW 7 — AUTOMATIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Automations
+    icon: mdi:robot
+    path: automations
+    type: masonry
+    cards:
+
+      # ── Enable/disable toggles ──────────────────────────────────────────────
+      - type: entities
+        title: "Automation Master Switches"
+        entities:
+          - entity: input_boolean.automation_cooling_enabled
+            name: "Cooling Auto-Control"
+          - entity: input_boolean.automation_rwh_enabled
+            name: "RWH Auto-Control"
+          - entity: input_boolean.automation_security_enabled
+            name: "Security Alerts"
+
+      # ── Cooling thresholds ──────────────────────────────────────────────────
+      - type: entities
+        title: "Cooling Automation Thresholds"
+        entities:
+          - entity: input_number.cooling_rh_bypass_threshold
+            name: "Monsoon Bypass RH (%)"
+          - entity: input_number.cooling_min_temp_threshold
+            name: "Winter Bypass Below (°C)"
+
+      # ── RWH thresholds ──────────────────────────────────────────────────────
+      - type: entities
+        title: "Rainwater Automation Thresholds"
+        entities:
+          - entity: input_number.rwh_low_level_threshold
+            name: "Low Level Alert (%)"
+          - entity: input_number.rwh_beehive_cut_threshold
+            name: "Beehive Supply Cut (%)"
+
+      # ── Force cooling mode manually ─────────────────────────────────────────
+      - type: entities
+        title: "Manual Mode Override"
+        entities:
+          - entity: input_select.cooling_mode
+            name: "Cooling Mode"

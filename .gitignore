@@ -1,0 +1,53 @@
+# Secrets — never commit these
+.env
+*.sqlite3
+secrets/
+credentials/
+
+# Docker volumes (generated at runtime, not source)
+volumes/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Arduino build artifacts
+*.elf
+*.bin
+*.hex
+build/
+
+# Home Assistant generated files
+*.log
+home-assistant_v2.db
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
+.storage/
+.cloud/
+
+# Frigate recordings (large, stays on device)
+volumes/frigate/media/
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo

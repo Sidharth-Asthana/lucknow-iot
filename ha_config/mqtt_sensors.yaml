@@ -1,0 +1,250 @@
+# Home Assistant — MQTT Sensor Definitions
+# Included by configuration.yaml as: mqtt: !include mqtt_sensors.yaml
+#
+# ESP32 nodes publish JSON to topic: homeassistant/sensor/<node>/<measurement>
+# Example: homeassistant/sensor/rwh/level  → {"value": 73.5, "unit": "%"}
+#
+# Fan/damper commands are sent TO the ESP32:
+#   Topic: homeassistant/command/beehive/<actuator>
+#   Payload: e.g. {"speed": 75}  or  {"state": "ON"}
+
+sensor:
+  # ───────────────────────────────────────────────────────────────────────────
+  # SYSTEM 2 — Rainwater Harvesting ESP32 node
+  # ───────────────────────────────────────────────────────────────────────────
+  - name: "RWH Level Pct"
+    unique_id: rwh_level_pct
+    state_topic: "homeassistant/sensor/rwh/level"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "%"
+    device_class: humidity          # closest proxy (0–100 %)
+    state_class: measurement
+    expire_after: 60                # mark unavailable if no update in 60 s
+    icon: mdi:water-percent
+    device:
+      identifiers: ["esp32_rwh"]
+      name: "RWH ESP32 Node"
+      model: "ESP32-WROOM-32"
+      manufacturer: "Espressif"
+
+  - name: "RWH Domestic Flow Lpm"
+    unique_id: rwh_domestic_flow_lpm
+    state_topic: "homeassistant/sensor/rwh/flow_domestic"
+    value_template: "{{ value_json.value | round(2) }}"
+    unit_of_measurement: "L/min"
+    device_class: volume_flow_rate
+    state_class: measurement
+    expire_after: 60
+    icon: mdi:water-pump
+    device:
+      identifiers: ["esp32_rwh"]
+
+  - name: "RWH Beehive Flow Lpm"
+    unique_id: rwh_beehive_flow_lpm
+    state_topic: "homeassistant/sensor/rwh/flow_beehive"
+    value_template: "{{ value_json.value | round(2) }}"
+    unit_of_measurement: "L/min"
+    device_class: volume_flow_rate
+    state_class: measurement
+    expire_after: 60
+    icon: mdi:water-boiler
+    device:
+      identifiers: ["esp32_rwh"]
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # SYSTEM 3 — Beehive Cooling ESP32 node
+  # ───────────────────────────────────────────────────────────────────────────
+  - name: "Indoor Temp C"
+    unique_id: indoor_temp_c
+    state_topic: "homeassistant/sensor/beehive/indoor_temp"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    expire_after: 120
+    icon: mdi:thermometer
+    device:
+      identifiers: ["esp32_beehive"]
+      name: "Beehive ESP32 Node"
+      model: "ESP32-WROOM-32"
+      manufacturer: "Espressif"
+
+  - name: "Indoor RH Pct"
+    unique_id: indoor_rh_pct
+    state_topic: "homeassistant/sensor/beehive/indoor_rh"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    expire_after: 120
+    icon: mdi:water-percent
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Outdoor Temp C"
+    unique_id: outdoor_temp_c
+    state_topic: "homeassistant/sensor/beehive/outdoor_temp"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    expire_after: 120
+    icon: mdi:weather-sunny
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Outdoor RH Pct"
+    unique_id: outdoor_rh_pct
+    state_topic: "homeassistant/sensor/beehive/outdoor_rh"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    expire_after: 120
+    icon: mdi:weather-rainy
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Beehive Inlet Temp C"
+    unique_id: beehive_inlet_temp_c
+    state_topic: "homeassistant/sensor/beehive/inlet_temp"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    expire_after: 120
+    icon: mdi:thermometer-chevron-down
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Soil Moisture E Pct"
+    unique_id: soil_moisture_e_pct
+    state_topic: "homeassistant/sensor/beehive/soil_e"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    expire_after: 300
+    icon: mdi:sprout
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Soil Moisture S Pct"
+    unique_id: soil_moisture_s_pct
+    state_topic: "homeassistant/sensor/beehive/soil_s"
+    value_template: "{{ value_json.value | round(1) }}"
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    expire_after: 300
+    icon: mdi:sprout
+    device:
+      identifiers: ["esp32_beehive"]
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # SYSTEM 5 — Fingerprint / Access control events
+  # ───────────────────────────────────────────────────────────────────────────
+  - name: "Panel Access Last User"
+    unique_id: panel_access_last_user
+    state_topic: "homeassistant/lock/server_panel"
+    value_template: "{{ value_json.user | default('unknown') }}"
+    icon: mdi:fingerprint
+    device:
+      identifiers: ["wiegand_bridge"]
+      name: "Server Panel Lock"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MQTT switches — pump, valves, dampers (commands sent to ESP32)
+# ─────────────────────────────────────────────────────────────────────────────
+switch:
+  - name: "RWH Valve Domestic"
+    unique_id: rwh_valve_domestic
+    state_topic: "homeassistant/switch/rwh/valve_domestic/state"
+    command_topic: "homeassistant/switch/rwh/valve_domestic/set"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    icon: mdi:pipe-valve
+    device:
+      identifiers: ["esp32_rwh"]
+
+  - name: "RWH Valve Beehive"
+    unique_id: rwh_valve_beehive
+    state_topic: "homeassistant/switch/rwh/valve_beehive/state"
+    command_topic: "homeassistant/switch/rwh/valve_beehive/set"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    icon: mdi:water-boiler-alert
+    device:
+      identifiers: ["esp32_rwh"]
+
+  - name: "Damper E"
+    unique_id: damper_e
+    state_topic: "homeassistant/switch/beehive/damper_e/state"
+    command_topic: "homeassistant/switch/beehive/damper_e/set"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    icon: mdi:air-filter
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Damper S"
+    unique_id: damper_s
+    state_topic: "homeassistant/switch/beehive/damper_s/state"
+    command_topic: "homeassistant/switch/beehive/damper_s/set"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    icon: mdi:air-filter
+    device:
+      identifiers: ["esp32_beehive"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MQTT fan entities (EC fans with 0-10V speed control via ESP32 DAC)
+# ─────────────────────────────────────────────────────────────────────────────
+fan:
+  - name: "Beehive Fan E"
+    unique_id: beehive_fan_e
+    state_topic: "homeassistant/fan/beehive/fan_e/state"
+    command_topic: "homeassistant/fan/beehive/fan_e/set"
+    percentage_state_topic: "homeassistant/fan/beehive/fan_e/speed"
+    percentage_command_topic: "homeassistant/fan/beehive/fan_e/speed_set"
+    speed_range_min: 20      # EC fans min stable speed
+    speed_range_max: 100
+    optimistic: false
+    icon: mdi:fan
+    device:
+      identifiers: ["esp32_beehive"]
+
+  - name: "Beehive Fan S"
+    unique_id: beehive_fan_s
+    state_topic: "homeassistant/fan/beehive/fan_s/state"
+    command_topic: "homeassistant/fan/beehive/fan_s/set"
+    percentage_state_topic: "homeassistant/fan/beehive/fan_s/speed"
+    percentage_command_topic: "homeassistant/fan/beehive/fan_s/speed_set"
+    speed_range_min: 20
+    speed_range_max: 100
+    optimistic: false
+    icon: mdi:fan
+    device:
+      identifiers: ["esp32_beehive"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MQTT lock — server room fingerprint panel
+# ─────────────────────────────────────────────────────────────────────────────
+lock:
+  - name: "Server Panel"
+    unique_id: server_panel_lock
+    state_topic: "homeassistant/lock/server_panel"
+    command_topic: "homeassistant/lock/server_panel/set"
+    value_template: "{{ value_json.state }}"
+    payload_lock: '{"state": "LOCKED"}'
+    payload_unlock: '{"state": "UNLOCKED"}'
+    state_locked: "LOCKED"
+    state_unlocked: "UNLOCKED"
+    optimistic: false
+    icon: mdi:fingerprint
+    device:
+      identifiers: ["wiegand_bridge"]

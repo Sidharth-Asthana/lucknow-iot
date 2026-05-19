@@ -1,0 +1,201 @@
+# Automation: Security System — Alerts, Floodlights, Alarm Logic
+# Lucknow Smart Residence — System 4
+
+# ── AUTO: Trigger alarm on PIR in armed_away mode ────────────────────────────
+- id: "security_pir_trigger_away"
+  alias: "Security: PIR triggers alarm (armed away)"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.pir_gate
+        - binary_sensor.pir_driveway
+        - binary_sensor.pir_front_door
+        - binary_sensor.pir_living_room
+        - binary_sensor.pir_dining
+        - binary_sensor.pir_terrace
+        - binary_sensor.pir_garage
+        - binary_sensor.pir_master_bedroom
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.main_alarm
+      state: "armed_away"
+    - condition: state
+      entity_id: input_boolean.automation_security_enabled
+      state: "on"
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      target:
+        entity_id: alarm_control_panel.main_alarm
+
+# ── AUTO: Trigger alarm on IR beam-break in any armed mode ───────────────────
+- id: "security_ir_beam_trigger"
+  alias: "Security: IR beam-break triggers alarm"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.ir_beam_west_gate
+        - binary_sensor.ir_beam_west_driveway
+        - binary_sensor.ir_beam_ne_perimeter
+        - binary_sensor.ir_beam_sw_perimeter
+      to: "on"
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: alarm_control_panel.main_alarm
+          state: "armed_away"
+        - condition: state
+          entity_id: alarm_control_panel.main_alarm
+          state: "armed_home"
+    - condition: state
+      entity_id: input_boolean.automation_security_enabled
+      state: "on"
+  action:
+    - service: alarm_control_panel.alarm_trigger
+      target:
+        entity_id: alarm_control_panel.main_alarm
+
+# ── AUTO: Alarm triggered — siren ON + push notification ─────────────────────
+- id: "security_alarm_triggered_response"
+  alias: "Security: Alarm triggered response"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.main_alarm
+      to: "triggered"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.siren
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.floodlight_ne
+          - light.floodlight_nw
+          - light.floodlight_se
+          - light.floodlight_sw
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🚨 ALARM TRIGGERED"
+        message: >
+          Intrusion detected at {{ now().strftime('%H:%M:%S') }}.
+          Check cameras immediately.
+        data:
+          push:
+            sound: "US-EN-Alexa-Motion-Detected-Generic.wav"
+            interruption-level: critical
+
+# ── AUTO: Alarm disarmed — siren OFF + floodlights OFF ───────────────────────
+- id: "security_alarm_disarmed_response"
+  alias: "Security: Alarm disarmed — all clear"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.main_alarm
+      to: "disarmed"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.siren
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.floodlight_ne
+          - light.floodlight_nw
+          - light.floodlight_se
+          - light.floodlight_sw
+
+# ── AUTO: Frigate motion — floodlight on during night hours ──────────────────
+- id: "security_frigate_motion_floodlight"
+  alias: "Security: Frigate motion → floodlight (night)"
+  description: >
+    When Frigate detects a person in an outdoor zone between sunset and sunrise,
+    turn on the nearest floodlight for 3 minutes.
+  trigger:
+    - platform: mqtt
+      topic: "frigate/events"
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: template
+      value_template: >
+        {{ trigger.payload_json.type == 'new' and
+           trigger.payload_json.after.label == 'person' }}
+  action:
+    - variables:
+        camera_id: "{{ trigger.payload_json.after.camera }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ camera_id in ['cam_gate','cam_driveway'] }}"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: light.floodlight_nw
+            - delay: "00:03:00"
+            - service: light.turn_off
+              target:
+                entity_id: light.floodlight_nw
+        - conditions:
+            - condition: template
+              value_template: "{{ camera_id in ['cam_ne','cam_frontdoor'] }}"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: light.floodlight_ne
+            - delay: "00:03:00"
+            - service: light.turn_off
+              target:
+                entity_id: light.floodlight_ne
+        - conditions:
+            - condition: template
+              value_template: "{{ camera_id in ['cam_sw','cam_garage'] }}"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: light.floodlight_sw
+            - delay: "00:03:00"
+            - service: light.turn_off
+              target:
+                entity_id: light.floodlight_sw
+
+# ── AUTO: Gate auto-lock when alarm is armed ─────────────────────────────────
+- id: "security_gate_autolock_arm"
+  alias: "Security: Auto-lock gate when armed"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.main_alarm
+      to:
+        - "armed_away"
+        - "armed_home"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.gate_lock_relay
+
+# ── AUTO: Gate unlock when alarm disarmed ────────────────────────────────────
+- id: "security_gate_unlock_disarm"
+  alias: "Security: Unlock gate when disarmed"
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.main_alarm
+      to: "disarmed"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.gate_lock_relay
+
+# ── AUTO: NVR storage warning (<20% free) ────────────────────────────────────
+- id: "security_nvr_storage_warning"
+  alias: "Security: NVR storage running low"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.mac_mini_a_disk_used_pct    # or Mini B if Frigate is there
+      above: 80
+  action:
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🎥 NVR Storage Low"
+        message: >
+          Frigate disk usage: {{ states('sensor.mac_mini_a_disk_used_pct') }}%.
+          Review oldest recordings or expand storage.

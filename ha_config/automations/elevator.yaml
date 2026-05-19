@@ -1,0 +1,134 @@
+# Automation: Elevator Control — Floor Arrival + Fault Monitoring
+# Lucknow Smart Residence — System 6
+
+# ── AUTO: Notify on floor arrival ────────────────────────────────────────────
+- id: "elevator_floor_arrival"
+  alias: "Elevator: Announce floor arrival"
+  description: >
+    When the elevator arrives at a floor (reed switch closes),
+    publish the floor name to the dashboard sensor.
+    Optional: play a chime via a KNX audio actuator.
+  trigger:
+    - platform: state
+      entity_id: sensor.elevator_floor
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: sensor.elevator_floor
+          state: "In Transit"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: sensor.elevator_floor
+          state: "unavailable"
+  action:
+    # Log to persistent state (dashboard reads this)
+    - service: logbook.log
+      data:
+        name: "Elevator"
+        message: "Arrived at {{ states('sensor.elevator_floor') }}"
+        entity_id: sensor.elevator_floor
+
+# ── AUTO: Elevator fault alert ────────────────────────────────────────────────
+- id: "elevator_fault_alert"
+  alias: "Elevator: Fault detected — push alert"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.elevator_fault
+      to: "on"
+  action:
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🚨 Elevator Fault"
+        message: >
+          Elevator has reported a fault at {{ now().strftime('%H:%M on %d %b') }}.
+          Check elevator controller and call service if needed.
+        data:
+          push:
+            sound: "default"
+            interruption-level: time-sensitive
+    - service: persistent_notification.create
+      data:
+        title: "⚠️ Elevator Fault"
+        message: >
+          Fault detected at {{ now().strftime('%H:%M:%S, %d %B %Y') }}.
+          Elevator may be out of service.
+        notification_id: "elevator_fault"
+
+# ── AUTO: Dismiss elevator fault notification ─────────────────────────────────
+- id: "elevator_fault_clear"
+  alias: "Elevator: Clear fault notification"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.elevator_fault
+      to: "off"
+  action:
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: "elevator_fault"
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "✅ Elevator Fault Cleared"
+        message: "Elevator fault relay is no longer active."
+
+# ── AUTO: Elevator door open too long ────────────────────────────────────────
+- id: "elevator_door_open_alert"
+  alias: "Elevator: Door open too long"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.elevator_door_open
+      to: "on"
+      for:
+        minutes: 5
+  action:
+    - service: notify.mobile_app_all_devices
+      data:
+        title: "🚪 Elevator Door Alert"
+        message: "Elevator door has been open for more than 5 minutes."
+
+# ── AUTO: Momentary call relay pulse (button press simulation) ───────────────
+# These automations translate HA button presses into 500ms relay pulses
+# that simulate pressing the elevator call button at each floor.
+
+- id: "elevator_call_ground_pulse"
+  alias: "Elevator: Call button Ground (momentary pulse)"
+  trigger:
+    - platform: state
+      entity_id: button.elevator_call_g
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.elevator_call_ground
+    - delay: "00:00:00.500"
+    - service: switch.turn_off
+      target:
+        entity_id: switch.elevator_call_ground
+
+- id: "elevator_call_first_pulse"
+  alias: "Elevator: Call button First (momentary pulse)"
+  trigger:
+    - platform: state
+      entity_id: button.elevator_call_f1
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.elevator_call_first
+    - delay: "00:00:00.500"
+    - service: switch.turn_off
+      target:
+        entity_id: switch.elevator_call_first
+
+- id: "elevator_call_terrace_pulse"
+  alias: "Elevator: Call button Terrace (momentary pulse)"
+  trigger:
+    - platform: state
+      entity_id: button.elevator_call_t
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.elevator_call_terrace
+    - delay: "00:00:00.500"
+    - service: switch.turn_off
+      target:
+        entity_id: switch.elevator_call_terrace

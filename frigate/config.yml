@@ -1,0 +1,299 @@
+# Frigate NVR Configuration
+# Lucknow Smart Residence — 7 PoE IP cameras
+# Place at: volumes/frigate/config/config.yml
+#
+# Camera hardware: Reolink RLC-810A (8 MP, H.265, PoE)
+# RTSP URL format: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@{camera-ip}/h264Preview_01_main
+#
+# Frigate docs: https://docs.frigate.video/configuration/
+
+mqtt:
+  enabled: true
+  host: mosquitto               # Docker service name (resolves on Docker network)
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate_nvr
+  stats_interval: 60
+
+# ── Hardware detector (optional: Coral TPU USB for edge AI) ──────────────────
+detectors:
+  cpu_detector:
+    type: cpu
+    num_threads: 4
+  # Uncomment if Google Coral USB Accelerator is connected:
+  # coral_usb:
+  #   type: edgetpu
+  #   device: usb
+
+# ── Object detection model ────────────────────────────────────────────────────
+model:
+  path: /config/model_cache/ssd_mobilenet_v2_coco_quant_postprocess.tflite
+  width: 320
+  height: 320
+  labelmap_path: /config/model_cache/coco-80-labels.txt
+
+# ── Global recording policy ───────────────────────────────────────────────────
+record:
+  enabled: true
+  retain:
+    days: 30                    # 30-day local NVR retention
+    mode: motion                # only keep segments with motion (saves ~70% space)
+  events:
+    retain:
+      default: 30               # event clips retained 30 days
+      mode: motion
+  export:
+    timelapse_args: "-vf setpts=0.04*PTS -r 30"
+
+# ── Snapshot policy ───────────────────────────────────────────────────────────
+snapshots:
+  enabled: true
+  timestamp: true
+  bounding_box: true
+  retain:
+    default: 30
+
+# ── Global object tracking defaults ──────────────────────────────────────────
+objects:
+  track:
+    - person
+    - car
+    - motorcycle
+  filters:
+    person:
+      min_area: 3000            # ignore tiny blobs (birds, shadows)
+      max_area: 200000
+      threshold: 0.7
+    car:
+      min_area: 10000
+      threshold: 0.65
+
+# ── Global motion detection ────────────────────────────────────────────────────
+motion:
+  threshold: 30
+  contour_area: 100
+  delta_alpha: 0.2
+  frame_alpha: 0.01
+  frame_height: 180
+  improve_contrast: true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CAMERAS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+cameras:
+
+  # ── Camera 1: Gate ─────────────────────────────────────────────────────────
+  cam_gate:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.101/h264Preview_01_main
+          roles:
+            - detect
+            - record
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.101/h264Preview_01_sub
+          roles:
+            - audio
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+    zones:
+      gate_zone:
+        coordinates: "100,100,900,100,900,700,100,700"
+        objects:
+          - person
+          - car
+        filters:
+          person:
+            min_score: 0.7
+    record:
+      enabled: true
+      retain:
+        days: 30
+    snapshots:
+      enabled: true
+    motion:
+      mask:
+        - "0,0,100,0,100,1000,0,1000"   # mask left edge (trees)
+
+  # ── Camera 2: Driveway ─────────────────────────────────────────────────────
+  cam_driveway:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.102/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+        - motorcycle
+    zones:
+      driveway_zone:
+        coordinates: "200,300,1800,300,1800,1800,200,1800"
+        objects:
+          - car
+          - person
+    record:
+      enabled: true
+
+  # ── Camera 3: Front Door ──────────────────────────────────────────────────
+  cam_frontdoor:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.103/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 10              # higher fps for entry camera
+    objects:
+      track:
+        - person
+    zones:
+      entry_zone:
+        coordinates: "400,400,3400,400,3400,2000,400,2000"
+        objects:
+          - person
+        filters:
+          person:
+            min_score: 0.75
+    record:
+      enabled: true
+
+  # ── Camera 4: NE Perimeter ─────────────────────────────────────────────────
+  cam_ne:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.104/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+    zones:
+      perimeter_ne:
+        coordinates: "0,0,3840,0,3840,2160,0,2160"
+        objects:
+          - person
+    record:
+      enabled: true
+
+  # ── Camera 5: SW Perimeter ─────────────────────────────────────────────────
+  cam_sw:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.105/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+    zones:
+      perimeter_sw:
+        coordinates: "0,0,3840,0,3840,2160,0,2160"
+        objects:
+          - person
+    record:
+      enabled: true
+
+  # ── Camera 6: Terrace ──────────────────────────────────────────────────────
+  cam_terrace:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.106/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+    zones:
+      terrace_zone:
+        coordinates: "0,0,3840,0,3840,2160,0,2160"
+    record:
+      enabled: true
+    motion:
+      # Mask out the sky (top 30%) to reduce false triggers from clouds
+      mask:
+        - "0,0,3840,0,3840,650,0,650"
+
+  # ── Camera 7: Garage Interior ──────────────────────────────────────────────
+  cam_garage:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.107/h264Preview_01_main
+          roles:
+            - detect
+            - record
+    detect:
+      width: 3840
+      height: 2160
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+    zones:
+      garage_zone:
+        coordinates: "0,0,3840,0,3840,2160,0,2160"
+        objects:
+          - person
+          - car
+    record:
+      enabled: true
+    # Garage is internal — motion is generally low-light; improve contrast
+    motion:
+      improve_contrast: true
+      threshold: 20
+
+# ── Go2RTC (Frigate's built-in WebRTC re-streamer) ────────────────────────────
+go2rtc:
+  streams:
+    cam_gate:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.101/h264Preview_01_main
+    cam_driveway:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.102/h264Preview_01_main
+    cam_frontdoor:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.103/h264Preview_01_main
+    cam_ne:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.104/h264Preview_01_main
+    cam_sw:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.105/h264Preview_01_main
+    cam_terrace:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.106/h264Preview_01_main
+    cam_garage:
+      - rtsp://admin:{FRIGATE_RTSP_PASSWORD}@10.0.0.107/h264Preview_01_main
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logger:
+  default: warning
+  logs:
+    frigate.record: info
+    frigate.events: info

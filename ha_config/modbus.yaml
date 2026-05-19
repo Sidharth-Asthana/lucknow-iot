@@ -1,0 +1,213 @@
+# Home Assistant — Modbus Configuration
+# Included by configuration.yaml as: modbus: !include modbus.yaml
+#
+# Covers:
+#   Hub 1 — Hybrid inverter (SunSpec Modbus TCP, port 502)
+#   Hub 2 — Eastron SDM630 grid meter (Modbus RTU via USB RS485 adapter)
+#
+# SunSpec register map: https://sunspec.org/sunspec-modbus-specification/
+# SDM630 register map:  Eastron SDM630 datasheet Rev 1.9
+
+- name: "inverter"
+  type: tcp
+  host: "10.0.0.40"      # static IP assigned to hybrid inverter on LAN
+  port: 502
+  delay: 3
+  message_wait_milliseconds: 200
+  sensors:
+    # ── SunSpec Common Model 103 (Three Phase Inverter) ──────────────────────
+    - name: "PV Power W"
+      unique_id: pv_power_w
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      address: 40083        # W (int16) — AC power output
+      count: 1
+      data_type: int16
+      scale: 1
+      precision: 0
+      scan_interval: 10
+
+    - name: "Inverter AC Output W"
+      unique_id: inverter_ac_output_w
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      address: 40086
+      count: 1
+      data_type: int16
+      scale: 1
+      precision: 0
+      scan_interval: 10
+
+    - name: "Battery SOC Pct"
+      unique_id: battery_soc_pct
+      unit_of_measurement: "%"
+      device_class: battery
+      state_class: measurement
+      address: 40058        # SoC (uint16, %)
+      count: 1
+      data_type: uint16
+      scale: 0.01           # register holds value × 100
+      precision: 1
+      scan_interval: 30
+
+    - name: "Battery Power W"
+      unique_id: battery_power_w
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      address: 40062        # Battery DC power (int16, W; +ve=discharge, -ve=charge)
+      count: 1
+      data_type: int16
+      scale: 1
+      precision: 0
+      scan_interval: 10
+
+    - name: "Daily PV kWh"
+      unique_id: daily_pv_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      address: 40093        # Daily PV energy (uint32, Wh) — high word
+      count: 2
+      data_type: uint32
+      scale: 0.001          # Wh → kWh
+      precision: 2
+      scan_interval: 60
+
+    - name: "AC Voltage V"
+      unique_id: ac_voltage_v
+      unit_of_measurement: V
+      device_class: voltage
+      state_class: measurement
+      address: 40079        # L1 voltage (uint16, V × 10)
+      count: 1
+      data_type: uint16
+      scale: 0.1
+      precision: 1
+      scan_interval: 30
+
+    - name: "AC Frequency Hz"
+      unique_id: ac_frequency_hz
+      unit_of_measurement: Hz
+      device_class: frequency
+      state_class: measurement
+      address: 40085        # Frequency (uint16, Hz × 100)
+      count: 1
+      data_type: uint16
+      scale: 0.01
+      precision: 2
+      scan_interval: 60
+
+    - name: "Inverter Temperature C"
+      unique_id: inverter_temp_c
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      address: 40103        # Heat sink temperature (int16, °C × 10)
+      count: 1
+      data_type: int16
+      scale: 0.1
+      precision: 1
+      scan_interval: 60
+
+  binary_sensors:
+    - name: "Inverter Fault"
+      unique_id: inverter_fault
+      device_class: problem
+      address: 40108        # Fault register (uint16, bit 0 = any fault)
+      count: 1
+      data_type: uint16
+      scan_interval: 15
+
+  switches:
+    - name: "Grid Export Enable"
+      unique_id: grid_export_enable
+      address: 40200        # Writable coil — enable/disable grid export
+      command_on: 1
+      command_off: 0
+      scan_interval: 60
+
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "grid_meter"
+  type: serial
+  port: /dev/ttyUSB1        # Eastron SDM630 RS485 → USB adapter
+  baudrate: 9600
+  bytesize: 8
+  method: rtu
+  parity: "N"
+  stopbits: 1
+  sensors:
+    # ── Eastron SDM630 register map (all float32, big-endian) ────────────────
+    - name: "Grid Import W"
+      unique_id: grid_import_w
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      slave: 1
+      address: 0x0000       # Phase 1 active power (float32, W)
+      count: 2
+      data_type: float32
+      precision: 0
+      scan_interval: 10
+
+    - name: "Grid Export W"
+      unique_id: grid_export_w
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+      slave: 1
+      address: 0x0048       # Total system power export (float32, W)
+      count: 2
+      data_type: float32
+      precision: 0
+      scan_interval: 10
+
+    - name: "Daily Grid Import kWh"
+      unique_id: daily_grid_import_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      slave: 1
+      address: 0x0156       # Import kWh (float32, kWh — cumulative)
+      count: 2
+      data_type: float32
+      precision: 3
+      scan_interval: 60
+
+    - name: "Daily Grid Export kWh"
+      unique_id: daily_grid_export_kwh
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+      slave: 1
+      address: 0x0158       # Export kWh (float32, kWh — cumulative)
+      count: 2
+      data_type: float32
+      precision: 3
+      scan_interval: 60
+
+    - name: "Grid Voltage V"
+      unique_id: grid_voltage_v
+      unit_of_measurement: V
+      device_class: voltage
+      state_class: measurement
+      slave: 1
+      address: 0x0000       # L1-N voltage
+      count: 2
+      data_type: float32
+      precision: 1
+      scan_interval: 30
+
+    - name: "Grid Power Factor"
+      unique_id: grid_power_factor
+      unit_of_measurement: ""
+      device_class: power_factor
+      state_class: measurement
+      slave: 1
+      address: 0x001E       # Total power factor (float32)
+      count: 2
+      data_type: float32
+      precision: 3
+      scan_interval: 60

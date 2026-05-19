@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.lucknow.wiegand_bridge</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/usr/local/bin/wiegand_bridge.py</string>
+  </array>
+
+  <!-- Start automatically at boot -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!-- Restart if it crashes -->
+  <key>KeepAlive</key>
+  <true/>
+
+  <!-- Environment variables (override in .env or edit here) -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>SERIAL_PORT</key>
+    <string>/dev/tty.usbserial-Wiegand</string>
+    <key>SERIAL_BAUD</key>
+    <string>9600</string>
+    <key>MQTT_HOST</key>
+    <string>10.0.0.10</string>
+    <key>MQTT_PORT</key>
+    <string>1883</string>
+    <key>DB_PATH</key>
+    <string>/usr/local/var/lucknow/fingerprint_users.sqlite3</string>
+    <key>LOG_PATH</key>
+    <string>/usr/local/var/log/panel_access.log</string>
+    <key>RELOCK_DELAY_S</key>
+    <string>5</string>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/usr/local/var/log/wiegand_bridge.log</string>
+  <key>StandardErrorPath</key>
+  <string>/usr/local/var/log/wiegand_bridge.log</string>
+
+  <!-- Throttle restart to prevent boot loop -->
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+</dict>
+</plist>

@@ -1,0 +1,136 @@
+# Lucknow Smart Residence — Mac Mini A Docker Stack
+# Run: docker compose up -d
+# HA UI:      http://localhost:8123   (or http://10.0.0.10:8123 on LAN)
+# Frigate UI: http://localhost:5000
+# MQTT:       localhost:1883 (internal) | 10.0.0.10:1883 (LAN devices)
+#
+# Prerequisites:
+#   - Docker Desktop for macOS (M-series)
+#   - Create ./volumes/ directory tree (see bottom of file)
+#   - ConBee II plugged into USB-A port (check device path with: ls /dev/tty.usbserial*)
+#   - Eastron SDM630 USB adapter plugged in
+
+version: "3.8"
+
+services:
+
+  # ─────────────────────────────────────────────────────────────
+  # HOME ASSISTANT  — Core smart-home platform
+  # ─────────────────────────────────────────────────────────────
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    privileged: true                        # needed for USB serial access
+    network_mode: host                      # required for mDNS, KNX multicast, UPnP
+    environment:
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./volumes/ha_config:/config         # persistent HA config
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      # ConBee II Zigbee stick — verify path: ls /dev/tty.usbserial*
+      - /dev/tty.usbserial-ConBee:/dev/ttyUSB0
+      # Eastron SDM630 RS485→USB adapter (Modbus RTU grid meter)
+      - /dev/tty.usbserial-SDM630:/dev/ttyUSB1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123/api/"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - mosquitto
+      - frigate
+
+  # ─────────────────────────────────────────────────────────────
+  # MOSQUITTO  — MQTT broker (ESP32 nodes + HA ↔ Frigate)
+  # ─────────────────────────────────────────────────────────────
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2.0
+    restart: unless-stopped
+    ports:
+      - "1883:1883"                         # MQTT (LAN-accessible for ESP32 nodes)
+      - "9001:9001"                         # WebSocket (optional, for browser debug)
+    volumes:
+      - ./volumes/mosquitto/config:/mosquitto/config
+      - ./volumes/mosquitto/data:/mosquitto/data
+      - ./volumes/mosquitto/log:/mosquitto/log
+    environment:
+      - TZ=Asia/Kolkata
+
+  # ─────────────────────────────────────────────────────────────
+  # FRIGATE  — AI-powered NVR (7 PoE cameras, RTSP/ONVIF)
+  # ─────────────────────────────────────────────────────────────
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true
+    shm_size: "256mb"                       # shared memory for video decode
+    ports:
+      - "5000:5000"                         # Frigate web UI + API
+      - "8554:8554"                         # RTSP re-streams
+      - "8555:8555/tcp"                     # WebRTC
+      - "8555:8555/udp"
+    volumes:
+      - ./volumes/frigate/config:/config
+      - ./volumes/frigate/media:/media/frigate   # 30-day recording storage (use 4TB SSD on Mini B)
+      - /dev/bus/usb:/dev/bus/usb           # Coral TPU (optional, for local AI object detection)
+    environment:
+      - TZ=Asia/Kolkata
+      - FRIGATE_RTSP_PASSWORD=changeme      # used in config.yml camera URLs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/version"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+  # ─────────────────────────────────────────────────────────────
+  # WIEGAND BRIDGE  — Fingerprint reader → MQTT publisher
+  # (ZKTeco SF100 → Wiegand-26 → RS485 serial → USB)
+  # ─────────────────────────────────────────────────────────────
+  wiegand_bridge:
+    container_name: wiegand_bridge
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile.wiegand        # see scripts/Dockerfile.wiegand
+    restart: unless-stopped
+    devices:
+      # ZKTeco SF100 Wiegand→RS485 bridge adapter
+      - /dev/tty.usbserial-Wiegand:/dev/ttyUSB2
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - SERIAL_PORT=/dev/ttyUSB2
+      - SERIAL_BAUD=9600
+      - DB_PATH=/data/fingerprint_users.sqlite3
+      - RELOCK_DELAY_S=5
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./volumes/wiegand:/data
+    depends_on:
+      - mosquitto
+
+# ─────────────────────────────────────────────────────────────
+# VOLUME INIT (run once before first docker compose up):
+#
+#   mkdir -p volumes/ha_config \
+#            volumes/mosquitto/{config,data,log} \
+#            volumes/frigate/{config,media} \
+#            volumes/wiegand
+#
+#   # Mosquitto config:
+#   cat > volumes/mosquitto/config/mosquitto.conf << 'EOF'
+#   listener 1883 0.0.0.0
+#   listener 9001 0.0.0.0
+#   protocol websockets
+#   allow_anonymous true
+#   persistence true
+#   persistence_location /mosquitto/data/
+#   log_dest file /mosquitto/log/mosquitto.log
+#   EOF
+#
+#   # Then copy ha_config/ contents into volumes/ha_config/
+#   # And copy frigate/config.yml into volumes/frigate/config/config.yml
+# ─────────────────────────────────────────────────────────────
