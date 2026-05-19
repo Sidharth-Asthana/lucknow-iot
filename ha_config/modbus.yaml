@@ -5,6 +5,12 @@
 #   Hub 1 — Hybrid inverter (SunSpec Modbus TCP, port 502)
 #   Hub 2 — Eastron SDM630 grid meter (Modbus RTU via USB RS485 adapter)
 #
+# HA 2024+ schema rules:
+#   - int16 / uint16 sensors: omit `count` (always 1 register — count is implied)
+#   - int32 / uint32 / float32 sensors: count: 2 (two registers)
+#   - float64 sensors: count: 4
+#   - binary_sensors: no count or data_type fields
+#
 # SunSpec register map: https://sunspec.org/sunspec-modbus-specification/
 # SDM630 register map:  Eastron SDM630 datasheet Rev 1.9
 
@@ -12,17 +18,18 @@
   type: tcp
   host: "10.0.0.40"      # static IP assigned to hybrid inverter on LAN
   port: 502
-  delay: 3
-  message_wait_milliseconds: 200
+  delay: 3               # seconds to wait before first poll after connect
+  timeout: 5             # seconds per request before giving up
+
   sensors:
     # ── SunSpec Common Model 103 (Three Phase Inverter) ──────────────────────
+
     - name: "PV Power W"
       unique_id: pv_power_w
       unit_of_measurement: W
       device_class: power
       state_class: measurement
       address: 40083        # W (int16) — AC power output
-      count: 1
       data_type: int16
       scale: 1
       precision: 0
@@ -34,7 +41,6 @@
       device_class: power
       state_class: measurement
       address: 40086
-      count: 1
       data_type: int16
       scale: 1
       precision: 0
@@ -46,7 +52,6 @@
       device_class: battery
       state_class: measurement
       address: 40058        # SoC (uint16, %)
-      count: 1
       data_type: uint16
       scale: 0.01           # register holds value × 100
       precision: 1
@@ -58,7 +63,6 @@
       device_class: power
       state_class: measurement
       address: 40062        # Battery DC power (int16, W; +ve=discharge, -ve=charge)
-      count: 1
       data_type: int16
       scale: 1
       precision: 0
@@ -69,9 +73,8 @@
       unit_of_measurement: kWh
       device_class: energy
       state_class: total_increasing
-      address: 40093        # Daily PV energy (uint32, Wh) — high word
-      count: 2
-      data_type: uint32
+      address: 40093        # Daily PV energy (uint32, Wh) — high word first
+      data_type: uint32     # 2 registers inferred by HA
       scale: 0.001          # Wh → kWh
       precision: 2
       scan_interval: 60
@@ -82,7 +85,6 @@
       device_class: voltage
       state_class: measurement
       address: 40079        # L1 voltage (uint16, V × 10)
-      count: 1
       data_type: uint16
       scale: 0.1
       precision: 1
@@ -94,7 +96,6 @@
       device_class: frequency
       state_class: measurement
       address: 40085        # Frequency (uint16, Hz × 100)
-      count: 1
       data_type: uint16
       scale: 0.01
       precision: 2
@@ -106,25 +107,24 @@
       device_class: temperature
       state_class: measurement
       address: 40103        # Heat sink temperature (int16, °C × 10)
-      count: 1
       data_type: int16
       scale: 0.1
       precision: 1
       scan_interval: 60
 
   binary_sensors:
+    # binary_sensors: only address and scan_interval — no count or data_type
     - name: "Inverter Fault"
       unique_id: inverter_fault
       device_class: problem
-      address: 40108        # Fault register (uint16, bit 0 = any fault)
-      count: 1
-      data_type: uint16
+      address: 40108        # Fault register bit 0 = any fault
       scan_interval: 15
 
   switches:
     - name: "Grid Export Enable"
       unique_id: grid_export_enable
-      address: 40200        # Writable coil — enable/disable grid export
+      address: 40200        # Writable holding register — enable/disable grid export
+      write_type: holding
       command_on: 1
       command_off: 0
       scan_interval: 60
@@ -132,14 +132,17 @@
 # ─────────────────────────────────────────────────────────────────────────────
 - name: "grid_meter"
   type: serial
-  port: /dev/ttyUSB1        # Eastron SDM630 RS485 → USB adapter
+  port: /dev/ttyUSB1        # Eastron SDM630 RS485 → USB adapter (Mac Mini A)
   baudrate: 9600
   bytesize: 8
   method: rtu
   parity: "N"
   stopbits: 1
+
   sensors:
     # ── Eastron SDM630 register map (all float32, big-endian) ────────────────
+    # All SDM630 registers are float32 → count: 2 required
+
     - name: "Grid Import W"
       unique_id: grid_import_w
       unit_of_measurement: W
@@ -147,7 +150,6 @@
       state_class: measurement
       slave: 1
       address: 0x0000       # Phase 1 active power (float32, W)
-      count: 2
       data_type: float32
       precision: 0
       scan_interval: 10
@@ -159,7 +161,6 @@
       state_class: measurement
       slave: 1
       address: 0x0048       # Total system power export (float32, W)
-      count: 2
       data_type: float32
       precision: 0
       scan_interval: 10
@@ -171,7 +172,6 @@
       state_class: total_increasing
       slave: 1
       address: 0x0156       # Import kWh (float32, kWh — cumulative)
-      count: 2
       data_type: float32
       precision: 3
       scan_interval: 60
@@ -183,7 +183,6 @@
       state_class: total_increasing
       slave: 1
       address: 0x0158       # Export kWh (float32, kWh — cumulative)
-      count: 2
       data_type: float32
       precision: 3
       scan_interval: 60
@@ -194,8 +193,7 @@
       device_class: voltage
       state_class: measurement
       slave: 1
-      address: 0x0000       # L1-N voltage
-      count: 2
+      address: 0x0000       # L1-N voltage (float32, V)
       data_type: float32
       precision: 1
       scan_interval: 30
@@ -207,7 +205,6 @@
       state_class: measurement
       slave: 1
       address: 0x001E       # Total power factor (float32)
-      count: 2
       data_type: float32
       precision: 3
       scan_interval: 60
