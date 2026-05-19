@@ -25,7 +25,7 @@ self-sufficient residence in Lucknow, India.
 ## Quick start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/lucknow-iot.git
+git clone https://github.com/asthanasidharth911/lucknow-iot.git
 cd lucknow-iot
 cp .env.example .env        # fill in your passwords
 bash scripts/setup.sh       # init Docker volumes + copy configs
