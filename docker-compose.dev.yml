@@ -1,0 +1,56 @@
+# docker-compose.dev.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Windows / local dev override — NO hardware required.
+# Runs only HA + Mosquitto. No Frigate, no USB devices, no host networking.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+#
+# HA will be at:   http://localhost:8123
+# MQTT broker at:  localhost:1883
+#
+# After the stack is up, feed it fake sensor data:
+#   bash scripts/simulate.sh
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "3.8"
+
+services:
+
+  homeassistant:
+    # Override: drop host networking (doesn't work on Windows Docker Desktop)
+    # and use explicit port mapping instead.
+    network_mode: ""                  # clear the host-mode override
+    ports:
+      - "8123:8123"
+    # Override: remove all USB device mounts (no hardware on dev machine)
+    devices: []
+    # Override: HA only needs Mosquitto for dev; drop Frigate dependency
+    depends_on:
+      - mosquitto
+    environment:
+      - TZ=Asia/Kolkata
+      # Tell HA to trust the Docker internal network so the API is accessible
+      - TRUSTED_PROXIES=172.16.0.0/12
+
+  # Mosquitto is unchanged — port 1883 is already exposed in docker-compose.yml
+  mosquitto: {}
+
+  # Disable Frigate and wiegand_bridge in dev — they need cameras / serial port.
+  # Achieved by overriding their image to a no-op placeholder that exits immediately.
+  frigate:
+    image: busybox
+    command: ["true"]
+    restart: "no"
+    ports: []
+    volumes: []
+    environment: []
+
+  wiegand_bridge:
+    image: busybox
+    command: ["true"]
+    restart: "no"
+    devices: []
+    volumes: []
+    environment: []
+    depends_on: []

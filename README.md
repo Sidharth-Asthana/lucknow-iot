@@ -22,15 +22,42 @@ self-sufficient residence in Lucknow, India.
 
 ---
 
-## Quick start
+## Quick start — dev / Windows (no hardware needed)
+
+> Runs on any machine with Docker Desktop. No Mac Mini, no sensors, no cameras required.
 
 ```bash
 git clone https://github.com/Sidharth-Asthana/lucknow-iot.git
 cd lucknow-iot
-cp .env.example .env        # fill in your passwords
-bash scripts/setup.sh       # init Docker volumes + copy configs
-docker compose up -d        # start HA + Mosquitto + Frigate
-open http://localhost:8123  # complete HA onboarding
+bash scripts/setup.sh       # create volumes/ tree + write mosquitto.conf
+
+# Start HA + Mosquitto only (Windows-compatible, no USB devices)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+# Open HA, complete the onboarding wizard
+start http://localhost:8123
+
+# Feed all 6 subsystems with fake sensor data
+scripts\simulate.bat                 # Windows
+# bash scripts/simulate.sh           # Git Bash / WSL / macOS
+
+# Test a specific scenario (triggers automations):
+scripts\simulate.bat monsoon         # RH > 65% → bypass fires in 3 min
+scripts\simulate.bat lowwater        # tank < 15% → valve cut alert
+scripts\simulate.bat winter          # T < 18°C → winter bypass in 30 min
+```
+
+Watch automations fire in **HA → Settings → Automations** or **Logbook**.
+
+---
+
+## Production quick start (Mac Mini A)
+
+```bash
+cp .env.example .env        # fill in real passwords
+bash scripts/setup.sh
+docker compose up -d        # full stack: HA + Mosquitto + Frigate + Wiegand bridge
+open http://10.0.0.10:8123
 ```
 
 Then follow the full **Implementation checklist** in [`CLAUDE.md`](./CLAUDE.md).
