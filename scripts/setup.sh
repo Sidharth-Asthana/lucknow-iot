@@ -22,10 +22,13 @@ mkdir -p \
   "$VOLS/wiegand"
 echo "      ✓ volumes/ tree created"
 
-# ── 2. Copy HA config ─────────────────────────────────────────────────────────
+# ── 2. Copy HA config + dashboard ─────────────────────────────────────────────
 echo "[2/5] Copying Home Assistant config..."
 cp -r "$REPO_ROOT/ha_config/." "$VOLS/ha_config/"
+# Lovelace YAML mode: HA reads ui-lovelace.yaml directly from config dir
+cp "$REPO_ROOT/dashboard/lovelace.yaml" "$VOLS/ha_config/ui-lovelace.yaml"
 echo "      ✓ ha_config/ → volumes/ha_config/"
+echo "      ✓ dashboard/lovelace.yaml → volumes/ha_config/ui-lovelace.yaml"
 
 # ── 3. Copy Frigate config ────────────────────────────────────────────────────
 echo "[3/5] Copying Frigate config..."

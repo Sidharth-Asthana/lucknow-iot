@@ -16,6 +16,10 @@ homeassistant:
 # ── Core integrations loaded by default ──────────────────────────────────────
 default_config:          # includes frontend, history, logbook, map, mobile_app, etc.
 
+# ── Lovelace — load dashboard from file (no UI editor needed) ────────────────
+lovelace:
+  mode: yaml             # reads ui-lovelace.yaml from this config directory
+
 # ── Split configs ─────────────────────────────────────────────────────────────
 modbus: !include modbus.yaml
 mqtt:   !include mqtt_sensors.yaml
