@@ -1,4 +1,4 @@
-# Lucknow Smart Residence — IoT Stack
+# Smart Residence — IoT Stack
 
 Local-first IoT dashboard and automation stack for a 4-BHK G+1+T smart
 self-sufficient residence in Lucknow, India.
