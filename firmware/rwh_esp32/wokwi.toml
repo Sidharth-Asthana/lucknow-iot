@@ -1,0 +1,13 @@
+[wokwi]
+version = 1
+elf = ".pio/build/esp32dev/firmware.elf"
+# OR for Arduino IDE:
+# elf = "build/esp32.esp32.esp32/rwh_esp32.ino.bin"
+
+[[chip]]
+name = "rwh"
+
+# ── Simulate MB7389 ultrasonic level sensor ────────────────────────────────────
+# In Wokwi, the MB7389 TTL serial output is simulated using the Serial Monitor:
+# Type a distance value (mm) in the serial monitor to override the sensor reading.
+# Format: "R0650\r" → 650 mm from surface → 850 mm of water in a 1500 mm tank

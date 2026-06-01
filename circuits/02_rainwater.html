@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rainwater Harvesting — Circuit Diagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">←</a>
+  <h1>💧 System 02 — Rainwater Harvesting</h1>
+  <span class="timestamp" id="ts">--</span>
+  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Normal</span></span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-line blue"></div> Water Flow</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> MQTT / WiFi Data</div>
+  <div class="legend-item"><div class="legend-line amber"></div> Control Signal</div>
+  <div class="legend-item"><div class="legend-line red"></div> Low Level Alert</div>
+</div>
+
+<div class="svg-wrap">
+<svg class="circuit-svg" viewBox="0 0 800 490" width="800" height="490" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="a-bl"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#58a6ff"/></marker>
+  <marker id="a-cy"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="a-am"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="a-gn"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+  <marker id="a-rd"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
+</defs>
+
+<rect x="0" y="0" width="800" height="490" fill="#0d1117"/>
+
+<!-- zones -->
+<rect x="8" y="8"   width="784" height="205" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="22" y="26" fill="#8b949e" font-size="10" font-family="monospace">WATER COLLECTION + STORAGE</text>
+
+<rect x="8" y="223" width="784" height="259" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="22" y="241" fill="#8b949e" font-size="10" font-family="monospace">SENSING + CONTROL + DISTRIBUTION</text>
+
+<!-- ══ COLLECTION LAYER NODES  y=42-125 ══ -->
+
+<!-- Roof Catchment  x=18-163 -->
+<rect x="18" y="42" width="145" height="75" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="90" y="67"  text-anchor="middle" font-size="18" fill="#58a6ff">🌧️</text>
+<text x="90" y="84"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Roof Catchment</text>
+<text x="90" y="100" text-anchor="middle" class="node-sublabel">~139 m² · 1 000 mm/yr</text>
+
+<!-- First-flush + Filter  x=218-373 -->
+<rect x="218" y="42" width="155" height="75" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="295" y="67"  text-anchor="middle" font-size="18" fill="#58a6ff">🔧</text>
+<text x="295" y="84"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">First-flush + Filter</text>
+<text x="295" y="100" text-anchor="middle" class="node-sublabel">Leaf guard · diverter</text>
+
+<!-- 18 kL Tank  x=430-595 -->
+<rect x="430" y="35" width="165" height="88" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+<text x="512" y="62"  text-anchor="middle" font-size="20" fill="#58a6ff">🛢️</text>
+<text x="512" y="82"  text-anchor="middle" class="node-label" font-size="14" font-weight="600">18 kL RCC Tank</text>
+<text x="512" y="98"  text-anchor="middle" class="node-sublabel">Underground driveway</text>
+<!-- level bar -->
+<rect x="438" y="112" width="149" height="7" rx="3" fill="#30363d"/>
+<rect id="tank-bar" x="438" y="112" width="96" height="7" rx="3" fill="#58a6ff"/>
+<text id="tank-pct" x="512" y="128" text-anchor="middle" font-size="10" fill="#58a6ff" font-weight="700">-- %</text>
+
+<!-- Overflow / Recharge Pit  x=655-790 -->
+<rect x="655" y="42" width="135" height="75" rx="8" fill="#161b22" stroke="#39d353" stroke-width="1.5"/>
+<text x="722" y="67"  text-anchor="middle" font-size="18" fill="#39d353">🌱</text>
+<text x="722" y="84"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Recharge Pit</text>
+<text x="722" y="100" text-anchor="middle" class="node-sublabel">NE corner · gravel</text>
+
+<!-- ══ COLLECTION LAYER WIRES ══ -->
+<!-- Roof → Filter  (gap x=163–218, wire y=79) -->
+<path d="M 163,79 L 218,79" stroke-width="2.5" fill="none" marker-end="url(#a-bl)" class="wire-blue"/>
+<!-- Filter → Tank  (gap x=373–430, wire y=79) -->
+<path d="M 373,79 L 430,79" stroke-width="2.5" fill="none" marker-end="url(#a-bl)" class="wire-blue"/>
+<!-- Tank overflow → Recharge  (gap x=595–655, wire y=79) -->
+<path d="M 595,79 L 655,79" stroke-width="2" fill="none" stroke="#39d353" stroke-dasharray="6 6"
+      marker-end="url(#a-gn)" style="animation:flow-fwd 1.2s linear infinite;"/>
+<!-- labels: sit in respective gaps, 12 px above each wire -->
+<text x="190" y="69" text-anchor="middle" class="wire-label">gravity feed</text>
+<text x="401" y="69" text-anchor="middle" class="wire-label">filtered inflow</text>
+<text x="625" y="69" text-anchor="middle" class="wire-label">overflow</text>
+
+<!-- ══ CONTROL LAYER NODES  y=255-470 ══ -->
+
+<!-- MB7389 Level Sensor  x=18-168 -->
+<rect x="18" y="255" width="150" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="93" y="280"  text-anchor="middle" font-size="17" fill="#00d4ff">📡</text>
+<text x="93" y="297"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">MB7389 Level</text>
+<text x="93" y="313"  text-anchor="middle" class="node-sublabel">Ultrasonic · TTL UART</text>
+
+<!-- ESP32 RWH Node  x=230-390 -->
+<rect x="230" y="255" width="160" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="2"/>
+<text x="310" y="280"  text-anchor="middle" font-size="17" fill="#00d4ff">🧠</text>
+<text x="310" y="297"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">ESP32 RWH Node</text>
+<text x="310" y="313"  text-anchor="middle" class="node-sublabel">10.0.0.51 · paho-mqtt</text>
+
+<!-- Home Assistant  x=460-625 -->
+<rect x="460" y="255" width="165" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="542" y="280"  text-anchor="middle" font-size="17" fill="#00d4ff">🏠</text>
+<text x="542" y="297"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Home Assistant</text>
+<text x="542" y="313"  text-anchor="middle" class="node-sublabel">automation.rwh_pump</text>
+
+<!-- Pump  x=18-168 -->
+<rect x="18" y="400" width="150" height="70" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
+<text x="93" y="425"  text-anchor="middle" font-size="17" fill="#f0a500">⚙️</text>
+<text x="93" y="442"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Submersible Pump</text>
+<text x="93" y="458"  text-anchor="middle" class="node-sublabel">0.5 HP · Shelly relay</text>
+
+<!-- Domestic Valve  x=230-388 -->
+<rect x="230" y="400" width="158" height="70" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="309" y="425"  text-anchor="middle" font-size="17" fill="#58a6ff">🚰</text>
+<text x="309" y="442"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Domestic Valve</text>
+<text x="309" y="458"  text-anchor="middle" class="node-sublabel">UV + sediment filter</text>
+
+<!-- Beehive Drip Valve  x=460-618 -->
+<rect x="460" y="400" width="158" height="70" rx="8" fill="#161b22" stroke="#39d353" stroke-width="1.5"/>
+<text x="539" y="425"  text-anchor="middle" font-size="17" fill="#39d353">🌿</text>
+<text x="539" y="442"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Beehive Valve</text>
+<text x="539" y="458"  text-anchor="middle" class="node-sublabel">Unfiltered drip · solenoid</text>
+
+<!-- Flow meters legend  x=650-785 -->
+<rect x="650" y="400" width="135" height="70" rx="8" fill="#161b22" stroke="#8b949e" stroke-width="1"/>
+<text x="717" y="425"  text-anchor="middle" font-size="17" fill="#8b949e">💨</text>
+<text x="717" y="442"  text-anchor="middle" class="node-label" font-size="11" font-weight="600">YF-S201 Meters</text>
+<text id="d-flow-both" x="717" y="458" text-anchor="middle" class="node-sublabel">Dom: -- · BH: --</text>
+
+<!-- ══ CONTROL LAYER WIRES ══ -->
+
+<!-- MB7389 → ESP32  (gap x=168–230, wire y=290) -->
+<path d="M 168,290 L 230,290" stroke-width="1.5" fill="none" marker-end="url(#a-cy)" class="wire-cyan"/>
+<text x="199" y="280" text-anchor="middle" class="wire-label" fill="#00d4ff">UART</text>
+
+<!-- ESP32 → HA  (gap x=390–460, wire y=290) -->
+<path d="M 390,290 L 460,290" stroke-width="1.5" fill="none" marker-end="url(#a-cy)" class="wire-cyan"/>
+<text x="425" y="280" text-anchor="middle" class="wire-label" fill="#00d4ff">WiFi MQTT</text>
+
+<!-- Tank sensor loop: Tank → level sensor pipe  (left side route)
+     Tank left edge x=430, level sensor x=18-168.
+     Route: Tank bottom-left (438,123) → down to y=200 → left to x=93 → down to sensor top (93,255) -->
+<path d="M 438,123 L 438,200 L 93,200 L 93,255"
+      stroke-width="1" fill="none" stroke="#00d4ff" stroke-dasharray="3 9"
+      style="animation:flow-fwd 1.6s linear infinite; opacity:0.55;" marker-end="url(#a-cy)"/>
+<text x="263" y="194" text-anchor="middle" class="wire-label" fill="#00d4ff">level reading</text>
+
+<!-- YF-S201 flow meters → ESP32  (right-to-left bus)
+     Meters at x=650-785, ESP32 at x=230-390.
+     Route: Meters top (717,400) → up to y=370 → left to x=310 → down to ESP32 bottom (310,325) -->
+<path d="M 717,400 L 717,370 L 310,370 L 310,325"
+      stroke-width="1.5" fill="none" marker-end="url(#a-cy)" class="wire-cyan"
+      style="animation-duration:0.8s;"/>
+<text x="515" y="362" text-anchor="middle" class="wire-label" fill="#00d4ff">GPIO pulse counts</text>
+
+<!-- Tank → Pump  (water supply vertical)
+     Tank bottom: (512,123) → down via left corridor to x=93 → Pump top (93,400) -->
+<path d="M 438,123 L 438,213 L 60,213 L 60,400"
+      stroke-width="2.5" fill="none" marker-end="url(#a-bl)" class="wire-blue"/>
+<text x="248" y="207" text-anchor="middle" class="wire-label">pump suction line</text>
+
+<!-- Pump → Domestic Valve  (gap x=168–230, wire y=435) -->
+<path d="M 168,435 L 230,435" stroke-width="2.5" fill="none" marker-end="url(#a-bl)" class="wire-blue"/>
+<text x="199" y="425" text-anchor="middle" class="wire-label">supply</text>
+
+<!-- Pump → Beehive Valve  (route under pump/valves at y=478)
+     Pump bottom (93,470) → down to y=478 → right to x=539 → up to Beehive top (539,400) -->
+<path d="M 93,470 L 93,478 L 539,478 L 539,470"
+      stroke-width="2" fill="none" stroke="#58a6ff" stroke-dasharray="7 5"
+      marker-end="url(#a-bl)" style="animation:flow-fwd 1.1s linear infinite;"/>
+<text x="316" y="488" text-anchor="middle" class="wire-label">unfiltered drip branch</text>
+
+<!-- HA → Pump relay  (control, right-side descent)
+     HA bottom (542,325) → down to y=380 → left to x=130 → down to Pump top (130,400) -->
+<path d="M 542,325 L 542,380 L 130,380 L 130,400"
+      stroke-width="1.5" fill="none" stroke="#f0a500" stroke-dasharray="4 6"
+      marker-end="url(#a-am)" style="animation:flow-fwd 0.7s linear infinite;"/>
+<!-- HA → Domestic valve  (control) -->
+<path d="M 542,325 L 542,355 L 309,355 L 309,400"
+      stroke-width="1.5" fill="none" stroke="#f0a500" stroke-dasharray="4 6"
+      marker-end="url(#a-am)" style="animation:flow-fwd 0.7s linear infinite;"/>
+<!-- HA → Beehive valve  (control) -->
+<path d="M 625,290 L 660,290 L 660,355 L 539,355 L 539,400"
+      stroke-width="1.5" fill="none" stroke="#f0a500" stroke-dasharray="4 6"
+      marker-end="url(#a-am)" style="animation:flow-fwd 0.7s linear infinite;"/>
+<!-- single label for the HA control bus at y=355 corridor -->
+<text x="410" y="347" text-anchor="middle" class="wire-label" fill="#f0a500">HA switch control</text>
+
+<!-- live litres overlay — positioned below tank box, above zone border -->
+<text id="tank-litres" x="512" y="152" text-anchor="middle" font-size="11" font-weight="700" fill="#58a6ff">-- L</text>
+
+</svg>
+</div>
+
+<div class="data-panel">
+  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-grid">
+    <div class="data-cell"><div class="data-label">🛢️ Tank Level</div>
+      <div class="data-value blue" id="d-level">-- %</div></div>
+    <div class="data-cell"><div class="data-label">📦 Volume</div>
+      <div class="data-value blue" id="d-litres">-- L</div></div>
+    <div class="data-cell"><div class="data-label">🚰 Dom. Flow</div>
+      <div class="data-value normal" id="d-flow-dom">-- L/min</div></div>
+    <div class="data-cell"><div class="data-label">🌿 Beehive Flow</div>
+      <div class="data-value green" id="d-flow-bh">-- L/min</div></div>
+    <div class="data-cell"><div class="data-label">⚙️ Pump</div>
+      <div class="data-value amber" id="d-pump">--</div></div>
+    <div class="data-cell"><div class="data-label">🔵 Dom. Valve</div>
+      <div class="data-value cyan" id="d-valve-dom">--</div></div>
+    <div class="data-cell"><div class="data-label">🟢 BH Valve</div>
+      <div class="data-value green" id="d-valve-bh">--</div></div>
+    <div class="data-cell"><div class="data-label">⚠️ Alert</div>
+      <div class="data-value green" id="d-alert">None</div></div>
+  </div>
+</div>
+
+<script>
+let level=65;
+function noise(a){return (Math.random()-.5)*2*a;}
+function update(){
+  const now=new Date();
+  document.getElementById('ts').textContent=now.toLocaleTimeString();
+  level+=noise(0.3)-0.12;
+  if(level<20) level=80;
+  level=Math.max(5,Math.min(100,level));
+  const litres=Math.round(level/100*18000);
+  const pumpOn=level<25||Math.random()>0.85;
+  const domOn=Math.random()>0.4;
+  const bhOn=level>15&&Math.random()>0.6;
+  const domFlow=domOn?(1.2+noise(0.4)).toFixed(1):'0.0';
+  const bhFlow =bhOn ?(0.4+noise(0.15)).toFixed(2):'0.00';
+  const alert=level<10?'LOW LEVEL':'None';
+  document.getElementById('tank-bar').setAttribute('width',Math.round(1.49*level));
+  document.getElementById('tank-pct').textContent=Math.round(level)+' %';
+  document.getElementById('tank-litres').textContent=litres.toLocaleString()+' L';
+  document.getElementById('d-level').textContent=Math.round(level)+' %';
+  document.getElementById('d-litres').textContent=litres.toLocaleString()+' L';
+  document.getElementById('d-flow-dom').textContent=domFlow+' L/min';
+  document.getElementById('d-flow-bh').textContent=bhFlow+' L/min';
+  document.getElementById('d-pump').textContent=pumpOn?'ON':'OFF';
+  document.getElementById('d-valve-dom').textContent=domOn?'OPEN':'CLOSED';
+  document.getElementById('d-valve-bh').textContent=bhOn?'OPEN':'CLOSED';
+  document.getElementById('d-alert').textContent=alert;
+  document.getElementById('d-flow-both').textContent='Dom: '+domFlow+' · BH: '+bhFlow;
+  const b=document.getElementById('status-badge');
+  if(level<10){b.className='status-badge red';document.getElementById('status-text').textContent='LOW LEVEL';}
+  else if(pumpOn){b.className='status-badge amber';document.getElementById('status-text').textContent='Pump Running';}
+  else{b.className='status-badge green';document.getElementById('status-text').textContent='Normal';}
+}
+update(); setInterval(update,2000);
+</script>
+</body>
+</html>

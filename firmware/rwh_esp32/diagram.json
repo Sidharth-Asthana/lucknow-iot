@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "author": "Lucknow Smart Residence",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-v1",
+      "id": "esp32",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_flow_dom",
+      "top": -80,
+      "left": 220,
+      "attrs": {
+        "color": "blue",
+        "label": "YF-S201 domestic flow pulse"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_flow_bh",
+      "top": -80,
+      "left": 340,
+      "attrs": {
+        "color": "cyan",
+        "label": "YF-S201 beehive flow pulse"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_pump",
+      "top": 160,
+      "left": 220,
+      "attrs": {
+        "color": "red",
+        "label": "Pump relay"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_valve_dom",
+      "top": 160,
+      "left": 280,
+      "attrs": {
+        "color": "blue",
+        "label": "Domestic valve"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_valve_bh",
+      "top": 160,
+      "left": 340,
+      "attrs": {
+        "color": "cyan",
+        "label": "Beehive valve"
+      }
+    }
+  ],
+  "connections": [
+    [ "esp32:GPIO5",  "btn_flow_dom:1.l", "purple", [] ],
+    [ "esp32:GND",    "btn_flow_dom:2.l", "black",  [] ],
+
+    [ "esp32:GPIO18", "btn_flow_bh:1.l",  "purple", [] ],
+    [ "esp32:GND",    "btn_flow_bh:2.l",  "black",  [] ],
+
+    [ "esp32:GPIO27", "led_pump:A",        "red",    [] ],
+    [ "esp32:GPIO26", "led_valve_dom:A",   "blue",   [] ],
+    [ "esp32:GPIO25", "led_valve_bh:A",    "cyan",   [] ],
+    [ "esp32:GND",    "led_pump:K",        "black",  [] ],
+    [ "esp32:GND",    "led_valve_dom:K",   "black",  [] ],
+    [ "esp32:GND",    "led_valve_bh:K",    "black",  [] ]
+  ]
+}

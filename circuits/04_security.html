@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security System — Circuit Diagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">←</a>
+  <h1>🔒 System 04 — Security System</h1>
+  <span class="timestamp" id="ts">--</span>
+  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Armed Away</span></span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-line amber"></div> Video / RTSP Stream</div>
+  <div class="legend-item"><div class="legend-line red"></div> Alarm / Trigger Signal</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> MQTT / LAN Data</div>
+  <div class="legend-item"><div class="legend-line purple"></div> Wired Zone Input</div>
+</div>
+
+<div class="svg-wrap">
+<svg class="circuit-svg" viewBox="0 0 800 500" width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr-amber"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="arr-cyan"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="arr-red"    markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
+  <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#bc8cff"/></marker>
+  <marker id="arr-green"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+</defs>
+
+<rect x="0" y="0" width="800" height="500" fill="#0d1117"/>
+
+<!-- ═══ ZONE BACKGROUNDS ═══ -->
+<!-- Camera + PoE zone -->
+<rect x="8"   y="28" width="320" height="218" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="20"  y="44" fill="#8b949e" font-size="10" font-family="monospace">CAMERAS (PoE · RTSP/ONVIF)</text>
+<!-- Sensor zone -->
+<rect x="340" y="28" width="454" height="218" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="352" y="44" fill="#8b949e" font-size="10" font-family="monospace">WIRED SENSORS + KONNECTED</text>
+<!-- Control zone -->
+<rect x="8"   y="256" width="786" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="20"  y="272" fill="#8b949e" font-size="10" font-family="monospace">ALARM CONTROL + RESPONSE</text>
+
+<!-- ═══ CAMERA GROUP NODE ═══ -->
+<rect x="18" y="52" width="208" height="178" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+<text x="122" y="72" text-anchor="middle" font-size="13" fill="#f0a500">📷</text>
+<text x="122" y="88" text-anchor="middle" class="node-label" font-size="12" font-weight="600" fill="#f0a500">7 × IP Cameras</text>
+<text x="122" y="104" text-anchor="middle" class="node-sublabel">PoE · RTSP/ONVIF · Reolink</text>
+<!-- Camera list (no boxes, just labels) -->
+<text x="34"  y="122" class="node-sublabel" font-size="11">📷 Gate</text>
+<text x="34"  y="138" class="node-sublabel" font-size="11">📷 Driveway</text>
+<text x="34"  y="154" class="node-sublabel" font-size="11">📷 Front Door</text>
+<text x="34"  y="170" class="node-sublabel" font-size="11">📷 NE Perimeter</text>
+<text x="128" y="122" class="node-sublabel" font-size="11">📷 SW Perimeter</text>
+<text x="128" y="138" class="node-sublabel" font-size="11">📷 Terrace</text>
+<text x="128" y="154" class="node-sublabel" font-size="11">📷 Garage Int.</text>
+<!-- animated scan sweep: pulsing border -->
+<rect id="cam-pulse" x="18" y="52" width="208" height="178" rx="8" fill="none"
+      stroke="#f0a500" stroke-width="2" style="animation:pulse-border 2s ease-in-out infinite; opacity:0.4;"/>
+
+<!-- PoE Switch -->
+<rect x="252" y="70" width="72" height="130" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+<text x="288" y="96"  text-anchor="middle" font-size="15">🔌</text>
+<text x="288" y="112" text-anchor="middle" class="node-label" font-size="11" font-weight="600">PoE</text>
+<text x="288" y="127" text-anchor="middle" class="node-sublabel" font-size="9">Switch</text>
+<text x="288" y="141" text-anchor="middle" class="node-sublabel" font-size="9">8-port</text>
+<text x="288" y="155" text-anchor="middle" class="node-sublabel" font-size="9">unmanaged</text>
+<text x="288" y="170" text-anchor="middle" class="node-sublabel" font-size="9">10.0.0.101–107</text>
+
+<!-- PIR Sensors -->
+<rect x="352" y="50" width="158" height="82" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="431" y="73"  text-anchor="middle" font-size="16" fill="#bc8cff">👁️</text>
+<text x="431" y="90"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">PIR Sensors × 8</text>
+<text x="431" y="106" text-anchor="middle" class="node-sublabel">12V NC · perimeter wall</text>
+<text x="431" y="120" text-anchor="middle" class="node-sublabel" id="pir-state">Zones: all clear</text>
+
+<!-- IR Beam-break -->
+<rect x="352" y="146" width="158" height="66" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="431" y="167" text-anchor="middle" font-size="16" fill="#bc8cff">🔆</text>
+<text x="431" y="183" text-anchor="middle" class="node-label" font-size="12" font-weight="600">IR Beam-break × 4</text>
+<text x="431" y="198" text-anchor="middle" class="node-sublabel">NC pairs · gate + walls</text>
+
+<!-- Konnected Panel -->
+<rect x="524" y="50" width="152" height="160" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="2"/>
+<text x="600" y="76"  text-anchor="middle" font-size="16" fill="#bc8cff">📟</text>
+<text x="600" y="93"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Konnected Pro</text>
+<text x="600" y="110" text-anchor="middle" class="node-sublabel">10.0.0.30 · 6 zones</text>
+<text x="600" y="126" text-anchor="middle" class="node-sublabel">Zone 1: PIR-1</text>
+<text x="600" y="141" text-anchor="middle" class="node-sublabel">Zone 2: PIR-2</text>
+<text x="600" y="156" text-anchor="middle" class="node-sublabel">Zone 3–6: PIR 3-6</text>
+<text x="600" y="171" text-anchor="middle" class="node-sublabel">Zone 7–8: PIR 7-8</text>
+<text x="600" y="186" text-anchor="middle" class="node-sublabel" id="zone-state">Zones: secured</text>
+<text x="600" y="200" text-anchor="middle" class="node-sublabel">+ 4 IR beam zones</text>
+
+<!-- ═══ CONTROL NODES ═══ -->
+<!-- Frigate NVR -->
+<rect x="14"  y="282" width="150" height="74" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="89"  y="306" text-anchor="middle" font-size="16" fill="#f0a500">🎥</text>
+<text x="89"  y="323" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Frigate NVR</text>
+<text x="89"  y="339" text-anchor="middle" class="node-sublabel">Mac Mini · 30-day NVR</text>
+
+<!-- Home Assistant -->
+<rect x="244" y="282" width="162" height="74" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="2"/>
+<text x="325" y="306" text-anchor="middle" font-size="16" fill="#00d4ff">🏠</text>
+<text x="325" y="323" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Home Assistant</text>
+<text x="325" y="339" text-anchor="middle" class="node-sublabel" id="alarm-state-txt">alarm_control_panel</text>
+
+<!-- Alarm State Machine -->
+<rect x="242" y="368" width="164" height="118" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+<text x="324" y="386" text-anchor="middle" fill="#8b949e" font-size="10" font-weight="600">ALARM STATE</text>
+<text id="st-disarmed"  x="258" y="405" font-size="11" fill="#8b949e">○ disarmed</text>
+<text id="st-armed-a"   x="258" y="422" font-size="11" fill="#39d353">● armed_away</text>
+<text id="st-armed-h"   x="258" y="439" font-size="11" fill="#8b949e">○ armed_home</text>
+<text id="st-triggered" x="258" y="456" font-size="11" fill="#8b949e">○ triggered</text>
+<text x="324" y="478"  text-anchor="middle" class="node-sublabel">via alarm_control_panel</text>
+
+<!-- Siren -->
+<rect x="428" y="282" width="118" height="62" rx="8" fill="#0d1117" stroke="#f85149" stroke-width="1.5"/>
+<text x="487" y="306" text-anchor="middle" font-size="16" fill="#f85149">🔔</text>
+<text x="487" y="323" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Siren 110dB</text>
+<text id="siren-state"  x="487" y="337" text-anchor="middle" class="node-sublabel">OFF</text>
+
+<!-- Floodlights -->
+<rect x="428" y="356" width="118" height="62" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+<text x="487" y="380" text-anchor="middle" font-size="16" fill="#f0a500">💡</text>
+<text x="487" y="397" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Floodlights × 4</text>
+<text id="flood-state"  x="487" y="411" text-anchor="middle" class="node-sublabel">50W LED Shelly</text>
+
+<!-- Gate Motor -->
+<rect x="562" y="282" width="122" height="62" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="623" y="306" text-anchor="middle" font-size="16" fill="#bc8cff">🔐</text>
+<text x="623" y="323" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Gate Motor</text>
+<text id="gate-state"   x="623" y="337" text-anchor="middle" class="node-sublabel">auto-lock relay</text>
+
+<!-- Push Notify -->
+<rect x="562" y="356" width="122" height="62" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
+<text x="623" y="380" text-anchor="middle" font-size="16" fill="#39d353">📱</text>
+<text x="623" y="397" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Push Notify</text>
+<text x="623" y="411" text-anchor="middle" class="node-sublabel">HA Companion</text>
+
+<!-- ═══ WIRES — ALL MANHATTAN ROUTING ═══ -->
+
+<!-- W1: Camera group → PoE (amber)
+     Camera group right=226, PoE left=252 — straight horizontal through gap x=226-252 -->
+<path d="M 226,141 L 252,141" stroke-width="2" fill="none"
+      marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.5s;"/>
+<text x="239" y="135" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">RTSP·PoE</text>
+
+<!-- W2: PoE → Frigate (amber)
+     PoE bottom-center=(288,200) → down corridor y=246 → left to Frigate top-center=(89,282) -->
+<path d="M 288,200 L 288,246 L 89,246 L 89,282" stroke-width="2" fill="none"
+      marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.55s;"/>
+<text x="189" y="242" text-anchor="middle" class="wire-label" fill="#f0a500">RTSP streams</text>
+
+<!-- W3: PIR → Konnected (purple)
+     PIR right=510, Konnected left=524 — straight horizontal gap x=510-524 -->
+<path d="M 510,91 L 524,91" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:0.7s;"/>
+
+<!-- W4: IR → Konnected (purple)
+     IR right=510, Konnected left=524 — straight horizontal gap -->
+<path d="M 510,179 L 524,179" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:0.7s;"/>
+<!-- shared label for W3+W4 -->
+<text x="517" y="137" text-anchor="middle" class="wire-label" fill="#bc8cff" font-size="9">wired NC</text>
+
+<!-- W5: Konnected → HA (cyan)
+     Konnected bottom-center=(600,210) → down to corridor y=246 → left to HA top-center=(325,282) -->
+<path d="M 600,210 L 600,246 L 325,246 L 325,282" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.8s;"/>
+<text x="463" y="242" text-anchor="middle" class="wire-label" fill="#00d4ff">Konnected LAN</text>
+
+<!-- W6: Frigate → HA (cyan)
+     Frigate right=164, HA left=244 — straight horizontal through gap x=164-244 -->
+<path d="M 164,319 L 244,319" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-cyan)" class="wire-cyan"/>
+<text x="204" y="312" text-anchor="middle" class="wire-label" fill="#00d4ff">MQTT events</text>
+
+<!-- W7: HA → Siren (red)
+     HA right=406, Siren left=428 — straight horizontal through gap x=406-428 -->
+<path d="M 406,304 L 428,304" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-red)" class="wire-red"/>
+<text x="417" y="298" text-anchor="middle" class="wire-label" fill="#f85149" font-size="9">switch</text>
+
+<!-- W8: HA → Gate (purple)
+     Route: HA right=(406,296) → corridor x=416 up to y=268 → corridor y=268 right → corridor x=554 down to y=296 → Gate left=(562,296)
+     Corridor y=268: gap between zone top (256) and control nodes top (282) — use y=268 safely above all node tops -->
+<path d="M 406,296 L 416,296 L 416,268 L 554,268 L 554,296 L 562,296" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:0.65s;"/>
+
+<!-- W9: HA → Floodlights (amber)
+     Route: HA right=(406,312) → corridor x=416 down to y=387 → Floods left=(428,387)
+     x=416 is in gap x=406-428; y=344-356 is gap between Siren bottom(344) and Floods top(356) -->
+<path d="M 406,312 L 416,312 L 416,387 L 428,387" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.6s;"/>
+
+<!-- W10: HA → Push Notify (green)
+     Route: HA right=(406,322) → corridor x=416 down to y=422 (below all boxes, Floods bottom=418, Push bottom=418) → right to corridor x=554 → up to y=387 → Push left=(562,387)
+     Floods bottom = 356+62=418. Push bottom = 356+62=418. Use y=424 to be clear. -->
+<path d="M 406,322 L 416,322 L 416,424 L 554,424 L 554,387 L 562,387" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.65s;"/>
+
+</svg>
+</div>
+
+<div class="data-panel">
+  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-grid">
+    <div class="data-cell">
+      <div class="data-label">🔒 Alarm State</div>
+      <div class="data-value green" id="d-alarm">armed_away</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">👁️ PIR Active</div>
+      <div class="data-value normal" id="d-pir">0 / 8 zones</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🔆 IR Beams</div>
+      <div class="data-value normal" id="d-ir">All clear</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🎥 Cameras</div>
+      <div class="data-value amber" id="d-cams">7 streaming</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">📼 NVR Storage</div>
+      <div class="data-value normal" id="d-nvr">-- days</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🔔 Siren</div>
+      <div class="data-value green" id="d-siren">OFF</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">💡 Floodlights</div>
+      <div class="data-value green" id="d-floods">OFF</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">⚡ UPS Power</div>
+      <div class="data-value cyan" id="d-ups">On solar microgrid</div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes pulse-border { 0%,100%{opacity:0.2} 50%{opacity:0.6} }
+</style>
+
+<script>
+let nvrDays = 28;
+let alarmState = 'armed_away';
+
+function update() {
+  document.getElementById('ts').textContent = new Date().toLocaleTimeString();
+
+  const pirTriggered = Math.random() < 0.05;
+  const irBroken     = Math.random() < 0.02;
+  if (pirTriggered) alarmState = 'triggered';
+  else if (alarmState === 'triggered') alarmState = 'armed_away';
+
+  nvrDays = 28 + Math.round((Math.random()-0.5)*4);
+
+  document.getElementById('pir-state').textContent  = pirTriggered ? '⚠ ZONE TRIGGERED' : 'Zones: all clear';
+  document.getElementById('pir-state').style.fill   = pirTriggered ? '#f85149' : '#8b949e';
+  document.getElementById('zone-state').textContent = pirTriggered ? 'PIR TRIGGERED' : 'Zones: secured';
+  document.getElementById('alarm-state-txt').textContent = alarmState;
+  document.getElementById('siren-state').textContent = alarmState==='triggered' ? 'ACTIVE' : 'OFF';
+  document.getElementById('flood-state').textContent = alarmState==='triggered' ? 'ON' : '50W LED Shelly';
+  document.getElementById('gate-state').textContent  = alarmState==='triggered' ? 'LOCKED' : 'auto-lock relay';
+
+  ['disarmed','armed-a','armed-h','triggered'].forEach((k,i) => {
+    const el = document.getElementById('st-'+k);
+    if (!el) return;
+    const sk = ['disarmed','armed_away','armed_home','triggered'][i];
+    el.style.fill = alarmState===sk ? '#f85149' : '#8b949e';
+    el.textContent = (alarmState===sk ? '● ' : '○ ') + sk;
+  });
+
+  document.getElementById('d-alarm').textContent  = alarmState;
+  document.getElementById('d-alarm').className    = 'data-value '+(alarmState==='triggered'?'red':'green');
+  document.getElementById('d-pir').textContent    = pirTriggered ? '1 / 8 TRIGGERED' : '0 / 8 zones';
+  document.getElementById('d-ir').textContent     = irBroken ? 'BEAM BROKEN' : 'All clear';
+  document.getElementById('d-nvr').textContent    = nvrDays + ' days';
+  document.getElementById('d-siren').textContent  = alarmState==='triggered' ? 'ACTIVE' : 'OFF';
+  document.getElementById('d-floods').textContent = alarmState==='triggered' ? 'ON' : 'OFF';
+
+  const badge = document.getElementById('status-badge');
+  const stxt  = document.getElementById('status-text');
+  if (alarmState==='triggered')  { badge.className='status-badge red';   stxt.textContent='TRIGGERED'; }
+  else if (alarmState==='armed_away') { badge.className='status-badge green'; stxt.textContent='Armed Away'; }
+  else { badge.className='status-badge amber'; stxt.textContent=alarmState; }
+}
+
+update();
+setInterval(update, 2000);
+</script>
+</body>
+</html>

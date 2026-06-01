@@ -1,0 +1,502 @@
+# Lucknow Smart Residence — Dev Dashboard
+# ─────────────────────────────────────────────────────────────────────────────
+# Built-in HA cards ONLY — no HACS required.
+# Uses sim_* template sensors (configuration.yaml) + MQTT entities (simulator.py).
+# Zero "Configuration error" or "Entity not found" when running dev stack.
+#
+# Usage:
+#   cp dashboard/lovelace-dev.yaml volumes/ha_config/ui-lovelace.yaml
+#   (setup.sh does this automatically for dev mode)
+#
+# Production: cp dashboard/lovelace.yaml volumes/ha_config/ui-lovelace.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+title: "Lucknow Smart Residence"
+
+views:
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1 · OVERVIEW
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Overview
+    path: overview
+    icon: mdi:home
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.sim_pv_power_w
+            name: "PV Power"
+            icon: mdi:solar-power
+          - type: entity
+            entity: sensor.sim_battery_soc_pct
+            name: "Battery"
+            icon: mdi:battery-charging
+          - type: entity
+            entity: sensor.rwh_level_pct
+            name: "Tank Level"
+            icon: mdi:water-percent
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.indoor_temp_c
+            name: "Indoor"
+            icon: mdi:thermometer
+          - type: entity
+            entity: sensor.outdoor_temp_c
+            name: "Outdoor"
+            icon: mdi:weather-sunny
+          - type: entity
+            entity: sensor.indoor_rh_pct
+            name: "Indoor RH"
+            icon: mdi:water-percent
+
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.sim_elevator_floor
+            name: "Elevator"
+            icon: mdi:elevator
+          - type: entity
+            entity: sensor.panel_access_last_user
+            name: "Last Access"
+            icon: mdi:fingerprint
+          - type: entity
+            entity: sensor.sim_ups_battery_pct
+            name: "UPS"
+            icon: mdi:battery-80
+
+      - type: alarm-panel
+        entity: alarm_control_panel.main_alarm
+        name: "Security Alarm"
+        states:
+          - armed_away
+          - armed_home
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 2 · ENERGY
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Energy
+    path: energy
+    icon: mdi:lightning-bolt
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.sim_pv_power_w
+                name: "PV Output"
+                graph: line
+                hours_to_show: 12
+              - type: sensor
+                entity: sensor.sim_battery_soc_pct
+                name: "Battery SOC"
+                graph: line
+                hours_to_show: 12
+
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.sim_grid_import_w
+                name: "Grid Import"
+                graph: line
+                hours_to_show: 12
+              - type: sensor
+                entity: sensor.sim_grid_export_w
+                name: "Grid Export"
+                graph: line
+                hours_to_show: 12
+
+          - type: history-graph
+            title: "24-Hour Power"
+            hours_to_show: 24
+            entities:
+              - entity: sensor.sim_pv_power_w
+                name: PV
+              - entity: sensor.sim_inverter_ac_output_w
+                name: Inverter
+              - entity: sensor.sim_grid_import_w
+                name: Import
+              - entity: sensor.sim_grid_export_w
+                name: Export
+
+          - type: entities
+            title: "Power Status"
+            entities:
+              - entity: sensor.sim_ac_voltage_v
+                name: "AC Voltage"
+              - entity: sensor.sim_inverter_ac_output_w
+                name: "Inverter Output"
+              - entity: binary_sensor.sim_inverter_fault
+                name: "Inverter Fault"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 3 · WATER
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Water
+    path: water
+    icon: mdi:water
+    cards:
+      - type: gauge
+        entity: sensor.rwh_level_pct
+        name: "Tank Level"
+        min: 0
+        max: 100
+        severity:
+          green: 30
+          yellow: 15
+          red: 0
+
+      - type: horizontal-stack
+        cards:
+          - type: sensor
+            entity: sensor.rwh_level_pct
+            name: "Tank %"
+            graph: line
+            hours_to_show: 24
+          - type: sensor
+            entity: sensor.rwh_level_litres
+            name: "Litres"
+
+      - type: horizontal-stack
+        cards:
+          - type: sensor
+            entity: sensor.rwh_domestic_flow_lpm
+            name: "Domestic Flow"
+            graph: line
+            hours_to_show: 6
+          - type: sensor
+            entity: sensor.rwh_beehive_flow_lpm
+            name: "Beehive Flow"
+            graph: line
+            hours_to_show: 6
+
+      - type: entities
+        title: "Valves & Pump"
+        entities:
+          - entity: switch.rwh_valve_domestic
+            name: "Domestic Valve"
+          - entity: switch.rwh_valve_beehive
+            name: "Beehive Valve"
+
+      - type: history-graph
+        title: "Tank Level — 24 hr"
+        hours_to_show: 24
+        entities:
+          - entity: sensor.rwh_level_pct
+            name: "Level %"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 4 · COOLING
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Cooling
+    path: cooling
+    icon: mdi:air-filter
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: sensor
+            entity: sensor.outdoor_temp_c
+            name: "Outdoor"
+            graph: line
+            hours_to_show: 12
+          - type: sensor
+            entity: sensor.beehive_inlet_temp_c
+            name: "Inlet"
+            graph: line
+            hours_to_show: 12
+          - type: sensor
+            entity: sensor.indoor_temp_c
+            name: "Indoor"
+            graph: line
+            hours_to_show: 12
+
+      - type: horizontal-stack
+        cards:
+          - type: sensor
+            entity: sensor.outdoor_rh_pct
+            name: "Outdoor RH"
+            graph: line
+            hours_to_show: 12
+          - type: sensor
+            entity: sensor.indoor_rh_pct
+            name: "Indoor RH"
+            graph: line
+            hours_to_show: 12
+          - type: sensor
+            entity: sensor.cooling_delta_c
+            name: "ΔT Cooling"
+
+      - type: entities
+        title: "Cooling Mode"
+        entities:
+          - entity: input_select.cooling_mode
+            name: "Mode"
+          - entity: switch.damper_e
+            name: "Damper East"
+          - entity: switch.damper_s
+            name: "Damper South"
+          - entity: fan.beehive_fan_e
+            name: "Fan East"
+          - entity: fan.beehive_fan_s
+            name: "Fan South"
+
+      - type: history-graph
+        title: "Temperature — 24 hr"
+        hours_to_show: 24
+        entities:
+          - entity: sensor.outdoor_temp_c
+            name: Outdoor
+          - entity: sensor.beehive_inlet_temp_c
+            name: Inlet
+          - entity: sensor.indoor_temp_c
+            name: Indoor
+
+      - type: entities
+        title: "Soil Moisture"
+        entities:
+          - entity: sensor.soil_moisture_e_pct
+            name: "Beehive-E"
+          - entity: sensor.soil_moisture_s_pct
+            name: "Beehive-S"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 5 · SECURITY
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Security
+    path: security
+    icon: mdi:shield-home
+    cards:
+      - type: alarm-panel
+        entity: alarm_control_panel.main_alarm
+        name: "Main Alarm"
+        states:
+          - armed_away
+          - armed_home
+          - armed_night
+
+      - type: entities
+        title: "Motion Zones"
+        entities:
+          - entity: binary_sensor.sim_pir_zone_1
+            name: "Perimeter Zone 1"
+          - entity: binary_sensor.sim_pir_zone_2
+            name: "Perimeter Zone 2"
+
+      - type: markdown
+        content: |
+          ### Camera Feeds
+          **7 cameras active in production** (Frigate NVR).
+          In dev mode, cameras require the real Frigate service with RTSP streams.
+
+          Locations: Gate · Driveway · Front Door · NE Perimeter · SW Perimeter · Terrace · Garage
+
+      - type: entities
+        title: "Access Control"
+        entities:
+          - entity: lock.server_panel
+            name: "Server Panel"
+          - entity: sensor.panel_access_last_user
+            name: "Last User"
+          - entity: sensor.panel_access_last_time
+            name: "Last Time"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 6 · SYSTEMS
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Systems
+    path: systems
+    icon: mdi:cog
+    cards:
+      - type: entities
+        title: "Power Systems"
+        entities:
+          - entity: sensor.sim_pv_power_w
+            name: "PV Power"
+          - entity: sensor.sim_battery_soc_pct
+            name: "Battery SOC"
+          - entity: sensor.sim_ac_voltage_v
+            name: "AC Voltage"
+          - entity: binary_sensor.sim_inverter_fault
+            name: "Inverter Fault"
+          - entity: sensor.sim_ups_battery_pct
+            name: "UPS Battery"
+          - entity: switch.grid_export_enable
+            name: "Grid Export"
+
+      - type: entities
+        title: "Elevator"
+        entities:
+          - entity: sensor.elevator_floor
+            name: "Current Floor"
+          - entity: sensor.sim_elevator_floor
+            name: "Sim Floor"
+          - entity: binary_sensor.sim_elevator_door
+            name: "Door"
+
+      - type: history-graph
+        title: "PV + Battery — 24 hr"
+        hours_to_show: 24
+        entities:
+          - entity: sensor.sim_pv_power_w
+            name: PV
+          - entity: sensor.sim_battery_soc_pct
+            name: SOC
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 7 · AUTOMATIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Automations
+    path: automations
+    icon: mdi:robot
+    cards:
+      - type: entities
+        title: "Automation Toggles"
+        entities:
+          - entity: input_boolean.automation_cooling_enabled
+            name: "Auto Cooling"
+          - entity: input_boolean.automation_rwh_enabled
+            name: "Auto RWH Pump"
+          - entity: input_boolean.automation_security_enabled
+            name: "Auto Security"
+
+      - type: entities
+        title: "Cooling Thresholds"
+        entities:
+          - entity: input_select.cooling_mode
+            name: "Cooling Mode"
+          - entity: input_number.cooling_rh_bypass_threshold
+            name: "Monsoon RH Bypass %"
+          - entity: input_number.cooling_min_temp_threshold
+            name: "Winter Bypass °C"
+
+      - type: entities
+        title: "RWH Thresholds"
+        entities:
+          - entity: input_number.rwh_low_level_threshold
+            name: "Low Level Alert %"
+          - entity: input_number.rwh_beehive_cut_threshold
+            name: "Beehive Cut Level %"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 8 · TEST LAB
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Test Lab
+    path: test-lab
+    icon: mdi:flask
+    cards:
+      - type: markdown
+        content: |
+          ## 🧪 Test Scenarios
+          Trigger HA scripts that inject MQTT payloads simulating each operating condition.
+          Watch the Water and Cooling tabs update within 10 seconds.
+
+      - type: button
+        name: "🌞 Normal Summer"
+        icon: mdi:weather-sunny
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          target:
+            entity_id: script.scenario_normal_summer
+
+      - type: button
+        name: "🌧️ Monsoon Bypass"
+        icon: mdi:weather-pouring
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          target:
+            entity_id: script.scenario_monsoon_bypass
+
+      - type: button
+        name: "❄️ Winter Bypass"
+        icon: mdi:snowflake
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          target:
+            entity_id: script.scenario_winter_bypass
+
+      - type: button
+        name: "💧 Low Water"
+        icon: mdi:water-alert
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          target:
+            entity_id: script.scenario_low_water
+
+      - type: button
+        name: "⚡ Power Outage"
+        icon: mdi:power-plug-off
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          target:
+            entity_id: script.scenario_power_outage
+
+      - type: entities
+        title: "Live Simulator State"
+        entities:
+          - entity: sensor.outdoor_temp_c
+          - entity: sensor.indoor_rh_pct
+          - entity: sensor.rwh_level_pct
+          - entity: sensor.sim_pv_power_w
+          - entity: sensor.sim_battery_soc_pct
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 9 · GUIDE
+# ═══════════════════════════════════════════════════════════════════════════════
+  - title: Guide
+    path: guide
+    icon: mdi:book-open
+    cards:
+      - type: markdown
+        content: |
+          # Lucknow Smart Residence — Quick Guide
+
+          ## Dev Mode (this dashboard)
+          - **Simulator** publishes MQTT data every 10 s — all sensor values are synthetic
+          - **sim_*** entities are template sensors based on time-of-day (no hardware needed)
+          - Switch to `lovelace.yaml` on Mac Mini A production for HACS cards + real entities
+
+          ## System Overview
+          | System | Status | Notes |
+          |--------|--------|-------|
+          | PV + Battery | ✅ Simulated | 6 kWp / 12 kWh LFP |
+          | Rainwater Harvest | ✅ MQTT live | ESP32 RWH node |
+          | Beehive Cooling | ✅ MQTT live | ESP32 Beehive node |
+          | Security | ⚠️ Dev stub | Real cameras need Frigate |
+          | Access Control | ✅ MQTT live | Simulated access events |
+          | Elevator | ⚠️ Dev stub | Konnected on Mac Mini A |
+
+          ## Cooling Modes
+          | Mode | Trigger | Action |
+          |------|---------|--------|
+          | `cooling` | RH < 65%, T > 26°C | Dampers open, fans run |
+          | `monsoon_bypass` | Indoor RH > 65% | Dampers closed, fans off |
+          | `winter_bypass` | Outdoor T < 18°C | Passive solar only |
+          | `off` | Manual | All off |
+
+          ## IP Addresses
+          | Device | IP |
+          |--------|----|
+          | Mac Mini A (HA) | 10.0.0.10 |
+          | Hybrid Inverter | 10.0.0.40 |
+          | Beehive ESP32 | 10.0.0.50 |
+          | RWH ESP32 | 10.0.0.51 |
+
+          ## Useful Commands
+          ```bash
+          # Start dev stack
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+          # Watch simulator output
+          docker logs -f lucknow_iot_simulator_1
+
+          # Inject MQTT manually
+          mosquitto_pub -h localhost -t homeassistant/sensor/rwh/level -m '{"value": 42.0}'
+          ```

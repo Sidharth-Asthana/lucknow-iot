@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access Control — Circuit Diagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">←</a>
+  <h1>👆 System 05 — Access Control (Fingerprint + Server Panel)</h1>
+  <span class="timestamp" id="ts">--</span>
+  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Secured</span></span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-line purple"></div> Wiegand-26 Signal</div>
+  <div class="legend-item"><div class="legend-line amber"></div> RS485 / Serial</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> MQTT / LAN</div>
+  <div class="legend-item"><div class="legend-line green"></div> Lock Control</div>
+</div>
+
+<div class="svg-wrap">
+<svg class="circuit-svg" viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#bc8cff"/></marker>
+  <marker id="arr-amber"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="arr-cyan"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="arr-green"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+  <marker id="arr-red"    markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
+</defs>
+
+<rect x="0" y="0" width="800" height="430" fill="#0d1117"/>
+
+<!-- ═══ ZONE BACKGROUNDS ═══ -->
+<!-- Physical reader zone -->
+<rect x="8"   y="8" width="240" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="20"  y="24" fill="#8b949e" font-size="10" font-family="monospace">PHYSICAL READER (SERVER PANEL)</text>
+<!-- Bridge / Processing zone -->
+<rect x="258" y="8" width="258" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="270" y="24" fill="#8b949e" font-size="10" font-family="monospace">WIEGAND BRIDGE (Mac Mini A)</text>
+<!-- HA / Response zone -->
+<rect x="526" y="8" width="266" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="538" y="24" fill="#8b949e" font-size="10" font-family="monospace">HOME ASSISTANT + RESPONSE</text>
+<!-- Access log zone -->
+<rect x="8"   y="256" width="784" height="168" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="20"  y="272" fill="#8b949e" font-size="10" font-family="monospace">ACCESS LOG (last 5 events)</text>
+
+<!-- ═══ PHYSICAL READER NODES ═══ -->
+
+<!-- ZKTeco SF100 Fingerprint -->
+<rect x="20" y="38" width="162" height="90" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="2"/>
+<text x="101" y="65"  text-anchor="middle" font-size="22" fill="#bc8cff">👆</text>
+<text x="101" y="83"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">ZKTeco SF100</text>
+<text x="101" y="99"  text-anchor="middle" class="node-sublabel">Fingerprint · Wiegand-26</text>
+<text x="101" y="114" text-anchor="middle" class="node-sublabel">Capacitive sensor</text>
+
+<!-- Template DB (on reader chip) -->
+<rect x="20" y="148" width="162" height="72" rx="8" fill="#0d1117" stroke="#8b949e" stroke-width="1"/>
+<text x="101" y="172" text-anchor="middle" font-size="17" fill="#8b949e">🗃️</text>
+<text x="101" y="189" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Template DB</text>
+<text x="101" y="205" text-anchor="middle" class="node-sublabel">Stored on reader chip</text>
+
+<!-- ═══ BRIDGE NODES ═══ -->
+
+<!-- Wiegand → RS485 converter -->
+<rect x="270" y="38" width="152" height="82" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+<text x="346" y="62"  text-anchor="middle" font-size="17" fill="#f0a500">🔌</text>
+<text x="346" y="79"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Wiegand→RS485</text>
+<text x="346" y="95"  text-anchor="middle" class="node-sublabel">DFRobot bridge board</text>
+<text x="346" y="109" text-anchor="middle" class="node-sublabel">26-bit decode</text>
+
+<!-- Python Bridge Script -->
+<rect x="270" y="140" width="152" height="94" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="346" y="164" text-anchor="middle" font-size="17" fill="#f0a500">🐍</text>
+<text x="346" y="181" text-anchor="middle" class="node-label" font-size="13" font-weight="600">wiegand_bridge.py</text>
+<text x="346" y="197" text-anchor="middle" class="node-sublabel">launchd service</text>
+<text x="346" y="212" text-anchor="middle" class="node-sublabel">SQLite user DB</text>
+<text x="346" y="226" text-anchor="middle" class="node-sublabel" id="bridge-state">Listening…</text>
+
+<!-- ═══ HA / RESPONSE NODES ═══ -->
+
+<!-- Mosquitto MQTT Broker -->
+<rect x="538" y="38" width="148" height="80" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="612" y="62"  text-anchor="middle" font-size="17" fill="#00d4ff">📨</text>
+<text x="612" y="79"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Mosquitto MQTT</text>
+<text x="612" y="95"  text-anchor="middle" class="node-sublabel">homeassistant/lock/panel</text>
+<text x="612" y="109" text-anchor="middle" class="node-sublabel">:1883</text>
+
+<!-- HA lock entity + Electric Strike (combined right column) -->
+<rect x="538" y="134" width="148" height="74" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
+<text x="612" y="157" text-anchor="middle" font-size="17" fill="#39d353">🔒</text>
+<text x="612" y="174" text-anchor="middle" class="node-label" font-size="13" font-weight="600">lock.server_panel</text>
+<text id="lock-state" x="612" y="190" text-anchor="middle" class="node-sublabel">LOCKED</text>
+<text x="612" y="204" text-anchor="middle" class="node-sublabel">5-sec auto-relock</text>
+
+<!-- Electric Strike (separate node, right of HA zone) -->
+<rect x="697" y="38" width="88" height="170" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
+<text x="741" y="82"  text-anchor="middle" font-size="18" fill="#39d353">🚪</text>
+<text x="741" y="106" text-anchor="middle" class="node-label" font-size="10" font-weight="600">Electric</text>
+<text x="741" y="120" text-anchor="middle" class="node-label" font-size="10" font-weight="600">Strike</text>
+<text x="741" y="138" text-anchor="middle" class="node-sublabel" font-size="9">12V fail-secure</text>
+<text id="strike-state" x="741" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#39d353">LOCKED</text>
+
+<!-- ═══ WIRES — ALL MANHATTAN ROUTING ═══ -->
+
+<!-- W1: Fingerprint → Wiegand-RS485 (purple · Wiegand-26)
+     Fingerprint right=182, W-RS485 left=270 — straight horizontal through gap x=182-270 -->
+<path d="M 182,83 L 270,83" stroke-width="2.5" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple"/>
+<text x="226" y="76" text-anchor="middle" class="wire-label" fill="#bc8cff">Wiegand-26</text>
+
+<!-- W2: Template DB ↔ Reader (internal dashed, no animation) -->
+<path d="M 101,148 L 101,128" stroke-width="1" fill="none"
+      stroke="#8b949e" stroke-dasharray="3 5" style="opacity:0.4;"/>
+
+<!-- W3: Wiegand-RS485 → Python Bridge (amber · USB serial)
+     W-RS485 bottom=(346,120), Bridge top=(346,140) — straight vertical through gap y=120-140 -->
+<path d="M 346,120 L 346,140" stroke-width="2.5" fill="none"
+      marker-end="url(#arr-amber)" class="wire-amber"/>
+<text x="368" y="133" text-anchor="start" class="wire-label" fill="#f0a500">USB serial</text>
+
+<!-- W4: Python Bridge → MQTT (cyan · TCP publish)
+     Route: Bridge right=(422,187) → right to x=508 (gap x=422-526) → up to y=68 → right to MQTT left=(538,68)
+     x=508 is safely in the gap; y=68 is within MQTT box height (38-118) — label goes ABOVE the top turn -->
+<path d="M 422,187 L 508,187 L 508,68 L 538,68" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-cyan)" class="wire-cyan"/>
+<text x="512" y="30" text-anchor="middle" class="wire-label" fill="#00d4ff">MQTT pub</text>
+
+<!-- W5: MQTT → HA lock (cyan · internal)
+     MQTT bottom=(612,118), lock top=(612,134) — straight vertical through gap y=118-134 -->
+<path d="M 612,118 L 612,134" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-cyan)" class="wire-cyan"/>
+
+<!-- W6: HA lock → Electric Strike (green · 12V relay)
+     Lock right=(686,171), Strike left=(697,171) — straight horizontal through gap x=686-697 -->
+<path d="M 686,171 L 697,171" stroke-width="2.5" fill="none"
+      marker-end="url(#arr-green)" class="wire-green"/>
+<text x="692" y="164" text-anchor="middle" class="wire-label" fill="#39d353" font-size="9">12V relay</text>
+
+<!-- W7: Denied wire (hidden normally, shown on access denial)
+     Route entirely within Bridge zone, no box crossings -->
+<path id="denied-wire" d="M 422,165 L 468,165 L 468,228 L 422,228"
+      stroke-width="1.5" fill="none" stroke="#f85149" stroke-dasharray="3 9"
+      style="animation:flow-fwd 0.5s linear infinite; opacity:0;"
+      marker-end="url(#arr-red)"/>
+
+<!-- ═══ ACCESS LOG ═══ -->
+<foreignObject x="20" y="280" width="760" height="136">
+  <div xmlns="http://www.w3.org/1999/xhtml"
+       style="font-family:monospace;font-size:12px;color:#8b949e;line-height:1.8;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="color:#e6edf3;border-bottom:1px solid #30363d;">
+          <th style="text-align:left;padding:0 8px;width:130px;">Time</th>
+          <th style="text-align:left;padding:0 8px;width:170px;">User</th>
+          <th style="text-align:left;padding:0 8px;width:110px;">Result</th>
+          <th style="text-align:left;padding:0 8px;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="log-body">
+        <tr><td colspan="4" style="padding:6px 8px;color:#8b949e;">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</foreignObject>
+
+</svg>
+</div>
+
+<div class="data-panel">
+  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-grid">
+    <div class="data-cell">
+      <div class="data-label">🔒 Server Panel</div>
+      <div class="data-value green" id="d-lock">LOCKED</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">👤 Last User</div>
+      <div class="data-value cyan" id="d-user">--</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🕐 Last Access</div>
+      <div class="data-value normal" id="d-time">--</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">📊 Events Today</div>
+      <div class="data-value normal" id="d-events">--</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">✅ Enrolled Users</div>
+      <div class="data-value normal" id="d-enrolled">4</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">❌ Failed Today</div>
+      <div class="data-value red" id="d-failed">0</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🐍 Bridge Status</div>
+      <div class="data-value green" id="d-bridge">Running</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">⚡ Auto-relock</div>
+      <div class="data-value normal" id="d-relock">5 sec</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const USERS = ['Sidharth', 'Astha', 'Guest-01', 'Admin'];
+const log = [];
+let lockState = 'LOCKED';
+let eventCount = 0;
+let failCount = 0;
+let relockTimer = null;
+
+function fmt(d) { return d.toTimeString().slice(0,8); }
+
+function addEvent(user, result, action) {
+  log.unshift({ time: fmt(new Date()), user, result, action });
+  if (log.length > 5) log.pop();
+  const tbody = document.getElementById('log-body');
+  tbody.innerHTML = log.map(e => {
+    const c = e.result === 'GRANTED' ? '#39d353' : '#f85149';
+    return `<tr style="border-bottom:1px solid #21262d;">
+      <td style="padding:3px 8px;color:#8b949e;">${e.time}</td>
+      <td style="padding:3px 8px;color:#e6edf3;">${e.user}</td>
+      <td style="padding:3px 8px;color:${c};font-weight:700;">${e.result}</td>
+      <td style="padding:3px 8px;color:#8b949e;">${e.action}</td>
+    </tr>`;
+  }).join('');
+}
+
+function unlock(user) {
+  lockState = 'UNLOCKED';
+  eventCount++;
+  document.getElementById('lock-state').textContent  = 'UNLOCKED — 5s';
+  document.getElementById('lock-state').style.fill   = '#39d353';
+  document.getElementById('strike-state').textContent = 'OPEN';
+  document.getElementById('strike-state').style.fill  = '#f0a500';
+  document.getElementById('bridge-state').textContent = 'Auth: ' + user;
+  addEvent(user, 'GRANTED', 'Strike unlocked 5s');
+  clearTimeout(relockTimer);
+  relockTimer = setTimeout(() => {
+    lockState = 'LOCKED';
+    document.getElementById('lock-state').textContent  = 'LOCKED';
+    document.getElementById('lock-state').style.fill   = '#8b949e';
+    document.getElementById('strike-state').textContent = 'LOCKED';
+    document.getElementById('strike-state').style.fill  = '#39d353';
+    document.getElementById('bridge-state').textContent = 'Listening…';
+  }, 5000);
+}
+
+function deny(attempt) {
+  failCount++;
+  addEvent(attempt, 'DENIED', 'No match found');
+  document.getElementById('denied-wire').style.opacity = '0.8';
+  setTimeout(() => { document.getElementById('denied-wire').style.opacity = '0'; }, 2000);
+}
+
+function update() {
+  document.getElementById('ts').textContent = new Date().toLocaleTimeString();
+
+  if (Math.random() < 0.04) {
+    if (Math.random() < 0.85) unlock(USERS[Math.floor(Math.random()*USERS.length)]);
+    else deny('UNKNOWN-' + Math.floor(Math.random()*99));
+  }
+
+  document.getElementById('d-lock').textContent   = lockState;
+  document.getElementById('d-lock').className     = 'data-value '+(lockState==='UNLOCKED'?'amber':'green');
+  document.getElementById('d-user').textContent   = log.length ? log[0].user : '--';
+  document.getElementById('d-time').textContent   = log.length ? log[0].time : '--';
+  document.getElementById('d-events').textContent = eventCount;
+  document.getElementById('d-failed').textContent = failCount;
+  document.getElementById('d-bridge').textContent = 'Running';
+
+  const badge = document.getElementById('status-badge');
+  const stxt  = document.getElementById('status-text');
+  if (lockState==='UNLOCKED')     { badge.className='status-badge amber'; stxt.textContent='Panel Open'; }
+  else if (failCount > 2)         { badge.className='status-badge red';   stxt.textContent='Auth Failures'; }
+  else                            { badge.className='status-badge green';  stxt.textContent='Secured'; }
+}
+
+addEvent('Sidharth', 'GRANTED', 'Morning access');
+addEvent('Astha',    'GRANTED', 'Morning access');
+
+update();
+setInterval(update, 2000);
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[wokwi]
+version = 1
+elf = ".pio/build/esp32dev/firmware.elf"    # PlatformIO build output
+# OR for Arduino IDE: uncomment the line below and comment the line above
+# elf = "build/esp32.esp32.esp32/beehive_esp32.ino.bin"
+
+[[chip]]
+name = "beehive"
+
+# ── MQTT connectivity ──────────────────────────────────────────────────────────
+# Wokwi ESP32 WiFi connects to the internet via the cloud bridge.
+# For testing against a local Mosquitto:
+#   1. Install VS Code Wokwi extension
+#   2. Enable "Port forwarding" in Wokwi settings
+#   3. Set MQTT_HOST in the .ino to "host.wokwi.internal"
+#
+# For quick public testing: set MQTT_HOST to "broker.hivemq.com"
+# (free, no auth, suitable for testing only)

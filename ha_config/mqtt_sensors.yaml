@@ -153,6 +153,14 @@ sensor:
       identifiers: ["wiegand_bridge"]
       name: "Server Panel Lock"
 
+  - name: "Panel Access Last Time"
+    unique_id: panel_access_last_time
+    state_topic: "homeassistant/lock/server_panel"
+    value_template: "{{ value_json.time | default('--:--') }}"
+    icon: mdi:clock-outline
+    device:
+      identifiers: ["wiegand_bridge"]
+
 # ─────────────────────────────────────────────────────────────────────────────
 # MQTT switches — pump, valves, dampers (commands sent to ESP32)
 # ─────────────────────────────────────────────────────────────────────────────

@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "author": "Lucknow Smart Residence",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-v1",
+      "id": "esp32",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-sht31",
+      "id": "sht31_indoor",
+      "top": -80,
+      "left": 200,
+      "attrs": {
+        "address": "0x44",
+        "temperature": "28",
+        "humidity": "55"
+      }
+    },
+    {
+      "type": "wokwi-sht31",
+      "id": "sht31_outdoor",
+      "top": -80,
+      "left": 340,
+      "attrs": {
+        "address": "0x45",
+        "temperature": "42",
+        "humidity": "45"
+      }
+    },
+    {
+      "type": "wokwi-ds18b20",
+      "id": "ds18b20_inlet",
+      "top": 80,
+      "left": 300,
+      "attrs": {
+        "temperature": "30"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_soil_e",
+      "top": 160,
+      "left": 200,
+      "attrs": {
+        "label": "Soil-E (VH400)",
+        "value": "0.6"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_soil_s",
+      "top": 160,
+      "left": 340,
+      "attrs": {
+        "label": "Soil-S (VH400)",
+        "value": "0.6"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_fan_e",
+      "top": 240,
+      "left": 200,
+      "attrs": {
+        "color": "blue",
+        "label": "Fan-E relay"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_fan_s",
+      "top": 240,
+      "left": 260,
+      "attrs": {
+        "color": "blue",
+        "label": "Fan-S relay"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_damp_e",
+      "top": 240,
+      "left": 320,
+      "attrs": {
+        "color": "green",
+        "label": "Damper-E relay"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_damp_s",
+      "top": 240,
+      "left": 380,
+      "attrs": {
+        "color": "green",
+        "label": "Damper-S relay"
+      }
+    }
+  ],
+  "connections": [
+    [ "esp32:3V3",    "sht31_indoor:VCC",  "red",   [] ],
+    [ "esp32:GND",    "sht31_indoor:GND",  "black", [] ],
+    [ "esp32:GPIO21", "sht31_indoor:SDA",  "blue",  [] ],
+    [ "esp32:GPIO22", "sht31_indoor:SCL",  "green", [] ],
+
+    [ "esp32:3V3",    "sht31_outdoor:VCC", "red",   [] ],
+    [ "esp32:GND",    "sht31_outdoor:GND", "black", [] ],
+    [ "esp32:GPIO21", "sht31_outdoor:SDA", "blue",  [] ],
+    [ "esp32:GPIO22", "sht31_outdoor:SCL", "green", [] ],
+
+    [ "esp32:3V3",    "ds18b20_inlet:VCC", "red",   [] ],
+    [ "esp32:GND",    "ds18b20_inlet:GND", "black", [] ],
+    [ "esp32:GPIO4",  "ds18b20_inlet:DQ",  "yellow",[] ],
+
+    [ "esp32:3V3",    "pot_soil_e:VCC",    "red",   [] ],
+    [ "esp32:GND",    "pot_soil_e:GND",    "black", [] ],
+    [ "esp32:GPIO34", "pot_soil_e:SIG",    "orange",[] ],
+
+    [ "esp32:3V3",    "pot_soil_s:VCC",    "red",   [] ],
+    [ "esp32:GND",    "pot_soil_s:GND",    "black", [] ],
+    [ "esp32:GPIO35", "pot_soil_s:SIG",    "orange",[] ],
+
+    [ "esp32:GPIO25", "led_fan_e:A",       "blue",  [] ],
+    [ "esp32:GPIO26", "led_fan_s:A",       "blue",  [] ],
+    [ "esp32:GPIO27", "led_damp_e:A",      "green", [] ],
+    [ "esp32:GPIO14", "led_damp_s:A",      "green", [] ],
+    [ "esp32:GND",    "led_fan_e:K",       "black", [] ],
+    [ "esp32:GND",    "led_fan_s:K",       "black", [] ],
+    [ "esp32:GND",    "led_damp_e:K",      "black", [] ],
+    [ "esp32:GND",    "led_damp_s:K",      "black", [] ]
+  ]
+}

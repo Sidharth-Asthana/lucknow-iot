@@ -26,9 +26,17 @@ echo "      ✓ volumes/ tree created"
 echo "[2/5] Copying Home Assistant config..."
 cp -r "$REPO_ROOT/ha_config/." "$VOLS/ha_config/"
 # Lovelace YAML mode: HA reads ui-lovelace.yaml directly from config dir
-cp "$REPO_ROOT/dashboard/lovelace.yaml" "$VOLS/ha_config/ui-lovelace.yaml"
-echo "      ✓ ha_config/ → volumes/ha_config/"
-echo "      ✓ dashboard/lovelace.yaml → volumes/ha_config/ui-lovelace.yaml"
+# Dev setup uses lovelace-dev.yaml (built-in cards only, simulated entities).
+# For production: cp dashboard/lovelace.yaml volumes/ha_config/ui-lovelace.yaml
+if [[ -f "$REPO_ROOT/dashboard/lovelace-dev.yaml" ]]; then
+  cp "$REPO_ROOT/dashboard/lovelace-dev.yaml" "$VOLS/ha_config/ui-lovelace.yaml"
+  echo "      ✓ ha_config/ → volumes/ha_config/"
+  echo "      ✓ dashboard/lovelace-dev.yaml → volumes/ha_config/ui-lovelace.yaml (dev mode)"
+else
+  cp "$REPO_ROOT/dashboard/lovelace.yaml" "$VOLS/ha_config/ui-lovelace.yaml"
+  echo "      ✓ ha_config/ → volumes/ha_config/"
+  echo "      ✓ dashboard/lovelace.yaml → volumes/ha_config/ui-lovelace.yaml"
+fi
 
 # ── 3. Copy Frigate config ────────────────────────────────────────────────────
 echo "[3/5] Copying Frigate config..."

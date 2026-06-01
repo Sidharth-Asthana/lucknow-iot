@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elevator Control — Circuit Diagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">←</a>
+  <h1>🛗 System 06 — Elevator Control (Brand-Agnostic Dry Contact)</h1>
+  <span class="timestamp" id="ts">--</span>
+  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Idle GF</span></span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-line purple"></div> Dry-Contact Wired Input</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> LAN / Native Integration</div>
+  <div class="legend-item"><div class="legend-line amber"></div> Relay Output / Call</div>
+  <div class="legend-item"><div class="legend-line red"></div> Fault Alert</div>
+</div>
+
+<div class="svg-wrap">
+<svg class="circuit-svg" viewBox="0 0 800 470" width="800" height="470" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#bc8cff"/></marker>
+  <marker id="arr-cyan"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="arr-amber"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="arr-red"    markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
+  <marker id="arr-green"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+</defs>
+
+<rect x="0" y="0" width="800" height="470" fill="#0d1117"/>
+
+<!-- ═══ ZONE BACKGROUNDS ═══ -->
+<!-- Elevator shaft visual (left) -->
+<rect x="8"   y="8" width="218" height="452" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="117" y="24" text-anchor="middle" fill="#8b949e" font-size="10" font-family="monospace">ELEVATOR SHAFT</text>
+
+<!-- Sensor zone (mid-left) -->
+<rect x="236" y="8" width="300" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="248" y="24" fill="#8b949e" font-size="10" font-family="monospace">SENSOR INPUTS (DRY CONTACT)</text>
+
+<!-- HA + Dashboard zone (mid-right) -->
+<rect x="546" y="8" width="246" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="558" y="24" fill="#8b949e" font-size="10" font-family="monospace">HOME ASSISTANT + DASHBOARD</text>
+
+<!-- Automation zone (bottom) -->
+<rect x="236" y="256" width="556" height="204" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="248" y="272" fill="#8b949e" font-size="10" font-family="monospace">AUTOMATION + TRAVEL HISTORY</text>
+
+<!-- ═══ SHAFT VISUALIZATION ═══ -->
+<!-- Shaft inner outline -->
+<rect x="66" y="36" width="100" height="400" rx="4" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+
+<!-- Floor labels — positioned to the RIGHT of shaft, outside wire bus corridor -->
+<text x="182" y="106" fill="#8b949e" font-size="11">Terrace</text>
+<text x="182" y="120" fill="#8b949e" font-size="10">+6.95 m</text>
+<text x="182" y="241" fill="#8b949e" font-size="11">First</text>
+<text x="182" y="255" fill="#8b949e" font-size="10">+3.30 m</text>
+<text x="182" y="376" fill="#8b949e" font-size="11">Ground</text>
+<text x="182" y="390" fill="#8b949e" font-size="10">±0.00 m</text>
+
+<!-- Floor landing lines (within shaft) -->
+<line x1="64" y1="100" x2="168" y2="100" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="64" y1="235" x2="168" y2="235" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="64" y1="370" x2="168" y2="370" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+<!-- Reed switch indicators (left of shaft) -->
+<rect x="52" y="90"  width="14" height="14" rx="3" fill="#161b22" stroke="#bc8cff" stroke-width="1.5" id="reed-t"/>
+<text x="59" y="101" text-anchor="middle" font-size="8" fill="#bc8cff">S</text>
+<rect x="52" y="225" width="14" height="14" rx="3" fill="#161b22" stroke="#bc8cff" stroke-width="1.5" id="reed-f"/>
+<text x="59" y="236" text-anchor="middle" font-size="8" fill="#bc8cff">S</text>
+<rect x="52" y="360" width="14" height="14" rx="3" fill="#161b22" stroke="#bc8cff" stroke-width="1.5" id="reed-g"/>
+<text x="59" y="371" text-anchor="middle" font-size="8" fill="#bc8cff">S</text>
+
+<!-- Call buttons (right of shaft, INSIDE shaft zone) -->
+<rect x="158" y="91"  width="16" height="14" rx="3" fill="#161b22" stroke="#f0a500" stroke-width="1" id="btn-t"/>
+<text x="166" y="102" text-anchor="middle" font-size="9" fill="#f0a500">▲</text>
+<rect x="158" y="226" width="16" height="14" rx="3" fill="#161b22" stroke="#f0a500" stroke-width="1" id="btn-f"/>
+<text x="166" y="237" text-anchor="middle" font-size="9" fill="#f0a500">▲▼</text>
+<rect x="158" y="361" width="16" height="14" rx="3" fill="#161b22" stroke="#f0a500" stroke-width="1" id="btn-g"/>
+<text x="166" y="372" text-anchor="middle" font-size="9" fill="#f0a500">▲</text>
+
+<!-- Animated elevator car -->
+<rect id="elev-car"    x="71"  y="355" width="90" height="60" rx="4" fill="#21262d" stroke="#00d4ff" stroke-width="2"/>
+<rect id="elev-door-l" x="76"  y="360" width="38" height="50" rx="2" fill="#0d1117"/>
+<rect id="elev-door-r" x="118" y="360" width="38" height="50" rx="2" fill="#0d1117"/>
+<text id="elev-label"  x="116" y="392" text-anchor="middle" font-size="13" fill="#00d4ff">GF</text>
+
+<!-- ═══ SENSOR NODES ═══ -->
+
+<!-- Reed Switches × 3 -->
+<rect x="248" y="38"  width="152" height="68" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="324" y="60"  text-anchor="middle" font-size="16" fill="#bc8cff">🧲</text>
+<text x="324" y="77"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Reed Switches × 3</text>
+<text x="324" y="93"  text-anchor="middle" class="node-sublabel">NO · door-frame mounted</text>
+<text x="324" y="107" text-anchor="middle" class="node-sublabel" id="reed-state">G: ● · F1: ○ · T: ○</text>
+
+<!-- Door Switch -->
+<rect x="248" y="120" width="152" height="58" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="324" y="143" text-anchor="middle" font-size="16" fill="#bc8cff">🚪</text>
+<text x="324" y="159" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Door Switch</text>
+<text id="door-state-txt" x="324" y="173" text-anchor="middle" class="node-sublabel">NC · CLOSED</text>
+
+<!-- Fault Relay -->
+<rect x="248" y="192" width="152" height="50" rx="8" fill="#0d1117" stroke="#f85149" stroke-width="1.5"/>
+<text x="324" y="213" text-anchor="middle" font-size="16" fill="#f85149">⚠️</text>
+<text x="324" y="229" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Fault Relay</text>
+<text id="fault-state-txt" x="324" y="238" text-anchor="middle" class="node-sublabel">Dry contact · no fault</text>
+
+<!-- Konnected Pro 2 -->
+<rect x="414" y="38"  width="118" height="160" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="2"/>
+<text x="473" y="62"  text-anchor="middle" font-size="16" fill="#bc8cff">📟</text>
+<text x="473" y="79"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Konnected Pro 2</text>
+<text x="473" y="95"  text-anchor="middle" class="node-sublabel">10.0.0.31</text>
+<text x="473" y="110" text-anchor="middle" class="node-sublabel">Zone 7: Reed-GF</text>
+<text x="473" y="125" text-anchor="middle" class="node-sublabel">Zone 8: Reed-F1</text>
+<text x="473" y="140" text-anchor="middle" class="node-sublabel">Zone 9: Reed-T</text>
+<text x="473" y="155" text-anchor="middle" class="node-sublabel">Zone 10: Door</text>
+<text x="473" y="170" text-anchor="middle" class="node-sublabel">Zone 11: Fault</text>
+<text x="473" y="188" text-anchor="middle" class="node-sublabel">Out 1–3: Call relays</text>
+
+<!-- ═══ HA NODES ═══ -->
+
+<!-- Home Assistant -->
+<rect x="558" y="38"  width="158" height="84" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="2"/>
+<text x="637" y="62"  text-anchor="middle" font-size="16" fill="#00d4ff">🏠</text>
+<text x="637" y="79"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Home Assistant</text>
+<text id="ha-floor" x="637" y="95"  text-anchor="middle" class="node-sublabel">sensor.elevator_floor = GF</text>
+<text id="ha-fault" x="637" y="110" text-anchor="middle" class="node-sublabel">binary_sensor.elevator_fault</text>
+
+<!-- Floor indicator widget -->
+<rect x="558" y="134" width="82" height="84" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+<text x="599" y="154" text-anchor="middle" fill="#8b949e" font-size="9">FLOOR</text>
+<text id="floor-indicator" x="599" y="196" text-anchor="middle" font-size="32" font-weight="700" fill="#00d4ff">GF</text>
+<text id="door-icon"       x="599" y="212" text-anchor="middle" font-size="11" fill="#8b949e">🚪 closed</text>
+
+<!-- Push / Fault Alert -->
+<rect x="650" y="134" width="138" height="62" rx="8" fill="#0d1117" stroke="#f85149" stroke-width="1.5"/>
+<text x="719" y="157" text-anchor="middle" font-size="16" fill="#f85149">📱</text>
+<text x="719" y="174" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Fault Alert</text>
+<text id="alert-txt" x="719" y="190" text-anchor="middle" class="node-sublabel">No active alerts</text>
+
+<!-- Call relay label -->
+<rect x="650" y="207" width="138" height="26" rx="6" fill="#0d1117" stroke="#f0a500" stroke-width="1"/>
+<text x="719" y="224" text-anchor="middle" class="node-sublabel" fill="#f0a500">button.call_GF / F1 / T</text>
+
+<!-- ═══ WIRES — ALL MANHATTAN ROUTING ═══ -->
+
+<!-- W1: Reed switches in shaft → Reed Switches node
+     Bus at x=228 (gap between shaft panel right=226 and sensor zone left=236)
+     Reed T (y≈97): stub right along shaft then up to Reed box entry
+     Reed F (y≈232): stub right then up
+     Reed G (y≈367): stub right then up
+     All stubs are horizontal to bus x=228, then single animated trunk up to box -->
+
+<!-- Static stubs: shaft reed → bus at x=228 (horizontal, no diagonals) -->
+<line x1="66" y1="97"  x2="228" y2="97"  stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 6" opacity="0.5"/>
+<line x1="66" y1="232" x2="228" y2="232" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 6" opacity="0.5"/>
+<line x1="66" y1="367" x2="228" y2="367" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 6" opacity="0.5"/>
+<!-- Vertical bus at x=228 (spans all three floors) -->
+<line x1="228" y1="97" x2="228" y2="367" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 6" opacity="0.4"/>
+<!-- Animated trunk: bus → Reed Switches node left=(248,72) — horizontal through gap x=228-248 -->
+<path d="M 228,72 L 248,72" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:1.0s;"/>
+
+<!-- W2: Door switch wire — shaft door position → Door Switch node (horizontal through same gap)
+     Static stub at shaft level (center y=370 for door), animated trunk enters node at y=150 -->
+<line x1="66" y1="150" x2="228" y2="150" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 6" opacity="0.5"/>
+<path d="M 228,150 L 248,150" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:1.1s;"/>
+
+<!-- W3: Fault relay → Fault Relay node (horizontal through gap) -->
+<line x1="66" y1="217" x2="228" y2="217" stroke="#f85149" stroke-width="1" stroke-dasharray="3 6" opacity="0.5"/>
+<path d="M 228,217 L 248,217" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-red)" class="wire-red" style="animation-duration:1.2s;"/>
+
+<!-- W4: Reed Switches → Konnected (horizontal, right=400, Konnected left=414, gap=14px) -->
+<path d="M 400,72 L 414,72" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:0.7s;"/>
+
+<!-- W5: Door Switch → Konnected (horizontal, gap=14px) -->
+<path d="M 400,149 L 414,149" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-purple)" class="wire-purple" style="animation-duration:0.75s;"/>
+
+<!-- W6: Fault Relay → Konnected (horizontal, gap=14px) -->
+<path d="M 400,217 L 414,217" stroke-width="1.8" fill="none"
+      marker-end="url(#arr-red)" class="wire-red" style="animation-duration:0.7s;"/>
+<text x="407" y="140" text-anchor="middle" class="wire-label" fill="#bc8cff" font-size="9">wired NC</text>
+
+<!-- W7: Konnected → HA (cyan · LAN)
+     Konnected right=532, HA left=558 — route up and right through gap
+     Use corridor x=540 (gap x=532-558), corridor y=28 (above both boxes) -->
+<path d="M 532,118 L 540,118 L 540,28 L 637,28 L 637,38" stroke-width="1.5" fill="none"
+      marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.8s;"/>
+<text x="575" y="24" text-anchor="middle" class="wire-label" fill="#00d4ff" font-size="9">Konnected LAN</text>
+
+<!-- W8: HA → Call relay → Konnected output (amber · reverse, call activation)
+     Route: HA bottom=(637,122) → down to corridor y=246 → left to Konnected center=(473,246) → up to Konnected bottom=(473,198)
+     y=246 is the gap between sensor zone (bottom=246) and automation zone (top=256) — use y=248 -->
+<path d="M 637,122 L 637,248 L 473,248 L 473,198" stroke-width="1.5" fill="none"
+      stroke="#f0a500" stroke-dasharray="4 6" style="animation:flow-rev 0.7s linear infinite;"
+      marker-end="url(#arr-amber)"/>
+<text x="555" y="244" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">call relay out</text>
+
+<!-- ═══ AUTOMATION LOG ═══ -->
+<foreignObject x="248" y="280" width="526" height="172">
+  <div xmlns="http://www.w3.org/1999/xhtml"
+       style="font-family:monospace;font-size:12px;color:#8b949e;line-height:1.8;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="color:#e6edf3;border-bottom:1px solid #30363d;">
+          <th style="text-align:left;padding:0 8px;width:100px;">Time</th>
+          <th style="text-align:left;padding:0 8px;width:120px;">From → To</th>
+          <th style="text-align:left;padding:0 8px;width:100px;">Door</th>
+          <th style="text-align:left;padding:0 8px;">Source</th>
+        </tr>
+      </thead>
+      <tbody id="elev-log">
+        <tr><td colspan="4" style="padding:6px 8px;color:#8b949e;">Awaiting movement…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</foreignObject>
+
+</svg>
+</div>
+
+<div class="data-panel">
+  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-grid">
+    <div class="data-cell">
+      <div class="data-label">🛗 Current Floor</div>
+      <div class="data-value cyan" id="d-floor">GF</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🚪 Door State</div>
+      <div class="data-value normal" id="d-door">Closed</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">⚡ Motor State</div>
+      <div class="data-value normal" id="d-motor">Idle</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🧲 Reed-GF</div>
+      <div class="data-value green" id="d-reed-g">Closed</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🧲 Reed-F1</div>
+      <div class="data-value normal" id="d-reed-f">Open</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">🧲 Reed-T</div>
+      <div class="data-value normal" id="d-reed-t">Open</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">⚠️ Fault</div>
+      <div class="data-value green" id="d-fault">None</div>
+    </div>
+    <div class="data-cell">
+      <div class="data-label">📊 Trips Today</div>
+      <div class="data-value normal" id="d-trips">0</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FLOOR_POS    = { 'GF': 325, 'F1': 195, 'T': 65 };
+const FLOOR_LABELS = { 'GF': 'GF', 'F1': 'F1', 'T': 'T' };
+const FLOORS = ['GF', 'F1', 'T'];
+
+let currentFloor = 'GF';
+let targetFloor  = null;
+let carY         = FLOOR_POS['GF'];
+let doorOpen     = false;
+let fault        = false;
+let trips        = 0;
+const log = [];
+
+function fmt() { return new Date().toTimeString().slice(0,8); }
+
+function addLog(from, to, door, src) {
+  log.unshift({ time: fmt(), from, to, door, src });
+  if (log.length > 5) log.pop();
+  const tbody = document.getElementById('elev-log');
+  tbody.innerHTML = log.map(e =>
+    `<tr style="border-bottom:1px solid #21262d;">
+      <td style="padding:3px 8px;color:#8b949e;">${e.time}</td>
+      <td style="padding:3px 8px;color:#e6edf3;">${e.from} → ${e.to}</td>
+      <td style="padding:3px 8px;color:${e.door==='Open'?'#f0a500':'#8b949e'}">${e.door}</td>
+      <td style="padding:3px 8px;color:#8b949e;">${e.src}</td>
+    </tr>`).join('');
+}
+
+function animate() {
+  if (targetFloor && targetFloor !== currentFloor) {
+    const targetY = FLOOR_POS[targetFloor];
+    const dy = targetY - carY;
+    if (Math.abs(dy) < 3) {
+      carY = targetY;
+      currentFloor = targetFloor;
+      targetFloor  = null;
+      doorOpen     = true;
+      trips++;
+    } else {
+      carY += dy > 0 ? 4 : -4;
+    }
+    document.getElementById('elev-car').setAttribute('y', carY);
+    document.getElementById('elev-door-l').setAttribute('y', carY + 5);
+    document.getElementById('elev-door-r').setAttribute('y', carY + 5);
+    document.getElementById('elev-label').setAttribute('y', carY + 37);
+    document.getElementById('elev-label').textContent = FLOOR_LABELS[currentFloor] || '…';
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+function triggerTrip() {
+  if (targetFloor) return;
+  const from = currentFloor;
+  const opts  = FLOORS.filter(f => f !== currentFloor);
+  targetFloor = opts[Math.floor(Math.random() * opts.length)];
+  doorOpen    = false;
+  addLog(from, targetFloor, 'Open→Close', 'Button call');
+}
+
+let tick = 0;
+function update() {
+  tick++;
+  document.getElementById('ts').textContent = new Date().toLocaleTimeString();
+
+  if (Math.random() < 0.07 && !targetFloor) triggerTrip();
+  if (doorOpen && tick % 4 === 0) doorOpen = false;
+
+  const reedG = currentFloor==='GF' && !targetFloor;
+  const reedF = currentFloor==='F1' && !targetFloor;
+  const reedT = currentFloor==='T'  && !targetFloor;
+
+  const setReed = (id, active) => {
+    document.getElementById(id).setAttribute('fill', active ? '#bc8cff' : '#161b22');
+  };
+  setReed('reed-g', reedG);
+  setReed('reed-f', reedF);
+  setReed('reed-t', reedT);
+
+  document.getElementById('floor-indicator').textContent = FLOOR_LABELS[currentFloor];
+  document.getElementById('door-icon').textContent       = doorOpen ? '🚪 open' : '🚪 closed';
+  document.getElementById('reed-state').textContent =
+    'G:'+(reedG?'●':'○')+' · F1:'+(reedF?'●':'○')+' · T:'+(reedT?'●':'○');
+  document.getElementById('door-state-txt').textContent = doorOpen ? 'NC · OPEN' : 'NC · CLOSED';
+  document.getElementById('ha-floor').textContent       = 'sensor.elevator_floor = ' + currentFloor;
+  document.getElementById('alert-txt').textContent      = fault ? 'FAULT DETECTED' : 'No active alerts';
+
+  document.getElementById('d-floor').textContent  = currentFloor;
+  document.getElementById('d-door').textContent   = doorOpen ? 'Open' : 'Closed';
+  document.getElementById('d-motor').textContent  = targetFloor ? 'Running → '+targetFloor : 'Idle';
+  document.getElementById('d-reed-g').textContent = reedG ? 'Closed (active)' : 'Open';
+  document.getElementById('d-reed-f').textContent = reedF ? 'Closed (active)' : 'Open';
+  document.getElementById('d-reed-t').textContent = reedT ? 'Closed (active)' : 'Open';
+  document.getElementById('d-fault').textContent  = fault ? 'FAULT' : 'None';
+  document.getElementById('d-trips').textContent  = trips;
+
+  const badge = document.getElementById('status-badge');
+  const stxt  = document.getElementById('status-text');
+  if (fault)          { badge.className='status-badge red';   stxt.textContent='FAULT'; }
+  else if (targetFloor){ badge.className='status-badge amber'; stxt.textContent='Moving → '+targetFloor; }
+  else if (doorOpen)  { badge.className='status-badge cyan';  stxt.textContent='Door Open '+currentFloor; }
+  else                { badge.className='status-badge green'; stxt.textContent='Idle '+currentFloor; }
+}
+
+addLog('GF','F1','Open','Button call');
+addLog('F1','T', 'Open','Button call');
+addLog('T', 'GF','Open','Button call');
+
+update();
+setInterval(update, 500);
+</script>
+</body>
+</html>

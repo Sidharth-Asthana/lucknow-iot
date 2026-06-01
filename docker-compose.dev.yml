@@ -45,3 +45,20 @@ services:
     volumes: []
     environment: []
     depends_on: []
+
+  # ── MQTT Simulator ────────────────────────────────────────────────────────────
+  # Publishes realistic sensor data every 10 s — populates all MQTT entities
+  # without requiring ESP32 hardware. Disable for production (hw.yml).
+  simulator:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile.simulator
+    restart: unless-stopped
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - SIM_INTERVAL=10
+    depends_on:
+      - mosquitto
+    networks:
+      - default

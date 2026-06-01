@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucknow Smart Residence — Circuit Diagrams</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .index-header { padding: 36px 32px 4px; }
+  .index-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .index-header p  { color: var(--text-muted); max-width: 580px;
+                     margin: 0 auto 32px; line-height: 1.7; text-align: center; }
+  .system-grid { padding: 0 32px 48px; }
+  .system-card { padding: 24px; }
+  .card-number { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em;
+                 text-transform: uppercase; margin-bottom: 5px; }
+  .card-title  { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .card-desc   { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center;
+                 margin-top: 18px; }
+  .card-arrow  { font-size: 20px; color: var(--text-muted); opacity: 0.5; }
+  .footer-bar  { text-align: center; padding: 0 32px 28px;
+                 color: var(--text-muted); font-size: 12px; }
+  .footer-bar a { color: var(--blue); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏡&nbsp; Lucknow Smart Residence</h1>
+  <span class="timestamp" id="ts">--</span>
+  <span class="status-badge green"><span class="dot"></span>All Systems</span>
+</div>
+
+<div class="index-header" style="text-align:center;">
+  <h1>Animated Circuit Diagrams</h1>
+  <p>Interactive topology diagrams for all 6 IoT subsystems. Live simulated sensor
+     values update every 2 s. No external dependencies — pure SVG + CSS + JS.</p>
+</div>
+
+<div class="system-grid">
+
+  <a href="01_pv_battery.html" class="system-card amber">
+    <div class="card-number">System 01</div>
+    <div class="card-icon">⚡</div>
+    <div class="card-title">PV + Battery Storage</div>
+    <div class="card-desc">15 × 400 W panels · 12 kWh LFP · 5 kW hybrid inverter · Modbus TCP · net metering</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">Modbus TCP</span>
+        <span class="tag">SunSpec</span>
+        <span class="tag">RS485</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="02_rainwater.html" class="system-card blue">
+    <div class="card-number">System 02</div>
+    <div class="card-icon">💧</div>
+    <div class="card-title">Rainwater Harvesting</div>
+    <div class="card-desc">18,000 L underground tank · MB7389 ultrasonic · YF-S201 flow meters · auto pump + 2 valves</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">ESP32 MQTT</span>
+        <span class="tag">MB7389</span>
+        <span class="tag">YF-S201</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="03_beehive_cooling.html" class="system-card cyan">
+    <div class="card-number">System 03</div>
+    <div class="card-icon">🌬️</div>
+    <div class="card-title">Beehive Evaporative Cooling</div>
+    <div class="card-desc">144-cone terracotta panels · EC fans · motorised dampers · 4-mode bypass logic · ~14°C ΔT</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">SHT31</span>
+        <span class="tag">DS18B20</span>
+        <span class="tag">Belimo</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="04_security.html" class="system-card red">
+    <div class="card-number">System 04</div>
+    <div class="card-icon">🔒</div>
+    <div class="card-title">Security System</div>
+    <div class="card-desc">7 RTSP cameras · Frigate NVR · PIR × 8 · IR beam-break × 4 · 30-day local storage</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">Frigate</span>
+        <span class="tag">Konnected</span>
+        <span class="tag">RTSP</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="05_access_control.html" class="system-card purple">
+    <div class="card-number">System 05</div>
+    <div class="card-icon">👆</div>
+    <div class="card-title">Access Control</div>
+    <div class="card-desc">ZKTeco fingerprint · Wiegand-26 → RS485 → Python bridge → MQTT · electric strike</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">Wiegand-26</span>
+        <span class="tag">Python</span>
+        <span class="tag">MQTT</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="06_elevator.html" class="system-card green">
+    <div class="card-number">System 06</div>
+    <div class="card-icon">🛗</div>
+    <div class="card-title">Elevator Control</div>
+    <div class="card-desc">Brand-agnostic dry-contact · 3 reed switches · door sensor · fault relay → Konnected → HA</div>
+    <div class="card-footer">
+      <div class="card-tags">
+        <span class="tag">Konnected</span>
+        <span class="tag">Dry contact</span>
+        <span class="tag">HA native</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer-bar">
+  Lucknow Smart Residence · Local IoT stack · Home Assistant on Mac Mini A (10.0.0.10) ·
+  <a href="http://localhost:8123" target="_blank">Open HA Dashboard</a>
+</div>
+
+<script>
+  function tick() { document.getElementById('ts').textContent = new Date().toLocaleTimeString(); }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>

@@ -87,6 +87,115 @@ template:
         device_class: problem
         state: "{{ states('sensor.rwh_level_pct') | float(100) < 10 }}"
 
+# ── Simulated Modbus / Konnected sensors (dev mode — no hardware required) ─────
+# Named with sim_ prefix — never conflict with real Modbus/Konnected entities.
+# Used by dashboard/lovelace-dev.yaml. Hardware dashboards use the real entities.
+template:
+  - sensor:
+      # PV power: bell curve peaking at noon (5800 W)
+      - name: "Sim PV Power W"
+        unique_id: sim_pv_power_w
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set h = now().hour + now().minute / 60 %}
+          {% if h >= 6 and h <= 18 %}
+            {% set x = (h - 12) / 5.5 %}
+            {{ [0, (5800 * (1 - x * x)) | round(0)] | max | int }}
+          {% else %}
+            0
+          {% endif %}
+        icon: mdi:solar-power
+
+      # Battery SOC: ramp charge 6am–3pm, discharge rest of day
+      - name: "Sim Battery SOC Pct"
+        unique_id: sim_battery_soc_pct
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        state: >
+          {% set h = now().hour + now().minute / 60 %}
+          {% if h >= 6 and h <= 15 %}
+            {{ [100, (40 + (h - 6) / 9 * 55) | round(1)] | min }}
+          {% else %}
+            {% set dh = ((h - 15 + 24) % 24) %}
+            {{ [5, (95 - dh / 15 * 55) | round(1)] | max }}
+          {% endif %}
+        icon: mdi:battery-charging
+
+      # Grid import W (positive = taking from grid)
+      - name: "Sim Grid Import W"
+        unique_id: sim_grid_import_w
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set pv = states('sensor.sim_pv_power_w') | float(0) %}
+          {{ [0, (1200 - pv) | round(0)] | max | int }}
+        icon: mdi:transmission-tower-import
+
+      # Grid export W (positive = sending to grid)
+      - name: "Sim Grid Export W"
+        unique_id: sim_grid_export_w
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set pv = states('sensor.sim_pv_power_w') | float(0) %}
+          {{ [0, (pv - 1200) | round(0)] | max | int }}
+        icon: mdi:transmission-tower-export
+
+      # Inverter AC output (5 kW rated max)
+      - name: "Sim Inverter AC Output W"
+        unique_id: sim_inverter_ac_output_w
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ [5000, states('sensor.sim_pv_power_w') | float(0)] | min | int }}
+        icon: mdi:lightning-bolt
+
+      # AC voltage (nominal 240 V)
+      - name: "Sim AC Voltage V"
+        unique_id: sim_ac_voltage_v
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        state: "239.8"
+        icon: mdi:sine-wave
+
+      # UPS battery (85% for dev)
+      - name: "Sim UPS Battery Pct"
+        unique_id: sim_ups_battery_pct
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        state: "85"
+        icon: mdi:battery-80
+
+      # Elevator floor (idle at Ground)
+      - name: "Sim Elevator Floor"
+        unique_id: sim_elevator_floor
+        state: "Ground"
+        icon: mdi:elevator
+
+  - binary_sensor:
+      # Inverter fault — always OK in dev
+      - name: "Sim Inverter Fault"
+        unique_id: sim_inverter_fault
+        device_class: problem
+        state: "off"
+      # PIR zones — clear in dev
+      - name: "Sim PIR Zone 1"
+        unique_id: sim_pir_zone_1
+        device_class: motion
+        state: "off"
+      - name: "Sim PIR Zone 2"
+        unique_id: sim_pir_zone_2
+        device_class: motion
+        state: "off"
+
 # ── Input helpers ─────────────────────────────────────────────────────────────
 input_select:
   cooling_mode:
