@@ -3,277 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beehive Cooling — Circuit Diagram</title>
+<title>Cylindrical Cooling Tower — Circuit Diagram</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="header">
   <a href="index.html" class="back">←</a>
-  <h1>🌬️ System 03 — Beehive Evaporative Cooling</h1>
+  <h1>🌀 System 03 — Cylindrical Passive Cooling Tower</h1>
   <span class="timestamp" id="ts">--</span>
-  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Cooling</span></span>
+  <span class="status-badge cyan" id="status-badge"><span class="dot"></span><span id="status-text">Cooling Active</span></span>
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-line cyan"></div> Cooled Airflow</div>
-  <div class="legend-item"><div class="legend-line amber"></div> Fan / Damper Control</div>
-  <div class="legend-item"><div class="legend-line blue"></div> Drip Water (RWH)</div>
-  <div class="legend-item"><div class="legend-line green"></div> Sensor / MQTT</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> Cooled airflow</div>
+  <div class="legend-item"><div class="legend-line red"></div> Hot exhaust / fault</div>
+  <div class="legend-item"><div class="legend-line blue"></div> Water supply (RWH filtered)</div>
+  <div class="legend-item"><div class="legend-line amber"></div> Solar power / control</div>
 </div>
 
+<div class="scenario-bar">
+  <button class="sc-btn" id="sc-prev">◄ Prev</button>
+  <div class="sc-info">
+    <span class="sc-label">Scenario</span>
+    <span class="sc-name" id="sc-name">Cooling Active</span>
+    <span class="sc-num"  id="sc-num">1 / 6</span>
+    <span class="sc-desc" id="sc-desc">Hot dry day · tower fully operational · ΔT 10°C</span>
+  </div>
+  <div class="sc-timer" id="sc-timer">Auto ▶ 30s</div>
+  <button class="sc-btn" id="sc-next">Next ►</button>
+</div>
+<div class="alert-bar" id="alert-bar"></div>
+
 <div class="svg-wrap">
-<svg class="circuit-svg" viewBox="0 0 800 510" width="800" height="510" xmlns="http://www.w3.org/2000/svg">
+<svg class="circuit-svg" viewBox="0 0 800 490" xmlns="http://www.w3.org/2000/svg">
 <defs>
-  <marker id="a-cy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
-  <marker id="a-am" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
-  <marker id="a-bl" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#58a6ff"/></marker>
-  <marker id="a-gn" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+  <marker id="arr-cyan"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="arr-red"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
+  <marker id="arr-blue"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#58a6ff"/></marker>
+  <marker id="arr-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+  <!-- Cone pattern for tower surface -->
+  <pattern id="cone-pat" x="0" y="0" width="14" height="16" patternUnits="userSpaceOnUse">
+    <circle cx="7" cy="8" r="4.5" fill="#b85030" opacity="0.7"/>
+  </pattern>
 </defs>
+<rect x="0" y="0" width="800" height="490" fill="#0d1117"/>
 
-<rect x="0" y="0" width="800" height="510" fill="#0d1117"/>
+<!-- ═══ TOWER VISUAL (centre) ═══ -->
+<!-- Outer frame / zone -->
+<rect x="290" y="10" width="200" height="400" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+<text x="390" y="26" text-anchor="middle" fill="#8b949e" font-size="10" font-family="monospace">CYLINDRICAL COOLING TOWER</text>
 
-<!-- Zone: airflow (top) -->
-<rect x="8" y="8"   width="784" height="240" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="22" y="26" fill="#8b949e" font-size="10" font-family="monospace">PASSIVE COOLING PATH  (east intake → beehive panels → living stack → burjeel exhaust)</text>
+<!-- Fan housing at top -->
+<rect id="node-fan" x="312" y="32" width="156" height="38" rx="6" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="390" y="48" text-anchor="middle" font-size="13">🌬️</text>
+<text x="390" y="62" text-anchor="middle" class="node-sublabel" font-size="9" id="sv-fan">DC Fan · 75% · 340 W</text>
 
-<!-- Zone: control (bottom) -->
-<rect x="8" y="258" width="784" height="244" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="22" y="276" fill="#8b949e" font-size="10" font-family="monospace">SENSORS + CONTROL LAYER</text>
+<!-- Top damper -->
+<rect id="node-tdamp" x="330" y="76" width="120" height="22" rx="4" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="390" y="92" text-anchor="middle" class="node-sublabel" font-size="9" id="sv-tdamp">Top Damper: OPEN</text>
 
-<!-- ══ AIRFLOW NODES  y=40–215 ══ -->
+<!-- Tower cylinder body with cone pattern -->
+<rect x="316" y="104" width="148" height="248" rx="8" fill="url(#cone-pat)" stroke="#8b3018" stroke-width="1.5"/>
+<text x="390" y="136" text-anchor="middle" fill="#e6edf3" font-size="10" font-weight="600" opacity="0.7">Terracotta Cones</text>
+<text x="390" y="150" text-anchor="middle" fill="#8b949e" font-size="9" opacity="0.8">~200 cones · hex-packed</text>
+<!-- Drip manifold indicator at top of tower body -->
+<line x1="316" y1="110" x2="464" y2="110" stroke="#58a6ff" stroke-width="3" stroke-dasharray="6 4" opacity="0.8"/>
+<text x="390" y="106" text-anchor="middle" fill="#58a6ff" font-size="8">▼ drip manifold</text>
+<!-- Airflow arrows inside tower (upward) -->
+<text x="390" y="200" text-anchor="middle" fill="#00d4ff" font-size="18" opacity="0.5" id="sv-airflow">↑</text>
+<text x="390" y="240" text-anchor="middle" fill="#00d4ff" font-size="18" opacity="0.4">↑</text>
+<text x="390" y="280" text-anchor="middle" fill="#00d4ff" font-size="16" opacity="0.3">↑</text>
+<!-- ΔT live readout on tower body -->
+<text x="390" y="320" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="700" id="sv-dt">ΔT = 10°C</text>
+<text x="390" y="335" text-anchor="middle" fill="#8b949e" font-size="9">43°C → 33°C</text>
 
-<!-- Outdoor Air  x=18-158 -->
-<rect x="18" y="40" width="140" height="80" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="1.5"/>
-<text x="88" y="64"  text-anchor="middle" font-size="18" fill="#00d4ff">🌡️</text>
-<text x="88" y="81"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Outdoor Air</text>
-<text id="oa-lbl" x="88" y="97"  text-anchor="middle" class="node-sublabel">--°C · --%RH</text>
-<text id="oa-tmp" x="88" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#00d4ff">-- °C</text>
+<!-- Base damper -->
+<rect id="node-bdamp" x="330" y="358" width="120" height="22" rx="4" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="390" y="374" text-anchor="middle" class="node-sublabel" font-size="9" id="sv-bdamp">Base Damper: OPEN</text>
 
-<!-- Beehive Panel-E  x=218-378 -->
-<rect x="218" y="32" width="160" height="95" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="2"/>
-<text x="298" y="57"  text-anchor="middle" font-size="18" fill="#00d4ff">🍯</text>
-<text x="298" y="75"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Beehive Panel-E</text>
-<text x="298" y="91"  text-anchor="middle" class="node-sublabel">2.5 × 2.5 m · 144 cones</text>
-<text x="298" y="106" text-anchor="middle" class="node-sublabel">East face · ~14 °C ΔT</text>
-<text id="panel-dt" x="298" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#00d4ff">ΔT -- °C</text>
+<!-- Duct to house -->
+<rect id="node-duct" x="312" y="386" width="156" height="22" rx="4" fill="#161b22" stroke="#00d4ff" stroke-width="1"/>
+<text x="390" y="401" text-anchor="middle" class="node-sublabel" font-size="9">Insulated duct → house ventilation</text>
 
-<!-- Beehive Panel-S  x=218-378 -->
-<rect x="218" y="155" width="160" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="1.5"/>
-<text x="298" y="179" text-anchor="middle" font-size="17" fill="#00d4ff">🍯</text>
-<text x="298" y="196" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Beehive Panel-S</text>
-<text x="298" y="212" text-anchor="middle" class="node-sublabel">South face</text>
+<!-- ═══ LEFT COLUMN — inputs ═══ -->
+<!-- Outdoor sensor -->
+<rect id="node-out" x="20" y="30" width="148" height="78" rx="8" fill="#0d1117" stroke="#8b949e" stroke-width="1.5"/>
+<text x="94" y="54"  text-anchor="middle" font-size="16">🌡️</text>
+<text x="94" y="70"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Outdoor Sensors</text>
+<text x="94" y="85"  text-anchor="middle" class="node-sublabel">SHT31 · Temp + RH</text>
+<text x="94" y="100" text-anchor="middle" class="node-sublabel" id="sv-out">43°C · 32% RH</text>
 
-<!-- Cooled Air / Living Room  x=448-608 -->
-<rect x="448" y="40" width="160" height="80" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
-<text x="528" y="64"  text-anchor="middle" font-size="18" fill="#58a6ff">🛋️</text>
-<text x="528" y="81"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Living / Dining</text>
-<text id="indoor-lbl" x="528" y="97"  text-anchor="middle" class="node-sublabel">--°C · --%RH</text>
-<text id="ind-tmp" x="528" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#58a6ff">-- °C</text>
+<!-- Solar panel (for fan) -->
+<rect id="node-sol" x="20" y="130" width="148" height="72" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+<text x="94" y="153" text-anchor="middle" font-size="16">☀️</text>
+<text x="94" y="169" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Dedicated Solar Panel</text>
+<text x="94" y="184" text-anchor="middle" class="node-sublabel">400 W · fan power</text>
+<text x="94" y="197" text-anchor="middle" class="node-sublabel" id="sv-sol">Output: 380 W</text>
 
-<!-- Stair Void  x=638-778 -->
-<rect x="638" y="40" width="140" height="70" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
-<text x="708" y="63"  text-anchor="middle" font-size="17" fill="#58a6ff">🪜</text>
-<text x="708" y="80"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Stair Void</text>
-<text x="708" y="96"  text-anchor="middle" class="node-sublabel">G+1+T chimney</text>
+<!-- RWH Water supply (filtered) -->
+<rect id="node-rwh" x="20" y="224" width="148" height="72" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="94" y="248" text-anchor="middle" font-size="16">💧</text>
+<text x="94" y="264" text-anchor="middle" class="node-label" font-size="12" font-weight="600">RWH Supply (filtered)</text>
+<text x="94" y="279" text-anchor="middle" class="node-sublabel">From tank → filtration unit</text>
+<text x="94" y="293" text-anchor="middle" class="node-sublabel" id="sv-rwh">Flow: 2.1 L/min</text>
 
-<!-- Burjeel Exhaust  x=638-778 -->
-<rect x="638" y="155" width="140" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="2"/>
-<text x="708" y="178" text-anchor="middle" font-size="17" fill="#00d4ff">🏛️</text>
-<text x="708" y="195" text-anchor="middle" class="node-label" font-size="13" font-weight="600">Burjeel Exhaust</text>
-<text x="708" y="211" text-anchor="middle" class="node-sublabel">2 × 2 × 4 m tower</text>
+<!-- Drip valve -->
+<rect id="node-drip" x="20" y="318" width="148" height="60" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="94" y="341" text-anchor="middle" font-size="16">🔧</text>
+<text x="94" y="357" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Drip Valve (solenoid)</text>
+<text x="94" y="372" text-anchor="middle" class="node-sublabel" id="sv-drip">OPEN · 2.1 L/min</text>
 
-<!-- ══ AIRFLOW WIRES (pure horizontal/vertical, no diagonals) ══ -->
+<!-- ═══ RIGHT COLUMN — outputs / control ═══ -->
+<!-- Indoor sensor -->
+<rect id="node-in"  x="638" y="30" width="148" height="78" rx="8" fill="#0d1117" stroke="#8b949e" stroke-width="1.5"/>
+<text x="712" y="54"  text-anchor="middle" font-size="16">🌡️</text>
+<text x="712" y="70"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Indoor Sensors</text>
+<text x="712" y="85"  text-anchor="middle" class="node-sublabel">SHT31 · house corridor</text>
+<text x="712" y="100" text-anchor="middle" class="node-sublabel" id="sv-in">33°C · 42% RH</text>
 
-<!-- Outdoor → Panel-E  (gap x=158–218, at y=80) -->
-<path d="M 158,80 L 218,80" stroke-width="3" fill="none" marker-end="url(#a-cy)" class="wire-cyan"/>
-<text x="188" y="70" text-anchor="middle" class="wire-label">intake</text>
+<!-- House ventilation -->
+<rect id="node-vent" x="638" y="130" width="148" height="72" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="2"/>
+<text x="712" y="153" text-anchor="middle" font-size="16" fill="#00d4ff">🏠</text>
+<text x="712" y="170" text-anchor="middle" class="node-label" font-size="13" font-weight="600">House Ventilation</text>
+<text x="712" y="185" text-anchor="middle" class="node-sublabel">Central corridor → rooms</text>
+<text x="712" y="197" text-anchor="middle" class="node-sublabel" id="sv-vent">Cooled air flowing</text>
 
-<!-- Outdoor → Panel-S  (route: right of Outdoor (158,80) → down to y=190 → right to Panel-S left) -->
-<path d="M 158,90 L 200,90 L 200,190 L 218,190" stroke-width="2.5" fill="none"
-      marker-end="url(#a-cy)" class="wire-cyan" style="animation-duration:0.9s;"/>
+<!-- ESP32 node -->
+<rect id="node-esp" x="638" y="224" width="148" height="72" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
+<text x="712" y="248" text-anchor="middle" font-size="16" fill="#00d4ff">📡</text>
+<text x="712" y="264" text-anchor="middle" class="node-label" font-size="12" font-weight="600">ESP32 Cooling Node</text>
+<text x="712" y="279" text-anchor="middle" class="node-sublabel">10.0.0.50 · MQTT</text>
+<text x="712" y="293" text-anchor="middle" class="node-sublabel" id="sv-esp">Publishing · 10 s</text>
 
-<!-- Panel-E → Living Room  (gap x=378–448, at y=80) -->
-<path d="M 378,80 L 448,80" stroke-width="3" fill="none" marker-end="url(#a-cy)" class="wire-cyan" style="animation-duration:0.5s;"/>
-<text x="413" y="70" text-anchor="middle" class="wire-label">cooled ~14 °C ΔT</text>
+<!-- HA -->
+<rect id="node-ha"  x="638" y="318" width="148" height="60" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="2"/>
+<text x="712" y="341" text-anchor="middle" font-size="16" fill="#00d4ff">🏠</text>
+<text x="712" y="357" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Home Assistant</text>
+<text x="712" y="372" text-anchor="middle" class="node-sublabel" id="sv-ha">Mode: Cooling Active</text>
 
-<!-- Panel-S → Living Room  (route: Panel-S right (378,190) → right to x=420 → up to y=100 → right to Living left (448,100)) -->
-<path d="M 378,190 L 420,190 L 420,100 L 448,100" stroke-width="2.5" fill="none"
-      marker-end="url(#a-cy)" class="wire-cyan" style="animation-duration:0.7s;"/>
+<!-- ═══ WIRES ═══ -->
+<!-- W1 Solar → Fan (amber, enters tower top-left) -->
+<path id="wa" d="M 168,166 L 280,166 L 280,51 L 312,51" stroke-width="2" fill="none" marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.5s;"/>
+<text x="225" y="162" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">fan power</text>
 
-<!-- Living → Stair Void  (gap x=608–638, at y=75) -->
-<path d="M 608,75 L 638,75" stroke-width="2.5" fill="none" marker-end="url(#a-cy)" class="wire-cyan"/>
-<text x="623" y="65" text-anchor="middle" class="wire-label">via corridor</text>
+<!-- W2 RWH → drip manifold (blue, enters tower top-left) -->
+<path id="wb" d="M 168,260 L 280,260 L 280,110 L 316,110" stroke-width="2" fill="none" marker-end="url(#arr-blue)" class="wire-blue" style="animation-duration:0.7s;"/>
+<text x="225" y="256" text-anchor="middle" class="wire-label" fill="#58a6ff" font-size="9">drip water</text>
 
-<!-- Stair → Burjeel  (gap y=110–155, at x=708) -->
-<path d="M 708,110 L 708,155" stroke-width="3" fill="none" marker-end="url(#a-cy)" class="wire-cyan" style="animation-duration:0.45s;"/>
-<text x="728" y="132" text-anchor="start" class="wire-label">buoyancy</text>
+<!-- W3 Drip valve → RWH (control wire, shown as dashed from drip valve to RWH node) -->
+<path id="wc" d="M 168,348 L 200,348 L 200,270 L 168,270" stroke-width="1.2" fill="none" marker-end="url(#arr-blue)" class="wire-blue" style="opacity:0.4;"/>
 
-<!-- ══ CONTROL NODES  y=278–480 ══ -->
+<!-- W4 Outdoor sensor → ESP32 (data, left to right via top bus) -->
+<path id="wd" d="M 168,69 L 580,69 L 580,260 L 638,260" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.8s;"/>
+<text x="374" y="63" text-anchor="middle" class="wire-label" fill="#00d4ff" font-size="9">outdoor T/RH</text>
 
-<!-- ESP32 Beehive  x=18-178 -->
-<rect x="18" y="278" width="160" height="75" rx="8" fill="#161b22" stroke="#39d353" stroke-width="2"/>
-<text x="98" y="303"  text-anchor="middle" font-size="17" fill="#39d353">🧠</text>
-<text x="98" y="320"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">ESP32 Beehive</text>
-<text x="98" y="337"  text-anchor="middle" class="node-sublabel">10.0.0.50 · SHT31 × 2</text>
+<!-- W5 Indoor sensor → ESP32 (cyan data) -->
+<path id="we" d="M 638,69 L 620,69 L 620,260 L 638,260" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.75s;"/>
 
-<!-- Home Assistant  x=260-420 -->
-<rect x="260" y="278" width="160" height="75" rx="8" fill="#161b22" stroke="#39d353" stroke-width="1.5"/>
-<text x="340" y="303"  text-anchor="middle" font-size="17" fill="#39d353">🏠</text>
-<text x="340" y="320"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Home Assistant</text>
-<text id="d-mode-sm" x="340" y="337"  text-anchor="middle" class="node-sublabel">Mode: --</text>
+<!-- W6 Tower base duct → House ventilation (cooled air, exits right) -->
+<path id="wf" d="M 468,397 L 580,397 L 580,166 L 638,166" stroke-width="2" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.6s;"/>
+<text x="524" y="391" text-anchor="middle" class="wire-label" fill="#00d4ff" font-size="9">cooled air</text>
 
-<!-- Cooling Mode State Machine  x=245-555 -->
-<rect x="245" y="385" width="315" height="98" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="402" y="403" text-anchor="middle" fill="#8b949e" font-size="10" font-weight="600">COOLING MODE STATE MACHINE</text>
-<text id="s-cool"  x="263" y="422" font-size="11" fill="#39d353">● cooling: RH &lt; 65%, T &gt; 26°C</text>
-<text id="s-mon"   x="263" y="441" font-size="11" fill="#8b949e">○ monsoon_bypass: indoor RH &gt; 65%</text>
-<text id="s-win"   x="263" y="460" font-size="11" fill="#8b949e">○ winter_bypass: outdoor T &lt; 18°C</text>
-<text id="s-off"   x="263" y="479" font-size="11" fill="#8b949e">○ off: manual override</text>
+<!-- W7 Tower fan exhaust (hot air up, red) -->
+<path id="wg" d="M 390,32 L 390,14" stroke-width="2" fill="none" marker-end="url(#arr-red)" stroke="#f85149" stroke-dasharray="5 4" style="animation:flow-fwd 0.4s linear infinite;"/>
+<text x="415" y="22" text-anchor="start" class="wire-label" fill="#f85149" font-size="9">hot exhaust ↑</text>
 
-<!-- EC Fan-E  x=460-595 -->
-<rect x="460" y="278" width="135" height="70" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="527" y="303"  text-anchor="middle" font-size="17" fill="#f0a500">💨</text>
-<text x="527" y="320"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">EC Fan-E</text>
-<text id="fan-e-s" x="527" y="337"  text-anchor="middle" class="node-sublabel">-- % · 50–80 W</text>
+<!-- W8 ESP32 → HA (MQTT) -->
+<path id="wh" d="M 712,296 L 712,318" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan"/>
 
-<!-- EC Fan-S  x=460-595 -->
-<rect x="460" y="390" width="135" height="65" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="527" y="413"  text-anchor="middle" font-size="17" fill="#f0a500">💨</text>
-<text x="527" y="430"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">EC Fan-S</text>
-<text id="fan-s-s" x="527" y="446"  text-anchor="middle" class="node-sublabel">-- % · 50–80 W</text>
+<!-- W9 HA → Dampers + Fan control (amber dashed back to tower) -->
+<path id="wi" d="M 638,348 L 600,348 L 600,87 L 468,87" stroke-width="1.5" fill="none" marker-end="url(#arr-amber)" stroke="#f0a500" stroke-dasharray="4 6" style="animation:flow-rev 0.7s linear infinite;"/>
+<text x="534" y="83" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">fan + damper ctrl</text>
 
-<!-- Damper-E  x=615-745 -->
-<rect x="615" y="278" width="130" height="70" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="680" y="303"  text-anchor="middle" font-size="16" fill="#f0a500">🚪</text>
-<text x="680" y="320"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Damper-E</text>
-<text id="dmp-e" x="680" y="337"  text-anchor="middle" class="node-sublabel">--</text>
-
-<!-- Damper-S  x=615-745 -->
-<rect x="615" y="390" width="130" height="65" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="680" y="413"  text-anchor="middle" font-size="16" fill="#f0a500">🚪</text>
-<text x="680" y="430"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">Damper-S</text>
-<text id="dmp-s" x="680" y="446"  text-anchor="middle" class="node-sublabel">--</text>
-
-<!-- RWH Drip Supply  x=18-168 -->
-<rect x="18" y="393" width="152" height="60" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
-<text x="94" y="416"  text-anchor="middle" font-size="16" fill="#58a6ff">💧</text>
-<text x="94" y="433"  text-anchor="middle" class="node-label" font-size="12" font-weight="600">RWH Drip Supply</text>
-<text x="94" y="448"  text-anchor="middle" class="node-sublabel">Unfiltered solenoid</text>
-
-<!-- ══ CONTROL WIRES ══ -->
-
-<!-- ESP32 → HA  (gap x=178–260, at y=315) -->
-<path d="M 178,315 L 260,315" stroke-width="1.5" fill="none" marker-end="url(#a-gn)" class="wire-green"/>
-<text x="219" y="305" text-anchor="middle" class="wire-label" fill="#39d353">WiFi MQTT</text>
-
-<!-- HA → Fan-E  (gap x=420–460, at y=308) -->
-<path d="M 420,308 L 460,308" stroke-width="1.5" fill="none" stroke="#f0a500"
-      stroke-dasharray="4 6" marker-end="url(#a-am)" style="animation:flow-fwd 0.65s linear infinite;"/>
-<text x="440" y="298" text-anchor="middle" class="wire-label" fill="#f0a500">0-10V speed</text>
-
-<!-- HA → Fan-S  (route: HA bottom (340,353) → down to y=370 → right to x=527 → down to Fan-S top) -->
-<path d="M 340,353 L 340,370 L 527,370 L 527,390"
-      stroke-width="1.5" fill="none" stroke="#f0a500"
-      stroke-dasharray="4 6" marker-end="url(#a-am)" style="animation:flow-fwd 0.65s linear infinite;"/>
-
-<!-- HA → Damper-E  (route: HA right (420,295) → right to x=445 → right to Damper-E left) -->
-<path d="M 420,295 L 445,295 L 445,308 L 615,308"
-      stroke-width="1.5" fill="none" stroke="#f0a500"
-      stroke-dasharray="4 6" marker-end="url(#a-am)" style="animation:flow-fwd 0.65s linear infinite;"/>
-<text x="530" y="285" text-anchor="middle" class="wire-label" fill="#f0a500">24V damper ctrl</text>
-
-<!-- HA → Damper-S  (same descent as Fan-S, branch off to right) -->
-<path d="M 340,353 L 340,375 L 680,375 L 680,390"
-      stroke-width="1.5" fill="none" stroke="#f0a500"
-      stroke-dasharray="4 6" marker-end="url(#a-am)" style="animation:flow-fwd 0.65s linear infinite;"/>
-
-<!-- RWH → Beehive panels  (route: RWH top (94,393) → up to y=248 → right to Panel-S midpoint x=298)
-     Stays outside all control-layer boxes. -->
-<path d="M 94,393 L 94,248 L 298,248 L 298,225"
-      stroke-width="2" fill="none" marker-end="url(#a-bl)" class="wire-blue"
-      style="animation-duration:1.2s;"/>
-<text x="196" y="240" text-anchor="middle" class="wire-label" fill="#58a6ff">drip water</text>
-
-<!-- Sensor lines: ESP32 reads outdoor sensors — subtle dashed back-path -->
-<path d="M 18,315 L 10,315 L 10,80 L 18,80" stroke-width="1" fill="none"
-      stroke="#39d353" stroke-dasharray="3 9"
-      style="animation:flow-rev 1.5s linear infinite; opacity:0.45;"/>
-<text x="14" y="200" text-anchor="middle" fill="#39d353" font-size="9"
-      transform="rotate(-90,14,200)">SHT31 sensors</text>
+<!-- W10 HA → Drip valve control -->
+<path id="wj" d="M 638,367 L 400,367 L 400,408" stroke-width="1.5" fill="none" marker-end="url(#arr-amber)" stroke="#f0a500" stroke-dasharray="4 6" style="animation:flow-rev 0.8s linear infinite; opacity:0.7;"/>
 
 </svg>
 </div>
 
+<div class="comp-panel" id="comp-panel"><div class="comp-panel-title">Component States</div></div>
+
 <div class="data-panel">
-  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-panel-title">Sensor Readings · updates every 5 s</div>
   <div class="data-grid">
-    <div class="data-cell"><div class="data-label">🌡️ Outdoor Temp</div>
-      <div class="data-value amber" id="d-ot">-- °C</div></div>
-    <div class="data-cell"><div class="data-label">❄️ Inlet Temp</div>
-      <div class="data-value cyan" id="d-it">-- °C</div></div>
-    <div class="data-cell"><div class="data-label">🏠 Indoor Temp</div>
-      <div class="data-value blue" id="d-indoor">-- °C</div></div>
-    <div class="data-cell"><div class="data-label">💦 Outdoor RH</div>
-      <div class="data-value normal" id="d-orh">-- %</div></div>
-    <div class="data-cell"><div class="data-label">💦 Indoor RH</div>
-      <div class="data-value normal" id="d-irh">-- %</div></div>
-    <div class="data-cell"><div class="data-label">⬇️ ΔT Cooling</div>
-      <div class="data-value cyan" id="d-dt">-- °C</div></div>
-    <div class="data-cell"><div class="data-label">💨 Fan E / S</div>
-      <div class="data-value amber" id="d-fans">-- / -- %</div></div>
-    <div class="data-cell"><div class="data-label">🌬️ Mode</div>
-      <div class="data-value green" id="d-mode">--</div></div>
+    <div class="data-cell"><div class="data-label">🌡️ Outdoor Temp</div><div class="data-value red" id="d-tout">43°C</div></div>
+    <div class="data-cell"><div class="data-label">💧 Outdoor RH</div><div class="data-value normal" id="d-rhout">32%</div></div>
+    <div class="data-cell"><div class="data-label">🌡️ Indoor Temp</div><div class="data-value cyan" id="d-tin">33°C</div></div>
+    <div class="data-cell"><div class="data-label">💧 Indoor RH</div><div class="data-value normal" id="d-rhin">42%</div></div>
+    <div class="data-cell"><div class="data-label">🌬️ Fan Speed</div><div class="data-value amber" id="d-fan">75%</div></div>
+    <div class="data-cell"><div class="data-label">🌡️ ΔT (cooling)</div><div class="data-value cyan" id="d-dt">10°C</div></div>
+    <div class="data-cell"><div class="data-label">💧 Drip Flow</div><div class="data-value blue" id="d-drip">2.1 L/min</div></div>
+    <div class="data-cell"><div class="data-label">⚙️ Mode</div><div class="data-value cyan" id="d-mode">Cooling Active</div></div>
   </div>
 </div>
 
 <script>
-function noise(a){return (Math.random()-.5)*2*a;}
-function update(){
-  const now=new Date();
-  document.getElementById('ts').textContent=now.toLocaleTimeString();
-  const h=now.getHours()+now.getMinutes()/60;
-  const oT=31+11*Math.pow(Math.sin(Math.PI*(h-6)/12),2)+noise(1.5);
-  const oRH=65-20*Math.pow(Math.sin(Math.PI*(h-6)/12),2)+noise(3);
-  const iT=oT-14-Math.abs(noise(1.5));
-  const inT=iT+3+noise(1);
-  const iRH=55+noise(4);
-  const dT=oT-iT;
-  let mode,fanSpd;
-  if(iRH>65){mode='monsoon_bypass';fanSpd=0;}
-  else if(oT<18){mode='winter_bypass';fanSpd=0;}
-  else{mode='cooling';fanSpd=Math.min(100,Math.max(20,Math.round(dT/14*100)+noise(5)));}
-  document.getElementById('oa-lbl').textContent=oT.toFixed(1)+'°C · '+Math.round(oRH)+'%RH';
-  document.getElementById('oa-tmp').textContent=oT.toFixed(1)+' °C';
-  document.getElementById('indoor-lbl').textContent=inT.toFixed(1)+'°C · '+Math.round(iRH)+'%RH';
-  document.getElementById('ind-tmp').textContent=inT.toFixed(1)+' °C';
-  document.getElementById('panel-dt').textContent='ΔT '+dT.toFixed(1)+' °C';
-  document.getElementById('fan-e-s').textContent=fanSpd+'% · 50–80 W';
-  document.getElementById('fan-s-s').textContent=Math.round(fanSpd*.85)+'% · 50–80 W';
-  document.getElementById('dmp-e').textContent=mode==='cooling'?'OPEN':'CLOSED';
-  document.getElementById('dmp-s').textContent=mode==='cooling'?'OPEN':'CLOSED';
-  document.getElementById('d-mode-sm').textContent='Mode: '+mode;
-  ['cool','mon','win','off'].forEach((k,i)=>{
-    const el=document.getElementById('s-'+k);
-    const nm=['cooling','monsoon_bypass','winter_bypass','off'][i];
-    const labels=['cooling: RH < 65%, T > 26°C','monsoon_bypass: indoor RH > 65%','winter_bypass: outdoor T < 18°C','off: manual override'];
-    el.style.fill=mode===nm?'#39d353':'#8b949e';
-    el.textContent=(mode===nm?'● ':'○ ')+labels[i];
-  });
-  document.getElementById('d-ot').textContent=oT.toFixed(1)+' °C';
-  document.getElementById('d-it').textContent=iT.toFixed(1)+' °C';
-  document.getElementById('d-indoor').textContent=inT.toFixed(1)+' °C';
-  document.getElementById('d-orh').textContent=Math.round(oRH)+' %';
-  document.getElementById('d-irh').textContent=Math.round(iRH)+' %';
-  document.getElementById('d-dt').textContent=dT.toFixed(1)+' °C';
-  document.getElementById('d-fans').textContent=fanSpd+' / '+Math.round(fanSpd*.85)+' %';
-  document.getElementById('d-mode').textContent=mode;
-  const b=document.getElementById('status-badge');
-  if(mode==='monsoon_bypass'){b.className='status-badge amber';document.getElementById('status-text').textContent='Monsoon Bypass';}
-  else if(mode==='winter_bypass'){b.className='status-badge blue';document.getElementById('status-text').textContent='Winter Bypass';}
-  else{b.className='status-badge green';document.getElementById('status-text').textContent='Cooling Active';}
+const SCENARIOS=[
+  {
+    name:'Cooling Active', badge:'cyan', badgeText:'Cooling Active',
+    desc:'Hot dry day · fan at 75% · ΔT ≈ 10°C · all dampers open',
+    alerts:[],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating 380 W → fan power', l:'ok'},
+      'DC Axial Fan':     {s:'RUNNING · 75% speed · 340 W', l:'ok'},
+      'Top Damper':       {s:'OPEN', l:'ok'},
+      'Base Damper':      {s:'OPEN', l:'ok'},
+      'Drip Manifold':    {s:'ACTIVE · 2.1 L/min', l:'ok'},
+      'Drip Valve':       {s:'OPEN', l:'ok'},
+      'RWH Supply':       {s:'Tank healthy · flowing', l:'ok'},
+      'Tower Cones':      {s:'Wet · evaporating', l:'ok'},
+      'Outdoor Sensors':  {s:'43°C · 32% RH · reading', l:'ok'},
+      'Indoor Sensors':   {s:'33°C · 42% RH · reading', l:'ok'},
+      'ESP32 Node':       {s:'Publishing · 10 s', l:'ok'},
+    },
+    tout:[41,46], rhout:[28,38], tin:[31,35], rhin:[39,46], fan:[70,85], drip:[1.8,2.4],
+    nodes:{'node-fan':'#f0a500','node-tdamp':'#00d4ff','node-bdamp':'#00d4ff','node-out':'#8b949e','node-sol':'#f0a500','node-rwh':'#58a6ff','node-drip':'#58a6ff','node-in':'#8b949e','node-vent':'#00d4ff','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':1,'wb':1,'wc':0.4,'wd':1,'we':1,'wf':1,'wg':0.9,'wh':1,'wi':1,'wj':0.6},
+    mode:'Cooling Active', dampTxt:'OPEN'
+  },
+  {
+    name:'Monsoon Bypass', badge:'amber', badgeText:'Monsoon Bypass',
+    desc:'Outdoor RH > 65% · evaporation ineffective · dampers closed · natural ventilation only',
+    alerts:[{level:'warn',text:'Monsoon bypass active — indoor RH 72% — evaporative cooling suspended'}],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating 220 W (overcast)', l:'ok'},
+      'DC Axial Fan':     {s:'OFF (RH too high)', l:'off'},
+      'Top Damper':       {s:'CLOSED — bypass mode', l:'warn'},
+      'Base Damper':      {s:'CLOSED — bypass mode', l:'warn'},
+      'Drip Manifold':    {s:'OFF (valve closed)', l:'off'},
+      'Drip Valve':       {s:'CLOSED', l:'off'},
+      'RWH Supply':       {s:'Standby', l:'ok'},
+      'Tower Cones':      {s:'Drying — bypass mode', l:'warn'},
+      'Outdoor Sensors':  {s:'34°C · 74% RH — MONSOON', l:'warn'},
+      'Indoor Sensors':   {s:'32°C · 72% RH — high humidity', l:'warn'},
+      'ESP32 Node':       {s:'Publishing · bypass flag', l:'ok'},
+    },
+    tout:[32,37], rhout:[68,78], tin:[30,34], rhin:[68,75], fan:[0,0], drip:[0,0],
+    nodes:{'node-fan':'#30363d','node-tdamp':'#f0a500','node-bdamp':'#f0a500','node-out':'#f0a500','node-sol':'#f0a500','node-rwh':'#30363d','node-drip':'#30363d','node-in':'#f0a500','node-vent':'#f0a500','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':0.3,'wb':0.08,'wc':0.08,'wd':1,'we':1,'wf':0.15,'wg':0.05,'wh':1,'wi':0.6,'wj':0.1},
+    mode:'Monsoon Bypass', dampTxt:'CLOSED'
+  },
+  {
+    name:'Winter — Tower Isolated', badge:'green', badgeText:'Winter Mode',
+    desc:'Cold season · both dampers sealed · tower isolated · passive solar heating instead',
+    alerts:[],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating (but fan bypassed)', l:'ok'},
+      'DC Axial Fan':     {s:'OFF — winter mode', l:'off'},
+      'Top Damper':       {s:'SEALED CLOSED — winter isolation', l:'off'},
+      'Base Damper':      {s:'SEALED CLOSED — winter isolation', l:'off'},
+      'Drip Manifold':    {s:'OFF — no water in winter', l:'off'},
+      'Drip Valve':       {s:'CLOSED', l:'off'},
+      'RWH Supply':       {s:'Valve closed — winter', l:'off'},
+      'Tower Cones':      {s:'Dry · fully isolated from house', l:'off'},
+      'Outdoor Sensors':  {s:'14°C · 55% RH · winter', l:'ok'},
+      'Indoor Sensors':   {s:'22°C · 48% RH · heating', l:'ok'},
+      'ESP32 Node':       {s:'Publishing · winter mode', l:'ok'},
+    },
+    tout:[10,16], rhout:[48,60], tin:[20,24], rhin:[44,52], fan:[0,0], drip:[0,0],
+    nodes:{'node-fan':'#30363d','node-tdamp':'#30363d','node-bdamp':'#30363d','node-out':'#8b949e','node-sol':'#f0a500','node-rwh':'#30363d','node-drip':'#30363d','node-in':'#8b949e','node-vent':'#8b949e','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':0.08,'wb':0.04,'wc':0.04,'wd':0.5,'we':0.5,'wf':0.05,'wg':0.04,'wh':1,'wi':0.4,'wj':0.04},
+    mode:'Winter — Isolated', dampTxt:'SEALED'
+  },
+  {
+    name:'Low Water — Degraded Cooling', badge:'amber', badgeText:'Low Water',
+    desc:'RWH tank level low · drip supply reduced · fan running · ΔT reduced',
+    alerts:[{level:'warn',text:'RWH tank low — drip flow reduced — cooling efficiency degraded'}],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating 350 W', l:'ok'},
+      'DC Axial Fan':     {s:'RUNNING · 65% (reduced)', l:'warn'},
+      'Top Damper':       {s:'OPEN', l:'ok'},
+      'Base Damper':      {s:'OPEN', l:'ok'},
+      'Drip Manifold':    {s:'REDUCED · 0.6 L/min (tank low)', l:'warn'},
+      'Drip Valve':       {s:'OPEN (partial)', l:'warn'},
+      'RWH Supply':       {s:'Tank 16% — LOW — reducing flow', l:'fault'},
+      'Tower Cones':      {s:'Partially wet — degraded', l:'warn'},
+      'Outdoor Sensors':  {s:'41°C · 35% RH', l:'ok'},
+      'Indoor Sensors':   {s:'36°C · 40% RH — reduced cooling', l:'warn'},
+      'ESP32 Node':       {s:'Publishing · low water flag', l:'ok'},
+    },
+    tout:[39,44], rhout:[30,38], tin:[34,38], rhin:[37,44], fan:[55,70], drip:[0.4,0.8],
+    nodes:{'node-fan':'#f0a500','node-tdamp':'#00d4ff','node-bdamp':'#00d4ff','node-out':'#8b949e','node-sol':'#f0a500','node-rwh':'#f85149','node-drip':'#f0a500','node-in':'#f0a500','node-vent':'#f0a500','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':0.8,'wb':0.4,'wc':0.3,'wd':1,'we':1,'wf':0.6,'wg':0.7,'wh':1,'wi':1,'wj':0.5},
+    mode:'Degraded (low water)', dampTxt:'OPEN'
+  },
+  {
+    name:'Fan Fault — Passive Only', badge:'red', badgeText:'FAN FAULT',
+    desc:'Solar fan offline · dampers open for passive stack airflow only · ΔT ≈ 3°C',
+    alerts:[{level:'fault',text:'FAULT: Solar DC fan offline — passive stack only — cooling severely reduced'}],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating but fan not responding', l:'warn'},
+      'DC Axial Fan':     {s:'OFFLINE — motor fault', l:'fault'},
+      'Top Damper':       {s:'OPEN (passive stack only)', l:'warn'},
+      'Base Damper':      {s:'OPEN (passive stack only)', l:'warn'},
+      'Drip Manifold':    {s:'ACTIVE · 2.0 L/min (drip still on)', l:'ok'},
+      'Drip Valve':       {s:'OPEN', l:'ok'},
+      'RWH Supply':       {s:'Flowing · OK', l:'ok'},
+      'Tower Cones':      {s:'Wet · passive evaporation only', l:'warn'},
+      'Outdoor Sensors':  {s:'43°C · 34% RH', l:'ok'},
+      'Indoor Sensors':   {s:'40°C · 38% RH — minimal cooling', l:'warn'},
+      'ESP32 Node':       {s:'Publishing · fan fault flag', l:'ok'},
+    },
+    tout:[41,46], rhout:[30,38], tin:[38,42], rhin:[36,42], fan:[0,0], drip:[1.7,2.2],
+    nodes:{'node-fan':'#f85149','node-tdamp':'#f0a500','node-bdamp':'#f0a500','node-out':'#8b949e','node-sol':'#f0a500','node-rwh':'#58a6ff','node-drip':'#58a6ff','node-in':'#f85149','node-vent':'#f0a500','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':0.15,'wb':1,'wc':0.4,'wd':1,'we':1,'wf':0.3,'wg':0.08,'wh':1,'wi':0.5,'wj':0.7},
+    mode:'Passive Only', dampTxt:'OPEN (passive)'
+  },
+  {
+    name:'Maintenance — Tower Offline', badge:'red', badgeText:'MAINTENANCE',
+    desc:'Cone mineral clog detected · drip flow blocked · tower offline for cleaning',
+    alerts:[{level:'fault',text:'MAINTENANCE REQUIRED: Cone clog — drip flow zero despite valve open — tower offline'}],
+    comps:{
+      'Solar Fan Panel':  {s:'Generating (standby)', l:'ok'},
+      'DC Axial Fan':     {s:'OFF — tower offline', l:'off'},
+      'Top Damper':       {s:'CLOSED — maintenance mode', l:'warn'},
+      'Base Damper':      {s:'CLOSED — maintenance mode', l:'warn'},
+      'Drip Manifold':    {s:'BLOCKED — cone mineral deposit', l:'fault'},
+      'Drip Valve':       {s:'OPEN but no flow (blocked)', l:'fault'},
+      'RWH Supply':       {s:'Flowing to valve (clog downstream)', l:'warn'},
+      'Tower Cones':      {s:'DRY — mineral crust — cleaning needed', l:'fault'},
+      'Outdoor Sensors':  {s:'42°C · 33% RH · reading', l:'ok'},
+      'Indoor Sensors':   {s:'41°C · 36% RH — no cooling', l:'fault'},
+      'ESP32 Node':       {s:'Publishing · maintenance flag', l:'ok'},
+    },
+    tout:[40,45], rhout:[29,36], tin:[39,43], rhin:[34,40], fan:[0,0], drip:[0,0],
+    nodes:{'node-fan':'#30363d','node-tdamp':'#f0a500','node-bdamp':'#f0a500','node-out':'#8b949e','node-sol':'#39d353','node-rwh':'#f0a500','node-drip':'#f85149','node-in':'#f85149','node-vent':'#f85149','node-esp':'#00d4ff','node-ha':'#00d4ff'},
+    wires:{'wa':0.08,'wb':0.3,'wc':0.2,'wd':1,'we':1,'wf':0.05,'wg':0.04,'wh':1,'wi':0.4,'wj':0.2},
+    mode:'Offline — Maintenance', dampTxt:'CLOSED'
+  }
+];
+
+let si=0,countdown=30,dataTick=5;
+const rnd=(a,b)=>+(a+Math.random()*(b-a)).toFixed(1);
+const rndI=(a,b)=>Math.round(a+Math.random()*(b-a));
+
+function setNode(id,c){const e=document.getElementById(id);if(e)e.setAttribute('stroke',c);}
+function setWire(id,op){const e=document.getElementById(id);if(e)e.style.opacity=op;}
+function renderComponents(comps){
+  document.getElementById('comp-panel').innerHTML=
+    '<div class="comp-panel-title">Component States</div>'+
+    Object.entries(comps).map(([n,{s,l}])=>`<div class="comp-item ${l}"><div class="comp-dot"></div>${n}: <strong>${s}</strong></div>`).join('');
 }
-update(); setInterval(update,2000);
+function renderAlerts(alerts){
+  const bar=document.getElementById('alert-bar');
+  if(!alerts.length){bar.className='alert-bar';bar.textContent='';return;}
+  bar.className='alert-bar '+(alerts[0].level==='fault'?'fault':'warn');
+  bar.textContent=(alerts[0].level==='fault'?'🔴 ':'⚠ ')+alerts.map(a=>a.text).join(' · ');
+}
+function applyScenario(){
+  const s=SCENARIOS[si];
+  document.getElementById('sc-name').textContent=s.name;
+  document.getElementById('sc-num').textContent=`${si+1} / ${SCENARIOS.length}`;
+  document.getElementById('sc-desc').textContent=s.desc;
+  const badge=document.getElementById('status-badge');
+  badge.className=`status-badge ${s.badge}`;
+  document.getElementById('status-text').textContent=s.badgeText;
+  Object.entries(s.nodes).forEach(([id,c])=>setNode(id,c));
+  Object.entries(s.wires).forEach(([id,op])=>setWire(id,op));
+  renderComponents(s.comps);
+  renderAlerts(s.alerts);
+  updateSensors();
+}
+function updateSensors(){
+  const s=SCENARIOS[si];
+  const tout=rnd(s.tout[0],s.tout[1]);
+  const rhout=rndI(s.rhout[0],s.rhout[1]);
+  const tin=rnd(s.tin[0],s.tin[1]);
+  const rhin=rndI(s.rhin[0],s.rhin[1]);
+  const fan=rndI(s.fan[0],s.fan[1]);
+  const drip=rnd(s.drip[0],s.drip[1]);
+  const dt=+(tout-tin).toFixed(1);
+  document.getElementById('sv-out').textContent=`${tout}°C · ${rhout}% RH`;
+  document.getElementById('sv-in').textContent=`${tin}°C · ${rhin}% RH`;
+  document.getElementById('sv-fan').textContent=fan>0?`DC Fan · ${fan}% · ${Math.round(fan*4.5)} W`:'DC Fan · OFF';
+  document.getElementById('sv-sol').textContent=`Output: ${fan>0?Math.round(fan*4.8):rndI(100,400)} W`;
+  document.getElementById('sv-rwh').textContent=drip>0?`Flow: ${drip} L/min`:'Valve closed / blocked';
+  document.getElementById('sv-drip').textContent=drip>0?`OPEN · ${drip} L/min`:'CLOSED / BLOCKED';
+  document.getElementById('sv-tdamp').textContent=`Top Damper: ${s.dampTxt}`;
+  document.getElementById('sv-bdamp').textContent=`Base Damper: ${s.dampTxt}`;
+  document.getElementById('sv-dt').textContent=dt>0?`ΔT = ${dt}°C`:'ΔT = 0°C';
+  document.getElementById('sv-airflow').textContent=fan>0?'↑':'·';
+  document.getElementById('sv-vent').textContent=dt>4?'Cooled air flowing':dt>0?'Minimal airflow':'No cooling airflow';
+  document.getElementById('sv-esp').textContent=s.alerts.length?'Publishing · alert active':'Publishing · 10 s';
+  document.getElementById('sv-ha').textContent='Mode: '+s.mode;
+  document.getElementById('d-tout').textContent=tout+'°C';
+  document.getElementById('d-tout').className='data-value '+(tout>42?'red':'amber');
+  document.getElementById('d-rhout').textContent=rhout+'%';
+  document.getElementById('d-rhout').className='data-value '+(rhout>65?'red':rhout>50?'amber':'normal');
+  document.getElementById('d-tin').textContent=tin+'°C';
+  document.getElementById('d-tin').className='data-value '+(tin>38?'red':tin>32?'amber':'cyan');
+  document.getElementById('d-rhin').textContent=rhin+'%';
+  document.getElementById('d-rhin').className='data-value '+(rhin>65?'red':rhin>50?'amber':'normal');
+  document.getElementById('d-fan').textContent=fan>0?fan+'%':'OFF';
+  document.getElementById('d-fan').className='data-value '+(fan===0?'normal':'amber');
+  document.getElementById('d-dt').textContent=dt+'°C';
+  document.getElementById('d-dt').className='data-value '+(dt>8?'cyan':dt>3?'amber':'red');
+  document.getElementById('d-drip').textContent=drip>0?drip+' L/min':'0.0 L/min';
+  document.getElementById('d-drip').className='data-value '+(drip>1?'blue':drip>0?'amber':'normal');
+  document.getElementById('d-mode').textContent=s.mode;
+  document.getElementById('d-mode').className='data-value '+(s.badge==='red'?'red':s.badge==='amber'?'amber':'cyan');
+}
+setInterval(()=>{
+  countdown--;dataTick--;
+  document.getElementById('sc-timer').textContent=`Auto ▶ ${String(countdown).padStart(2,'0')}s`;
+  document.getElementById('ts').textContent=new Date().toLocaleTimeString();
+  if(countdown<=0){si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();}
+  else if(dataTick<=0){dataTick=5;updateSensors();}
+},1000);
+document.getElementById('sc-prev').addEventListener('click',()=>{si=(si-1+SCENARIOS.length)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
+document.getElementById('sc-next').addEventListener('click',()=>{si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
+applyScenario();
 </script>
 </body>
 </html>

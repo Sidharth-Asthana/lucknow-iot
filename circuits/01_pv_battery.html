@@ -10,246 +10,313 @@
 
 <div class="header">
   <a href="index.html" class="back">←</a>
-  <h1>⚡ System 01 — PV Array + Battery Storage</h1>
+  <h1>⚡ System 01 — PV + Battery Storage</h1>
   <span class="timestamp" id="ts">--</span>
-  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Charging</span></span>
+  <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Solar Peak</span></span>
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-line amber"></div> DC / AC Power</div>
-  <div class="legend-item"><div class="legend-line cyan"></div> Modbus / RS485 Data</div>
-  <div class="legend-item"><div class="legend-line red"></div> Fault / Alert</div>
+  <div class="legend-item"><div class="legend-line amber"></div> DC Power (solar/battery)</div>
+  <div class="legend-item"><div class="legend-line green"></div> AC Power / Grid</div>
+  <div class="legend-item"><div class="legend-line cyan"></div> Modbus / data</div>
+  <div class="legend-item"><div class="legend-line red"></div> Fault</div>
 </div>
 
+<div class="scenario-bar">
+  <button class="sc-btn" id="sc-prev">◄ Prev</button>
+  <div class="sc-info">
+    <span class="sc-label">Scenario</span>
+    <span class="sc-name" id="sc-name">Solar Peak</span>
+    <span class="sc-num"  id="sc-num">1 / 5</span>
+    <span class="sc-desc" id="sc-desc">Full generation · battery charging · no grid draw</span>
+  </div>
+  <div class="sc-timer" id="sc-timer">Auto ▶ 30s</div>
+  <button class="sc-btn" id="sc-next">Next ►</button>
+</div>
+<div class="alert-bar" id="alert-bar"></div>
+
 <div class="svg-wrap">
-<svg class="circuit-svg" viewBox="0 0 800 490" width="800" height="490" xmlns="http://www.w3.org/2000/svg">
+<svg class="circuit-svg" viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg">
 <defs>
-  <marker id="a-am" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
-  <marker id="a-cy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
-  <marker id="a-gn" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
-  <marker id="a-am-r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#f0a500"/></marker>
-  <marker id="a-cy-r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#00d4ff"/></marker>
+  <marker id="arr-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
+  <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
+  <marker id="arr-cyan"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+  <marker id="arr-red"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
 </defs>
+<rect x="0" y="0" width="800" height="430" fill="#0d1117"/>
 
-<rect x="0" y="0" width="800" height="490" fill="#0d1117"/>
+<!-- PV Array -->
+<rect id="node-pv"   x="18"  y="38" width="148" height="82" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="92"  y="62"  text-anchor="middle" font-size="18">☀️</text>
+<text x="92"  y="80"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">PV Array</text>
+<text x="92"  y="95"  text-anchor="middle" class="node-sublabel">15 × 400 W = 6 kWp</text>
+<text x="92"  y="110" text-anchor="middle" class="node-sublabel" id="sv-pv">5,200 W</text>
 
-<!-- ── Zone labels ───────────────────────────────────── -->
-<rect x="8" y="8" width="784" height="296" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="22" y="26" fill="#8b949e" font-size="10" font-family="monospace">POWER LAYER</text>
+<!-- Hybrid Inverter -->
+<rect id="node-inv"  x="248" y="38" width="168" height="82" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="332" y="62"  text-anchor="middle" font-size="18">⚡</text>
+<text x="332" y="80"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Hybrid Inverter</text>
+<text x="332" y="95"  text-anchor="middle" class="node-sublabel">MPPT · 5 kW · Modbus TCP</text>
+<text x="332" y="110" text-anchor="middle" class="node-sublabel" id="sv-inv">Online</text>
 
-<rect x="8" y="314" width="784" height="168" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="22" y="332" fill="#8b949e" font-size="10" font-family="monospace">DATA / CONTROL LAYER</text>
+<!-- AC Distribution Panel -->
+<rect id="node-ac"   x="490" y="38" width="158" height="82" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="2"/>
+<text x="569" y="62"  text-anchor="middle" font-size="18">🔌</text>
+<text x="569" y="80"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">AC Panel</text>
+<text x="569" y="95"  text-anchor="middle" class="node-sublabel">240V distribution</text>
+<text x="569" y="110" text-anchor="middle" class="node-sublabel" id="sv-ac">Inverter fed</text>
 
-<!-- ══════════════════════════════════════════════════ -->
-<!--  NODE BOXES                                        -->
-<!--  Row 1  y=42–122  (center y=82)                   -->
-<!--  Row 2  y=200–285 (center y=242)                  -->
-<!--  Data   y=345–425                                  -->
-<!-- ══════════════════════════════════════════════════ -->
+<!-- LFP Battery -->
+<rect id="node-bat"  x="248" y="200" width="168" height="90" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<text x="332" y="224" text-anchor="middle" font-size="18">🔋</text>
+<text x="332" y="242" text-anchor="middle" class="node-label" font-size="13" font-weight="600">LFP Battery</text>
+<text x="332" y="258" text-anchor="middle" class="node-sublabel">12 kWh · 2 × 6 kWh modules</text>
+<text x="332" y="273" text-anchor="middle" class="node-sublabel" id="sv-bat">SOC 74% ↑ Charging</text>
 
-<!-- PV Array  x=20-165 -->
-<rect x="20" y="42" width="145" height="80" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="92"  y="68"  text-anchor="middle" font-size="20" fill="#f0a500">☀️</text>
-<text x="92"  y="86"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">PV Array</text>
-<text x="92"  y="102" text-anchor="middle" class="node-sublabel">6 kWp · 15 × 400 W · 25° S</text>
-<text id="pv-w" x="92" y="136" text-anchor="middle" font-size="13" font-weight="700" fill="#f0a500">-- W</text>
+<!-- Grid / Mains Connection -->
+<rect id="node-grid" x="490" y="185" width="158" height="90" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="2"/>
+<text x="569" y="210" text-anchor="middle" font-size="18">🏭</text>
+<text x="569" y="228" text-anchor="middle" class="node-label" font-size="13" font-weight="600">Grid / Mains</text>
+<text x="569" y="244" text-anchor="middle" class="node-sublabel">Net metering · Import ↔ Export</text>
+<text x="569" y="258" text-anchor="middle" class="node-sublabel" id="sv-grid">Standby</text>
+<text x="569" y="271" text-anchor="middle" class="node-sublabel" id="sv-gridw">0 W</text>
 
-<!-- Hybrid Inverter  x=245-425 -->
-<rect x="245" y="42" width="180" height="80" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="335" y="68"  text-anchor="middle" font-size="20" fill="#f0a500">⚡</text>
-<text x="335" y="86"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Hybrid Inverter</text>
-<text x="335" y="102" text-anchor="middle" class="node-sublabel">5 kW MPPT · SunSpec Modbus</text>
-<text id="inv-w" x="335" y="136" text-anchor="middle" font-size="12" font-weight="600" fill="#f0a500">-- W out</text>
+<!-- Home Assistant -->
+<rect id="node-ha"   x="18"  y="320" width="158" height="74" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="2"/>
+<text x="97"  y="344" text-anchor="middle" font-size="16" fill="#00d4ff">🏠</text>
+<text x="97"  y="361" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Home Assistant</text>
+<text x="97"  y="377" text-anchor="middle" class="node-sublabel" id="sv-ha">Modbus polling · 10 s</text>
 
-<!-- AC Distribution Panel  x=500-665 -->
-<rect x="500" y="42" width="165" height="80" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="582" y="68"  text-anchor="middle" font-size="20" fill="#f0a500">🔌</text>
-<text x="582" y="86"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">AC Panel</text>
-<text x="582" y="102" text-anchor="middle" class="node-sublabel">240 V · Crit + Gen circuits</text>
+<!-- Critical Loads -->
+<rect id="node-crit" x="378" y="320" width="148" height="74" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="2"/>
+<text x="452" y="344" text-anchor="middle" font-size="16">🛡️</text>
+<text x="452" y="361" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Critical Loads</text>
+<text x="452" y="377" text-anchor="middle" class="node-sublabel" id="sv-crit">On solar · ~600 W</text>
 
-<!-- LFP Battery  x=245-425 -->
-<rect x="245" y="200" width="180" height="85" rx="8" fill="#161b22" stroke="#f0a500" stroke-width="1.5"/>
-<text x="335" y="226" text-anchor="middle" font-size="20" fill="#f0a500">🔋</text>
-<text x="335" y="244" text-anchor="middle" class="node-label" font-size="13" font-weight="600">LFP Battery</text>
-<text x="335" y="260" text-anchor="middle" class="node-sublabel">12 kWh · 2 × 6 kWh modules</text>
-<rect x="254" y="272" width="162" height="6" rx="3" fill="#30363d"/>
-<rect id="soc-bar" x="254" y="272" width="100" height="6" rx="3" fill="#f0a500"/>
-<text id="soc-txt" x="335" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#f0a500">SOC ---%</text>
+<!-- General Loads -->
+<rect id="node-gen"  x="544" y="320" width="248" height="74" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="2"/>
+<text x="668" y="344" text-anchor="middle" font-size="16">🏘️</text>
+<text x="668" y="361" text-anchor="middle" class="node-label" font-size="12" font-weight="600">General Loads</text>
+<text x="668" y="377" text-anchor="middle" class="node-sublabel" id="sv-gen">On solar · ~2.1 kW</text>
 
-<!-- Grid  x=500-665 -->
-<rect x="500" y="200" width="165" height="85" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
-<text x="582" y="225" text-anchor="middle" font-size="20" fill="#58a6ff">🏗️</text>
-<text x="582" y="243" text-anchor="middle" class="node-label" font-size="13" font-weight="600">Grid / DISCOM</text>
-<text x="582" y="259" text-anchor="middle" class="node-sublabel">Eastron SDM630 · RS485</text>
-<text id="grid-w" x="582" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#58a6ff">Import/Export -- W</text>
+<!-- ─── WIRES ─── -->
+<!-- W1 PV → Inverter (DC amber) -->
+<path id="w1" d="M 166,79 L 248,79" stroke-width="2" fill="none" marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.4s;"/>
+<text x="207" y="72" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">DC bus</text>
 
-<!-- Home Assistant  x=20-185 -->
-<rect x="20" y="345" width="165" height="70" rx="8" fill="#161b22" stroke="#00d4ff" stroke-width="1.5"/>
-<text x="102" y="369" text-anchor="middle" font-size="18" fill="#00d4ff">🏠</text>
-<text x="102" y="387" text-anchor="middle" class="node-label" font-size="13" font-weight="600">Home Assistant</text>
-<text x="102" y="403" text-anchor="middle" class="node-sublabel">Mac Mini A · 10.0.0.10</text>
+<!-- W2 Inverter → AC Panel (AC green) -->
+<path id="w2" d="M 416,79 L 490,79" stroke-width="2" fill="none" marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.5s;"/>
+<text x="453" y="72" text-anchor="middle" class="wire-label" fill="#39d353" font-size="9">AC 240 V</text>
 
-<!-- Critical Loads  x=385-540 -->
-<rect x="385" y="345" width="155" height="70" rx="8" fill="#161b22" stroke="#39d353" stroke-width="1.5"/>
-<text x="462" y="369" text-anchor="middle" font-size="18" fill="#39d353">🔒</text>
-<text x="462" y="387" text-anchor="middle" class="node-label" font-size="13" font-weight="600">Critical Loads</text>
-<text x="462" y="403" text-anchor="middle" class="node-sublabel">Security · HA · ~600 W</text>
+<!-- W3 Inverter ↔ Battery charge -->
+<path id="w3a" d="M 312,120 L 312,200" stroke-width="2" fill="none" marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.5s;"/>
+<!-- W3b Battery → Inverter discharge -->
+<path id="w3b" d="M 352,200 L 352,120" stroke-width="2" fill="none" marker-end="url(#arr-amber)" class="wire-amber" style="animation-duration:0.5s; opacity:0.15;"/>
+<text x="225" y="163" text-anchor="middle" class="wire-label" fill="#f0a500" font-size="9">DC battery bus</text>
 
-<!-- General Loads  x=555-720 -->
-<rect x="555" y="345" width="165" height="70" rx="8" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
-<text x="637" y="369" text-anchor="middle" font-size="18" fill="#8b949e">💡</text>
-<text x="637" y="387" text-anchor="middle" class="node-label" font-size="13" font-weight="600">General Loads</text>
-<text x="637" y="403" text-anchor="middle" class="node-sublabel">Lights · Kitchen · AC</text>
+<!-- W4 AC Panel ↔ Grid export -->
+<path id="w4a" d="M 559,120 L 559,185" stroke-width="2" fill="none" marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.6s; opacity:0.3;"/>
+<!-- W4b Grid → AC Panel import -->
+<path id="w4b" d="M 579,185 L 579,120" stroke-width="2" fill="none" marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.6s; opacity:0.1;"/>
+<text x="618" y="155" text-anchor="start" class="wire-label" fill="#39d353" font-size="9">net metering</text>
 
-<!-- ══════════════════════════════════════════════════ -->
-<!--  WIRES — no path segment passes through any box   -->
-<!-- ══════════════════════════════════════════════════ -->
+<!-- W5 AC Panel → Critical Loads (right-margin bus) -->
+<path id="w5" d="M 648,79 L 760,79 L 760,305 L 452,305 L 452,320" stroke-width="1.8" fill="none" marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.55s;"/>
 
-<!-- W1 · PV → Inverter  (gap x=165–245, wire at y=82) -->
-<path d="M 165,82 L 245,82" stroke-width="2.5" fill="none"
-      marker-end="url(#a-am)" class="wire-amber"/>
-<!-- label sits in the gap, 12 px above wire -->
-<text x="205" y="72" text-anchor="middle" class="wire-label">DC cable</text>
+<!-- W6 right-margin bus → General Loads -->
+<path id="w6" d="M 760,305 L 668,305 L 668,320" stroke-width="1.8" fill="none" marker-end="url(#arr-green)" class="wire-green" style="animation-duration:0.6s;"/>
 
-<!-- W2 · Inverter → AC Panel  (gap x=425–500, wire at y=82) -->
-<path d="M 425,82 L 500,82" stroke-width="2.5" fill="none"
-      marker-end="url(#a-am)" class="wire-amber"/>
-<text x="462" y="72" text-anchor="middle" class="wire-label">AC 240 V</text>
+<!-- W7 Inverter → HA (Modbus data, cyan) -->
+<path id="w7" d="M 248,99 L 196,99 L 196,307 L 97,307 L 97,320" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan"/>
+<text x="148" y="303" text-anchor="middle" class="wire-label" fill="#00d4ff" font-size="9">Modbus TCP</text>
 
-<!-- W3a · Inverter ↓ Battery  (charge; vertical in row gap, x=320) -->
-<path d="M 320,122 L 320,200" stroke-width="2.5" fill="none"
-      marker-end="url(#a-am)" class="wire-amber"/>
-<!-- W3b · Battery → Inverter  (discharge; x=350, reverse) -->
-<path d="M 350,200 L 350,122" stroke-width="2" fill="none"
-      stroke="#f0a500" stroke-dasharray="6 5"
-      marker-end="url(#a-am)" style="animation:flow-fwd 0.9s linear infinite; opacity:0.55;"/>
-<!-- label in LEFT corridor (x 165–245, y 155–175 = mid gap) — clear of all boxes -->
-<text x="205" y="157" text-anchor="middle" class="wire-label">DC Bus</text>
-<text x="205" y="170" text-anchor="middle" class="wire-label">charge ↓</text>
-<text x="205" y="183" text-anchor="middle" class="wire-label">discharge ↑</text>
+<!-- W8 Grid meter → HA (RS485 data) -->
+<path id="w8" d="M 490,240 L 438,240 L 438,307 L 176,307 L 176,357" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan" style="animation-duration:0.9s;"/>
+<text x="307" y="303" text-anchor="middle" class="wire-label" fill="#00d4ff" font-size="9">RS485 meter</text>
 
-<!-- W4 · AC Panel ↔ Grid  (vertical, x=567/582, gap y=122–200) -->
-<!-- import: down -->
-<path d="M 567,122 L 567,200" stroke-width="2.5" fill="none"
-      marker-end="url(#a-am)" class="wire-amber"/>
-<!-- export: up -->
-<path d="M 582,200 L 582,122" stroke-width="2" fill="none"
-      stroke="#58a6ff" stroke-dasharray="6 5"
-      marker-end="url(#a-cy)" style="animation:flow-rev 0.9s linear infinite; opacity:0.6;"/>
-<!-- label in RIGHT margin (x=672, gap y=122–200) — clears AC Panel right x=665 -->
-<text x="675" y="152" text-anchor="start" class="wire-label">Import ↓</text>
-<text x="675" y="168" text-anchor="start" class="wire-label">Export ↑</text>
-
-<!-- W5 · AC Panel → Critical + General
-     Route: right edge of AC Panel (665,82) → right margin x=755 (> Gen right 720)
-     → down to bus y=328 (< loads top 345) → branch left to each load.
-     No segment touches any node box. -->
-<path d="M 665,82 L 755,82 L 755,328 L 462,328 L 462,345"
-      stroke-width="2.5" fill="none" marker-end="url(#a-am)" class="wire-amber"/>
-<!-- branch to General (from bus junction at 755,328 left to 637,328 then down) -->
-<path d="M 755,328 L 637,328 L 637,345" stroke-width="2" fill="none"
-      stroke="#f0a500" stroke-dasharray="7 5"
-      style="animation:flow-fwd 0.45s linear infinite;" marker-end="url(#a-am)"/>
-<!-- bus labels in the horizontal corridor y=328 — between node boxes -->
-<text x="690" y="320" text-anchor="middle" class="wire-label">→ Crit</text>
-<text x="778" y="320" text-anchor="middle" class="wire-label">→ Gen</text>
-
-<!-- W6 · Inverter → HA  (Modbus TCP)
-     Route: left edge of Inverter (245,102) → left corridor x=195 (>PV right 165 + 30)
-     → down to y=330 (< loads top 345, > Grid bottom 285) → left to HA top x=102 -->
-<path d="M 245,102 L 195,102 L 195,330 L 102,330 L 102,345"
-      stroke-width="1.5" fill="none" marker-end="url(#a-cy)" class="wire-cyan"
-      style="animation-duration:0.9s;"/>
-<!-- label on the horizontal segment at y=102, placed well above in the corridor -->
-<text x="218" y="93" text-anchor="middle" class="wire-label" fill="#00d4ff">Modbus TCP</text>
-
-<!-- W7 · Grid/SDM630 → HA  (RS485 → Modbus RTU)
-     Route: left edge of Grid (500,250) → left to x=450 (> Battery right 425 + 25)
-     → down to y=310 (> Grid bottom 285, < loads top 345)
-     → left to x=210 (slightly right of Modbus corridor x=195)
-     → down to y=330, then left to HA.
-     All segments stay in clear corridors. -->
-<path d="M 500,250 L 450,250 L 450,310 L 210,310 L 210,330 L 145,330 L 145,345"
-      stroke-width="1.5" fill="none" stroke="#00d4ff" stroke-dasharray="4 8"
-      marker-end="url(#a-cy)" style="animation:flow-fwd 1.1s linear infinite;"/>
-<!-- label on long horizontal at y=310 — sits in the clear corridor -->
-<text x="340" y="302" text-anchor="middle" class="wire-label" fill="#00d4ff">RS485 / SDM630</text>
-
-<!-- W8 · HA → Inverter  (grid_export_enable control)
-     Route: top of HA at x=155 → up through left corridor x=220 → into Inverter left side.
-     Uses x=220 — distinct from Modbus at x=195, 25 px clearance. -->
-<path d="M 155,345 L 155,340 L 220,340 L 220,122 L 245,122"
-      stroke-width="1.5" fill="none" stroke="#00d4ff" stroke-dasharray="3 9"
-      marker-end="url(#a-cy)" style="animation:flow-rev 1.4s linear infinite; opacity:0.65;"/>
-<text x="232" y="134" text-anchor="start" class="wire-label" fill="#00d4ff">grid_export ctrl</text>
-
-<!-- ── Live value overlays (placed BELOW their respective boxes, y=136 / y=295) ── -->
 </svg>
 </div>
 
+<div class="comp-panel" id="comp-panel"><div class="comp-panel-title">Component States</div></div>
+
 <div class="data-panel">
-  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-panel-title">Sensor Readings · updates every 5 s</div>
   <div class="data-grid">
-    <div class="data-cell"><div class="data-label">☀️ PV Output</div>
-      <div class="data-value amber" id="d-pv">-- W</div></div>
-    <div class="data-cell"><div class="data-label">🔋 Battery SOC</div>
-      <div class="data-value amber" id="d-soc">-- %</div></div>
-    <div class="data-cell"><div class="data-label">⚡ Inverter Output</div>
-      <div class="data-value amber" id="d-inv">-- W</div></div>
-    <div class="data-cell"><div class="data-label">AC Voltage</div>
-      <div class="data-value normal" id="d-vac">-- V</div></div>
-    <div class="data-cell"><div class="data-label">🏗️ Grid Import</div>
-      <div class="data-value blue" id="d-imp">-- W</div></div>
-    <div class="data-cell"><div class="data-label">↗️ Grid Export</div>
-      <div class="data-value green" id="d-exp">-- W</div></div>
-    <div class="data-cell"><div class="data-label">⚙️ Mode</div>
-      <div class="data-value cyan" id="d-mode">--</div></div>
-    <div class="data-cell"><div class="data-label">🚨 Fault</div>
-      <div class="data-value green" id="d-fault">None</div></div>
+    <div class="data-cell"><div class="data-label">☀️ PV Output</div><div class="data-value amber" id="d-pv">5,200 W</div></div>
+    <div class="data-cell"><div class="data-label">🔋 Battery SOC</div><div class="data-value green" id="d-soc">74%</div></div>
+    <div class="data-cell"><div class="data-label">🔋 Battery Flow</div><div class="data-value amber" id="d-bat">+1,100 W</div></div>
+    <div class="data-cell"><div class="data-label">🏭 Grid Flow</div><div class="data-value normal" id="d-grid">0 W standby</div></div>
+    <div class="data-cell"><div class="data-label">🏘️ House Load</div><div class="data-value normal" id="d-load">2,700 W</div></div>
+    <div class="data-cell"><div class="data-label">⚡ Inverter</div><div class="data-value green" id="d-inv">Online</div></div>
+    <div class="data-cell"><div class="data-label">🛡️ Critical Circuit</div><div class="data-value green" id="d-crit">Solar fed</div></div>
+    <div class="data-cell"><div class="data-label">📡 Modbus</div><div class="data-value cyan" id="d-mbus">Connected</div></div>
   </div>
 </div>
 
 <script>
-function noise(a){ return (Math.random()-.5)*2*a; }
-function pvPower(h){
-  if(h<6||h>18) return 0;
-  const x=(h-12)/5.5;
-  return Math.max(0,5800*(1-x*x)+noise(120));
+const SCENARIOS = [
+  {
+    name:'Solar Peak', badge:'green', badgeText:'Solar Peak',
+    desc:'Full generation · battery charging · no grid draw', alerts:[],
+    comps:{
+      'PV Array':      {s:'Generating 5.2 kW', l:'ok'},
+      'Inverter':      {s:'Online', l:'ok'},
+      'Battery BMS':   {s:'Charging', l:'ok'},
+      'AC Panel':      {s:'Inverter fed', l:'ok'},
+      'Grid / Mains':  {s:'Standby (export ready)', l:'ok'},
+      'Critical Loads':{s:'On solar', l:'ok'},
+      'General Loads': {s:'On solar', l:'ok'},
+    },
+    pv:[4600,5600], soc:[68,82], bat:[700,1400], grid:[-300,0], load:[2200,3200],
+    nodes:{'node-pv':'#f0a500','node-inv':'#f0a500','node-bat':'#f0a500','node-ac':'#39d353','node-grid':'#39d353','node-ha':'#00d4ff','node-crit':'#39d353','node-gen':'#39d353'},
+    wires:{'w1':1,'w2':1,'w3a':1,'w3b':0.15,'w4a':0.35,'w4b':0.08,'w5':1,'w6':1,'w7':1,'w8':0.5},
+    invTxt:'Online', batDir:1, gridTxt:'Standby', critTxt:'On solar'
+  },
+  {
+    name:'Overcast Day', badge:'amber', badgeText:'Low Solar',
+    desc:'Partial PV · battery supplements · grid importing slightly',
+    alerts:[{level:'warn',text:'Low PV output — battery supplementing load'}],
+    comps:{
+      'PV Array':      {s:'Partial: 1.4 kW (cloud cover)', l:'warn'},
+      'Inverter':      {s:'Online', l:'ok'},
+      'Battery BMS':   {s:'Discharging (load support)', l:'warn'},
+      'AC Panel':      {s:'Mixed: PV + Battery + Grid', l:'ok'},
+      'Grid / Mains':  {s:'Importing 400 W', l:'warn'},
+      'Critical Loads':{s:'On mixed supply', l:'ok'},
+      'General Loads': {s:'On mixed supply', l:'ok'},
+    },
+    pv:[900,1900], soc:[48,68], bat:[-1000,-300], grid:[150,600], load:[2500,3400],
+    nodes:{'node-pv':'#f0a500','node-inv':'#f0a500','node-bat':'#f0a500','node-ac':'#39d353','node-grid':'#f0a500','node-ha':'#00d4ff','node-crit':'#39d353','node-gen':'#39d353'},
+    wires:{'w1':0.55,'w2':1,'w3a':0.1,'w3b':1,'w4a':0.08,'w4b':1,'w5':1,'w6':1,'w7':1,'w8':1},
+    invTxt:'Online', batDir:-1, gridTxt:'Importing', critTxt:'On battery+solar'
+  },
+  {
+    name:'Night Discharge', badge:'amber', badgeText:'Battery Only',
+    desc:'No PV · house running entirely on battery · grid on standby',
+    alerts:[],
+    comps:{
+      'PV Array':      {s:'Idle — no sunlight', l:'off'},
+      'Inverter':      {s:'Online (battery mode)', l:'ok'},
+      'Battery BMS':   {s:'Discharging −2.1 kW', l:'warn'},
+      'AC Panel':      {s:'Battery fed', l:'ok'},
+      'Grid / Mains':  {s:'Standby (backup ready)', l:'ok'},
+      'Critical Loads':{s:'On battery', l:'ok'},
+      'General Loads': {s:'On battery', l:'ok'},
+    },
+    pv:[0,0], soc:[28,55], bat:[-2500,-1700], grid:[0,0], load:[1700,2600],
+    nodes:{'node-pv':'#30363d','node-inv':'#f0a500','node-bat':'#f0a500','node-ac':'#39d353','node-grid':'#39d353','node-ha':'#00d4ff','node-crit':'#39d353','node-gen':'#39d353'},
+    wires:{'w1':0.07,'w2':1,'w3a':0.07,'w3b':1,'w4a':0.15,'w4b':0.07,'w5':1,'w6':1,'w7':1,'w8':0.3},
+    invTxt:'Battery mode', batDir:-1, gridTxt:'Standby', critTxt:'On battery'
+  },
+  {
+    name:'Mains Backup Active', badge:'red', badgeText:'MAINS BACKUP',
+    desc:'Battery critically low — grid/mains supplying entire house',
+    alerts:[{level:'fault',text:'CRITICAL: Battery SOC < 8% — mains backup now active'}],
+    comps:{
+      'PV Array':      {s:'Idle', l:'off'},
+      'Inverter':      {s:'Grid-tie (import mode)', l:'warn'},
+      'Battery BMS':   {s:'CRITICAL LOW: 6%', l:'fault'},
+      'AC Panel':      {s:'Grid / Mains fed', l:'warn'},
+      'Grid / Mains':  {s:'ACTIVE — importing 3.2 kW', l:'warn'},
+      'Critical Loads':{s:'On mains (safe)', l:'ok'},
+      'General Loads': {s:'On mains', l:'ok'},
+    },
+    pv:[0,0], soc:[4,9], bat:[-50,50], grid:[2800,3800], load:[2800,3600],
+    nodes:{'node-pv':'#30363d','node-inv':'#f0a500','node-bat':'#f85149','node-ac':'#f0a500','node-grid':'#f0a500','node-ha':'#00d4ff','node-crit':'#39d353','node-gen':'#f0a500'},
+    wires:{'w1':0.07,'w2':1,'w3a':0.07,'w3b':0.07,'w4a':0.07,'w4b':1,'w5':1,'w6':1,'w7':1,'w8':1},
+    invTxt:'Grid-tie mode', batDir:0, gridTxt:'IMPORTING', critTxt:'On mains'
+  },
+  {
+    name:'Inverter Fault', badge:'red', badgeText:'FAULT',
+    desc:'Inverter offline — solar disconnected — full mains bypass',
+    alerts:[{level:'fault',text:'FAULT: Inverter offline — solar & battery disconnected — mains bypass active'}],
+    comps:{
+      'PV Array':      {s:'DISCONNECTED (DC isolator open)', l:'fault'},
+      'Inverter':      {s:'OFFLINE — fault condition', l:'fault'},
+      'Battery BMS':   {s:'Isolated — BMS protection mode', l:'unknown'},
+      'AC Panel':      {s:'Mains bypass relay ACTIVE', l:'warn'},
+      'Grid / Mains':  {s:'Full house load on mains', l:'warn'},
+      'Critical Loads':{s:'On mains (no interruption)', l:'ok'},
+      'General Loads': {s:'On mains', l:'ok'},
+    },
+    pv:[0,0], soc:[0,0], bat:[0,0], grid:[2900,4100], load:[2800,3900],
+    nodes:{'node-pv':'#f85149','node-inv':'#f85149','node-bat':'#8b949e','node-ac':'#f0a500','node-grid':'#f0a500','node-ha':'#00d4ff','node-crit':'#f0a500','node-gen':'#f0a500'},
+    wires:{'w1':0.04,'w2':0.04,'w3a':0.04,'w3b':0.04,'w4a':0.04,'w4b':1,'w5':1,'w6':1,'w7':0.12,'w8':1},
+    invTxt:'OFFLINE', batDir:0, gridTxt:'FULL LOAD', critTxt:'On mains'
+  }
+];
+
+let si=0, countdown=30, dataTick=5;
+const rnd=(a,b)=>Math.round(a+Math.random()*(b-a));
+const fmtW=n=>n>=1000?(n/1000).toFixed(1)+' kW':n+' W';
+
+function setNode(id,c){const e=document.getElementById(id);if(e)e.setAttribute('stroke',c);}
+function setWire(id,op){const e=document.getElementById(id);if(e)e.style.opacity=op;}
+function renderComponents(comps){
+  document.getElementById('comp-panel').innerHTML=
+    '<div class="comp-panel-title">Component States</div>'+
+    Object.entries(comps).map(([n,{s,l}])=>`<div class="comp-item ${l}"><div class="comp-dot"></div>${n}: <strong>${s}</strong></div>`).join('');
 }
-function batterySoc(h){
-  if(h>=6&&h<=15) return Math.min(98,45+(h-6)*5.5+noise(1));
-  const e=h>15?h-15:h+9;
-  return Math.max(20,94-e*3.8+noise(1));
+function renderAlerts(alerts){
+  const bar=document.getElementById('alert-bar');
+  if(!alerts.length){bar.className='alert-bar';bar.textContent='';return;}
+  bar.className='alert-bar '+(alerts[0].level==='fault'?'fault':'warn');
+  bar.textContent=(alerts[0].level==='fault'?'🔴 ':'⚠ ')+alerts.map(a=>a.text).join(' · ');
 }
-function update(){
-  const now=new Date();
-  const h=now.getHours()+now.getMinutes()/60;
-  document.getElementById('ts').textContent=now.toLocaleTimeString();
-  const pv=Math.round(pvPower(h));
-  const soc=Math.round(batterySoc(h));
-  const inv=Math.round(pv*0.96+noise(80));
-  const base=1200+noise(150);
-  const imp=pv>base?0:Math.round(base-pv+noise(50));
-  const exp=pv>base+400?Math.round(pv-base-noise(80)):0;
-  const vac=238+noise(3);
-  const mode=pv>200?(soc<80?'Charging':'Export'):(soc>30?'Discharging':'Grid Import');
-  document.getElementById('pv-w').textContent=pv.toLocaleString()+' W';
-  document.getElementById('inv-w').textContent=inv.toLocaleString()+' W out';
-  document.getElementById('soc-txt').textContent='SOC '+soc+'%';
-  document.getElementById('soc-bar').setAttribute('width',Math.round(1.62*soc));
-  document.getElementById('grid-w').textContent=(imp>0?'Import '+imp:'Export '+exp)+' W';
-  document.getElementById('d-pv').textContent=pv.toLocaleString()+' W';
-  document.getElementById('d-soc').textContent=soc+' %';
-  document.getElementById('d-inv').textContent=inv.toLocaleString()+' W';
-  document.getElementById('d-vac').textContent=vac.toFixed(1)+' V';
-  document.getElementById('d-imp').textContent=imp+' W';
-  document.getElementById('d-exp').textContent=exp+' W';
-  document.getElementById('d-mode').textContent=mode;
-  const b=document.getElementById('status-badge');
-  b.className='status-badge '+(pv>500?'green':'amber');
-  document.getElementById('status-text').textContent=mode;
+function applyScenario(){
+  const s=SCENARIOS[si];
+  document.getElementById('sc-name').textContent=s.name;
+  document.getElementById('sc-num').textContent=`${si+1} / ${SCENARIOS.length}`;
+  document.getElementById('sc-desc').textContent=s.desc;
+  const badge=document.getElementById('status-badge');
+  badge.className=`status-badge ${s.badge}`;
+  document.getElementById('status-text').textContent=s.badgeText;
+  Object.entries(s.nodes).forEach(([id,c])=>setNode(id,c));
+  Object.entries(s.wires).forEach(([id,op])=>setWire(id,op));
+  renderComponents(s.comps);
+  renderAlerts(s.alerts);
+  updateSensors();
 }
-update(); setInterval(update,2000);
+function updateSensors(){
+  const s=SCENARIOS[si];
+  const pv=rnd(s.pv[0],s.pv[1]);
+  const soc=rnd(s.soc[0],s.soc[1]);
+  const bat=rnd(s.bat[0],s.bat[1]);
+  const grid=rnd(s.grid[0],s.grid[1]);
+  const load=rnd(s.load[0],s.load[1]);
+  document.getElementById('sv-pv').textContent=fmtW(pv);
+  document.getElementById('sv-inv').textContent=s.invTxt;
+  document.getElementById('sv-bat').textContent=`SOC ${soc}% · ${bat>100?'↑ Charging':bat<-100?'↓ Discharging':'Idle'}`;
+  document.getElementById('sv-grid').textContent=s.gridTxt;
+  document.getElementById('sv-gridw').textContent=grid>0?'+'+fmtW(grid)+' import':grid<-20?fmtW(-grid)+' export':'0 W';
+  document.getElementById('sv-ac').textContent=s.invTxt==='OFFLINE'?'Mains bypass relay':grid>500?'Mains + battery':'Inverter fed';
+  document.getElementById('sv-crit').textContent=s.critTxt;
+  document.getElementById('sv-gen').textContent=s.invTxt==='OFFLINE'?'On mains':grid>500?'On mixed':'On solar/battery';
+  document.getElementById('d-pv').textContent=fmtW(pv);
+  document.getElementById('d-pv').className='data-value '+(pv>3000?'amber':pv===0?'normal':'amber');
+  document.getElementById('d-soc').textContent=soc+'%';
+  document.getElementById('d-soc').className='data-value '+(soc<10?'red':soc<30?'amber':'green');
+  document.getElementById('d-bat').textContent=bat>50?'+'+fmtW(bat)+' charge':bat<-50?fmtW(-bat)+' discharge':'Idle';
+  document.getElementById('d-bat').className='data-value '+(bat<-2000?'red':bat>0?'green':'normal');
+  document.getElementById('d-grid').textContent=grid>200?'+'+fmtW(grid)+' import':grid<-50?fmtW(-grid)+' export':'0 W standby';
+  document.getElementById('d-grid').className='data-value '+(grid>1500?'red':grid>200?'amber':'green');
+  document.getElementById('d-load').textContent=fmtW(load);
+  document.getElementById('d-inv').textContent=s.invTxt;
+  document.getElementById('d-inv').className='data-value '+(s.invTxt==='OFFLINE'?'red':'green');
+  document.getElementById('d-crit').textContent=s.critTxt;
+  document.getElementById('d-mbus').textContent=s.invTxt==='OFFLINE'?'TIMEOUT':'Connected';
+  document.getElementById('d-mbus').className='data-value '+(s.invTxt==='OFFLINE'?'red':'cyan');
+}
+setInterval(()=>{
+  countdown--;dataTick--;
+  document.getElementById('sc-timer').textContent=`Auto ▶ ${String(countdown).padStart(2,'0')}s`;
+  document.getElementById('ts').textContent=new Date().toLocaleTimeString();
+  if(countdown<=0){si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();}
+  else if(dataTick<=0){dataTick=5;updateSensors();}
+},1000);
+document.getElementById('sc-prev').addEventListener('click',()=>{si=(si-1+SCENARIOS.length)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
+document.getElementById('sc-next').addEventListener('click',()=>{si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
+applyScenario();
 </script>
 </body>
 </html>

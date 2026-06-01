@@ -10,20 +10,33 @@
 
 <div class="header">
   <a href="index.html" class="back">←</a>
-  <h1>👆 System 05 — Access Control (Fingerprint + Server Panel)</h1>
+  <h1>👆 System 05 — Access Control</h1>
   <span class="timestamp" id="ts">--</span>
   <span class="status-badge green" id="status-badge"><span class="dot"></span><span id="status-text">Secured</span></span>
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-line purple"></div> Wiegand-26 Signal</div>
-  <div class="legend-item"><div class="legend-line amber"></div> RS485 / Serial</div>
+  <div class="legend-item"><div class="legend-line purple"></div> Wiegand-26 signal</div>
+  <div class="legend-item"><div class="legend-line amber"></div> RS485 / serial</div>
   <div class="legend-item"><div class="legend-line cyan"></div> MQTT / LAN</div>
-  <div class="legend-item"><div class="legend-line green"></div> Lock Control</div>
+  <div class="legend-item"><div class="legend-line green"></div> Lock control</div>
 </div>
 
+<div class="scenario-bar">
+  <button class="sc-btn" id="sc-prev">◄ Prev</button>
+  <div class="sc-info">
+    <span class="sc-label">Scenario</span>
+    <span class="sc-name" id="sc-name">Secured — Normal</span>
+    <span class="sc-num"  id="sc-num">1 / 6</span>
+    <span class="sc-desc" id="sc-desc">Bridge listening · panel locked · system idle</span>
+  </div>
+  <div class="sc-timer" id="sc-timer">Auto ▶ 30s</div>
+  <button class="sc-btn" id="sc-next">Next ►</button>
+</div>
+<div class="alert-bar" id="alert-bar"></div>
+
 <div class="svg-wrap">
-<svg class="circuit-svg" viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg">
+<svg class="circuit-svg" viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#bc8cff"/></marker>
   <marker id="arr-amber"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f0a500"/></marker>
@@ -31,263 +44,327 @@
   <marker id="arr-green"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39d353"/></marker>
   <marker id="arr-red"    markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#f85149"/></marker>
 </defs>
-
 <rect x="0" y="0" width="800" height="430" fill="#0d1117"/>
 
-<!-- ═══ ZONE BACKGROUNDS ═══ -->
-<!-- Physical reader zone -->
+<!-- Zone backgrounds -->
 <rect x="8"   y="8" width="240" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
 <text x="20"  y="24" fill="#8b949e" font-size="10" font-family="monospace">PHYSICAL READER (SERVER PANEL)</text>
-<!-- Bridge / Processing zone -->
 <rect x="258" y="8" width="258" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
 <text x="270" y="24" fill="#8b949e" font-size="10" font-family="monospace">WIEGAND BRIDGE (Mac Mini A)</text>
-<!-- HA / Response zone -->
 <rect x="526" y="8" width="266" height="238" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="538" y="24" fill="#8b949e" font-size="10" font-family="monospace">HOME ASSISTANT + RESPONSE</text>
-<!-- Access log zone -->
+<text x="538" y="24" fill="#8b949e" font-size="10" font-family="monospace">HOME ASSISTANT + STRIKE</text>
 <rect x="8"   y="256" width="784" height="168" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-<text x="20"  y="272" fill="#8b949e" font-size="10" font-family="monospace">ACCESS LOG (last 5 events)</text>
+<text x="20"  y="272" fill="#8b949e" font-size="10" font-family="monospace">ACCESS LOG · last 5 events</text>
 
-<!-- ═══ PHYSICAL READER NODES ═══ -->
-
-<!-- ZKTeco SF100 Fingerprint -->
-<rect x="20" y="38" width="162" height="90" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="2"/>
+<!-- ZKTeco Fingerprint Reader -->
+<rect id="node-fp"   x="20" y="38" width="162" height="90" rx="8" fill="#0d1117" stroke="#bc8cff" stroke-width="2"/>
 <text x="101" y="65"  text-anchor="middle" font-size="22" fill="#bc8cff">👆</text>
-<text x="101" y="83"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">ZKTeco SF100</text>
-<text x="101" y="99"  text-anchor="middle" class="node-sublabel">Fingerprint · Wiegand-26</text>
-<text x="101" y="114" text-anchor="middle" class="node-sublabel">Capacitive sensor</text>
+<text x="101" y="83"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Fingerprint Reader</text>
+<text x="101" y="99"  text-anchor="middle" class="node-sublabel">Capacitive · Wiegand-26</text>
+<text x="101" y="114" text-anchor="middle" class="node-sublabel" id="sv-fp">Idle · awaiting scan</text>
 
-<!-- Template DB (on reader chip) -->
-<rect x="20" y="148" width="162" height="72" rx="8" fill="#0d1117" stroke="#8b949e" stroke-width="1"/>
+<!-- Template DB -->
+<rect id="node-db"   x="20" y="148" width="162" height="72" rx="8" fill="#0d1117" stroke="#8b949e" stroke-width="1"/>
 <text x="101" y="172" text-anchor="middle" font-size="17" fill="#8b949e">🗃️</text>
-<text x="101" y="189" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Template DB</text>
-<text x="101" y="205" text-anchor="middle" class="node-sublabel">Stored on reader chip</text>
+<text x="101" y="189" text-anchor="middle" class="node-label" font-size="12" font-weight="600">Biometric Template DB</text>
+<text x="101" y="205" text-anchor="middle" class="node-sublabel" id="sv-db">Stored on reader chip</text>
 
-<!-- ═══ BRIDGE NODES ═══ -->
-
-<!-- Wiegand → RS485 converter -->
-<rect x="270" y="38" width="152" height="82" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
+<!-- Wiegand-RS485 converter -->
+<rect id="node-conv" x="270" y="38" width="152" height="82" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="1.5"/>
 <text x="346" y="62"  text-anchor="middle" font-size="17" fill="#f0a500">🔌</text>
-<text x="346" y="79"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Wiegand→RS485</text>
-<text x="346" y="95"  text-anchor="middle" class="node-sublabel">DFRobot bridge board</text>
-<text x="346" y="109" text-anchor="middle" class="node-sublabel">26-bit decode</text>
+<text x="346" y="79"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Wiegand → RS485</text>
+<text x="346" y="95"  text-anchor="middle" class="node-sublabel">Bridge board · 26-bit decode</text>
+<text x="346" y="109" text-anchor="middle" class="node-sublabel" id="sv-conv">Decoding · ready</text>
 
-<!-- Python Bridge Script -->
-<rect x="270" y="140" width="152" height="94" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
+<!-- Python Bridge -->
+<rect id="node-br"   x="270" y="140" width="152" height="94" rx="8" fill="#0d1117" stroke="#f0a500" stroke-width="2"/>
 <text x="346" y="164" text-anchor="middle" font-size="17" fill="#f0a500">🐍</text>
 <text x="346" y="181" text-anchor="middle" class="node-label" font-size="13" font-weight="600">wiegand_bridge.py</text>
-<text x="346" y="197" text-anchor="middle" class="node-sublabel">launchd service</text>
-<text x="346" y="212" text-anchor="middle" class="node-sublabel">SQLite user DB</text>
-<text x="346" y="226" text-anchor="middle" class="node-sublabel" id="bridge-state">Listening…</text>
+<text x="346" y="197" text-anchor="middle" class="node-sublabel">launchd · SQLite user DB</text>
+<text x="346" y="212" text-anchor="middle" class="node-sublabel" id="sv-br">Listening…</text>
+<text x="346" y="226" text-anchor="middle" class="node-sublabel" id="sv-br2">4 enrolled users</text>
 
-<!-- ═══ HA / RESPONSE NODES ═══ -->
-
-<!-- Mosquitto MQTT Broker -->
-<rect x="538" y="38" width="148" height="80" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
+<!-- Mosquitto MQTT -->
+<rect id="node-mqtt" x="538" y="38" width="148" height="80" rx="8" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5"/>
 <text x="612" y="62"  text-anchor="middle" font-size="17" fill="#00d4ff">📨</text>
 <text x="612" y="79"  text-anchor="middle" class="node-label" font-size="13" font-weight="600">Mosquitto MQTT</text>
 <text x="612" y="95"  text-anchor="middle" class="node-sublabel">homeassistant/lock/panel</text>
-<text x="612" y="109" text-anchor="middle" class="node-sublabel">:1883</text>
+<text x="612" y="109" text-anchor="middle" class="node-sublabel" id="sv-mqtt">Connected · :1883</text>
 
-<!-- HA lock entity + Electric Strike (combined right column) -->
-<rect x="538" y="134" width="148" height="74" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
+<!-- HA lock entity -->
+<rect id="node-lk"   x="538" y="134" width="148" height="74" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
 <text x="612" y="157" text-anchor="middle" font-size="17" fill="#39d353">🔒</text>
 <text x="612" y="174" text-anchor="middle" class="node-label" font-size="13" font-weight="600">lock.server_panel</text>
-<text id="lock-state" x="612" y="190" text-anchor="middle" class="node-sublabel">LOCKED</text>
+<text x="612" y="190" text-anchor="middle" class="node-sublabel" id="sv-lk">LOCKED</text>
 <text x="612" y="204" text-anchor="middle" class="node-sublabel">5-sec auto-relock</text>
 
-<!-- Electric Strike (separate node, right of HA zone) -->
-<rect x="697" y="38" width="88" height="170" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
+<!-- Electric Strike -->
+<rect id="node-str"  x="697" y="38" width="88" height="170" rx="8" fill="#0d1117" stroke="#39d353" stroke-width="1.5"/>
 <text x="741" y="82"  text-anchor="middle" font-size="18" fill="#39d353">🚪</text>
-<text x="741" y="106" text-anchor="middle" class="node-label" font-size="10" font-weight="600">Electric</text>
-<text x="741" y="120" text-anchor="middle" class="node-label" font-size="10" font-weight="600">Strike</text>
-<text x="741" y="138" text-anchor="middle" class="node-sublabel" font-size="9">12V fail-secure</text>
-<text id="strike-state" x="741" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#39d353">LOCKED</text>
+<text x="741" y="106" text-anchor="middle" class="node-label" font-size="10" font-weight="600">Electric Strike</text>
+<text x="741" y="120" text-anchor="middle" class="node-label" font-size="10" font-weight="600">12V fail-secure</text>
+<text id="sv-str"    x="741" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#39d353">LOCKED</text>
 
-<!-- ═══ WIRES — ALL MANHATTAN ROUTING ═══ -->
+<!-- Denied wire (hidden by default) -->
+<path id="denied-wire" d="M 422,165 L 468,165 L 468,228 L 422,228" stroke-width="1.5" fill="none" stroke="#f85149" stroke-dasharray="3 9" style="animation:flow-fwd 0.5s linear infinite;opacity:0;" marker-end="url(#arr-red)"/>
 
-<!-- W1: Fingerprint → Wiegand-RS485 (purple · Wiegand-26)
-     Fingerprint right=182, W-RS485 left=270 — straight horizontal through gap x=182-270 -->
-<path d="M 182,83 L 270,83" stroke-width="2.5" fill="none"
-      marker-end="url(#arr-purple)" class="wire-purple"/>
-<text x="226" y="76" text-anchor="middle" class="wire-label" fill="#bc8cff">Wiegand-26</text>
-
-<!-- W2: Template DB ↔ Reader (internal dashed, no animation) -->
-<path d="M 101,148 L 101,128" stroke-width="1" fill="none"
-      stroke="#8b949e" stroke-dasharray="3 5" style="opacity:0.4;"/>
-
-<!-- W3: Wiegand-RS485 → Python Bridge (amber · USB serial)
-     W-RS485 bottom=(346,120), Bridge top=(346,140) — straight vertical through gap y=120-140 -->
-<path d="M 346,120 L 346,140" stroke-width="2.5" fill="none"
-      marker-end="url(#arr-amber)" class="wire-amber"/>
-<text x="368" y="133" text-anchor="start" class="wire-label" fill="#f0a500">USB serial</text>
-
-<!-- W4: Python Bridge → MQTT (cyan · TCP publish)
-     Route: Bridge right=(422,187) → right to x=508 (gap x=422-526) → up to y=68 → right to MQTT left=(538,68)
-     x=508 is safely in the gap; y=68 is within MQTT box height (38-118) — label goes ABOVE the top turn -->
-<path d="M 422,187 L 508,187 L 508,68 L 538,68" stroke-width="1.5" fill="none"
-      marker-end="url(#arr-cyan)" class="wire-cyan"/>
-<text x="512" y="30" text-anchor="middle" class="wire-label" fill="#00d4ff">MQTT pub</text>
-
-<!-- W5: MQTT → HA lock (cyan · internal)
-     MQTT bottom=(612,118), lock top=(612,134) — straight vertical through gap y=118-134 -->
-<path d="M 612,118 L 612,134" stroke-width="1.5" fill="none"
-      marker-end="url(#arr-cyan)" class="wire-cyan"/>
-
-<!-- W6: HA lock → Electric Strike (green · 12V relay)
-     Lock right=(686,171), Strike left=(697,171) — straight horizontal through gap x=686-697 -->
-<path d="M 686,171 L 697,171" stroke-width="2.5" fill="none"
-      marker-end="url(#arr-green)" class="wire-green"/>
-<text x="692" y="164" text-anchor="middle" class="wire-label" fill="#39d353" font-size="9">12V relay</text>
-
-<!-- W7: Denied wire (hidden normally, shown on access denial)
-     Route entirely within Bridge zone, no box crossings -->
-<path id="denied-wire" d="M 422,165 L 468,165 L 468,228 L 422,228"
-      stroke-width="1.5" fill="none" stroke="#f85149" stroke-dasharray="3 9"
-      style="animation:flow-fwd 0.5s linear infinite; opacity:0;"
-      marker-end="url(#arr-red)"/>
-
-<!-- ═══ ACCESS LOG ═══ -->
+<!-- Access log foreignObject -->
 <foreignObject x="20" y="280" width="760" height="136">
-  <div xmlns="http://www.w3.org/1999/xhtml"
-       style="font-family:monospace;font-size:12px;color:#8b949e;line-height:1.8;">
+  <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:monospace;font-size:12px;color:#8b949e;line-height:1.8;">
     <table style="width:100%;border-collapse:collapse;">
-      <thead>
-        <tr style="color:#e6edf3;border-bottom:1px solid #30363d;">
-          <th style="text-align:left;padding:0 8px;width:130px;">Time</th>
-          <th style="text-align:left;padding:0 8px;width:170px;">User</th>
-          <th style="text-align:left;padding:0 8px;width:110px;">Result</th>
-          <th style="text-align:left;padding:0 8px;">Action</th>
-        </tr>
-      </thead>
-      <tbody id="log-body">
-        <tr><td colspan="4" style="padding:6px 8px;color:#8b949e;">Loading…</td></tr>
-      </tbody>
+      <thead><tr style="color:#e6edf3;border-bottom:1px solid #30363d;">
+        <th style="text-align:left;padding:0 8px;width:130px;">Time</th>
+        <th style="text-align:left;padding:0 8px;width:170px;">User</th>
+        <th style="text-align:left;padding:0 8px;width:110px;">Result</th>
+        <th style="text-align:left;padding:0 8px;">Action</th>
+      </tr></thead>
+      <tbody id="log-body"><tr><td colspan="4" style="padding:6px 8px;">Loading…</td></tr></tbody>
     </table>
   </div>
 </foreignObject>
 
+<!-- ─── WIRES ─── -->
+<path id="wa" d="M 182,83 L 270,83" stroke-width="2.5" fill="none" marker-end="url(#arr-purple)" class="wire-purple"/>
+<text x="226" y="76" text-anchor="middle" class="wire-label" fill="#bc8cff">Wiegand-26</text>
+<path id="wb" d="M 101,148 L 101,128" stroke-width="1" fill="none" stroke="#8b949e" stroke-dasharray="3 5" style="opacity:0.4;"/>
+<path id="wc" d="M 346,120 L 346,140" stroke-width="2.5" fill="none" marker-end="url(#arr-amber)" class="wire-amber"/>
+<text x="368" y="133" text-anchor="start" class="wire-label" fill="#f0a500">USB serial</text>
+<path id="wd" d="M 422,187 L 508,187 L 508,68 L 538,68" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan"/>
+<text x="512" y="30" text-anchor="middle" class="wire-label" fill="#00d4ff">MQTT pub</text>
+<path id="we" d="M 612,118 L 612,134" stroke-width="1.5" fill="none" marker-end="url(#arr-cyan)" class="wire-cyan"/>
+<path id="wf" d="M 686,171 L 697,171" stroke-width="2.5" fill="none" marker-end="url(#arr-green)" class="wire-green"/>
+<text x="692" y="164" text-anchor="middle" class="wire-label" fill="#39d353" font-size="9">12V relay</text>
 </svg>
 </div>
 
+<div class="comp-panel" id="comp-panel"><div class="comp-panel-title">Component States</div></div>
+
 <div class="data-panel">
-  <div class="data-panel-title">Live Simulated Values · updates every 2 s</div>
+  <div class="data-panel-title">Sensor Readings · updates every 5 s</div>
   <div class="data-grid">
-    <div class="data-cell">
-      <div class="data-label">🔒 Server Panel</div>
-      <div class="data-value green" id="d-lock">LOCKED</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">👤 Last User</div>
-      <div class="data-value cyan" id="d-user">--</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">🕐 Last Access</div>
-      <div class="data-value normal" id="d-time">--</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">📊 Events Today</div>
-      <div class="data-value normal" id="d-events">--</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">✅ Enrolled Users</div>
-      <div class="data-value normal" id="d-enrolled">4</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">❌ Failed Today</div>
-      <div class="data-value red" id="d-failed">0</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">🐍 Bridge Status</div>
-      <div class="data-value green" id="d-bridge">Running</div>
-    </div>
-    <div class="data-cell">
-      <div class="data-label">⚡ Auto-relock</div>
-      <div class="data-value normal" id="d-relock">5 sec</div>
-    </div>
+    <div class="data-cell"><div class="data-label">🔒 Panel State</div><div class="data-value green" id="d-lock">LOCKED</div></div>
+    <div class="data-cell"><div class="data-label">👤 Last User</div><div class="data-value cyan" id="d-user">--</div></div>
+    <div class="data-cell"><div class="data-label">📊 Events Today</div><div class="data-value normal" id="d-events">0</div></div>
+    <div class="data-cell"><div class="data-label">❌ Failed Scans</div><div class="data-value red" id="d-fail">0</div></div>
+    <div class="data-cell"><div class="data-label">✅ Enrolled</div><div class="data-value normal" id="d-enrolled">4</div></div>
+    <div class="data-cell"><div class="data-label">🐍 Bridge</div><div class="data-value green" id="d-bridge">Running</div></div>
+    <div class="data-cell"><div class="data-label">📨 MQTT</div><div class="data-value cyan" id="d-mqtt">Connected</div></div>
+    <div class="data-cell"><div class="data-label">🚪 Strike</div><div class="data-value green" id="d-strike">LOCKED</div></div>
   </div>
 </div>
 
 <script>
-const USERS = ['Sidharth', 'Astha', 'Guest-01', 'Admin'];
-const log = [];
-let lockState = 'LOCKED';
-let eventCount = 0;
-let failCount = 0;
-let relockTimer = null;
+const USERS=['Sidharth','Astha','Guest-01','Admin'];
+const LOG=[];
+let lockState='LOCKED', eventCount=0, failCount=0, relockTimer=null;
 
-function fmt(d) { return d.toTimeString().slice(0,8); }
-
-function addEvent(user, result, action) {
-  log.unshift({ time: fmt(new Date()), user, result, action });
-  if (log.length > 5) log.pop();
-  const tbody = document.getElementById('log-body');
-  tbody.innerHTML = log.map(e => {
-    const c = e.result === 'GRANTED' ? '#39d353' : '#f85149';
-    return `<tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:3px 8px;color:#8b949e;">${e.time}</td>
-      <td style="padding:3px 8px;color:#e6edf3;">${e.user}</td>
-      <td style="padding:3px 8px;color:${c};font-weight:700;">${e.result}</td>
-      <td style="padding:3px 8px;color:#8b949e;">${e.action}</td>
-    </tr>`;
+function fmt(){return new Date().toTimeString().slice(0,8);}
+function addLog(user,result,action){
+  LOG.unshift({time:fmt(),user,result,action});
+  if(LOG.length>5)LOG.pop();
+  document.getElementById('log-body').innerHTML=LOG.map(e=>{
+    const c=e.result==='GRANTED'?'#39d353':'#f85149';
+    return`<tr style="border-bottom:1px solid #21262d;"><td style="padding:3px 8px;color:#8b949e;">${e.time}</td><td style="padding:3px 8px;color:#e6edf3;">${e.user}</td><td style="padding:3px 8px;color:${c};font-weight:700;">${e.result}</td><td style="padding:3px 8px;color:#8b949e;">${e.action}</td></tr>`;
   }).join('');
 }
 
-function unlock(user) {
-  lockState = 'UNLOCKED';
-  eventCount++;
-  document.getElementById('lock-state').textContent  = 'UNLOCKED — 5s';
-  document.getElementById('lock-state').style.fill   = '#39d353';
-  document.getElementById('strike-state').textContent = 'OPEN';
-  document.getElementById('strike-state').style.fill  = '#f0a500';
-  document.getElementById('bridge-state').textContent = 'Auth: ' + user;
-  addEvent(user, 'GRANTED', 'Strike unlocked 5s');
-  clearTimeout(relockTimer);
-  relockTimer = setTimeout(() => {
-    lockState = 'LOCKED';
-    document.getElementById('lock-state').textContent  = 'LOCKED';
-    document.getElementById('lock-state').style.fill   = '#8b949e';
-    document.getElementById('strike-state').textContent = 'LOCKED';
-    document.getElementById('strike-state').style.fill  = '#39d353';
-    document.getElementById('bridge-state').textContent = 'Listening…';
-  }, 5000);
-}
-
-function deny(attempt) {
-  failCount++;
-  addEvent(attempt, 'DENIED', 'No match found');
-  document.getElementById('denied-wire').style.opacity = '0.8';
-  setTimeout(() => { document.getElementById('denied-wire').style.opacity = '0'; }, 2000);
-}
-
-function update() {
-  document.getElementById('ts').textContent = new Date().toLocaleTimeString();
-
-  if (Math.random() < 0.04) {
-    if (Math.random() < 0.85) unlock(USERS[Math.floor(Math.random()*USERS.length)]);
-    else deny('UNKNOWN-' + Math.floor(Math.random()*99));
+const SCENARIOS=[
+  {
+    name:'Secured — Normal', badge:'green', badgeText:'Secured',
+    desc:'Bridge listening · panel locked · all systems nominal',
+    alerts:[],
+    comps:{
+      'Fingerprint Reader':{s:'Idle · awaiting scan', l:'ok'},
+      'Template DB':       {s:'4 fingerprints enrolled', l:'ok'},
+      'Wiegand-RS485':     {s:'Ready · decoding', l:'ok'},
+      'Python Bridge':     {s:'Listening… · launchd', l:'ok'},
+      'MQTT Connection':   {s:'Connected · :1883', l:'ok'},
+      'lock.server_panel': {s:'LOCKED · fail-secure', l:'ok'},
+      'Electric Strike':   {s:'SECURED · 12V off', l:'ok'},
+    },
+    lockTxt:'LOCKED', strikeTxt:'LOCKED', strikeFill:'#39d353',
+    brTxt:'Listening…', mqttTxt:'Connected',
+    nodes:{'node-fp':'#bc8cff','node-db':'#8b949e','node-conv':'#f0a500','node-br':'#f0a500','node-mqtt':'#00d4ff','node-lk':'#39d353','node-str':'#39d353'},
+    wires:{'wa':1,'wc':1,'wd':1,'we':1,'wf':1}
+  },
+  {
+    name:'Access Granted', badge:'green', badgeText:'Unlocked',
+    desc:'Valid fingerprint scanned · strike unlocking for 5 seconds',
+    alerts:[],
+    comps:{
+      'Fingerprint Reader':{s:'MATCH — scanning', l:'ok'},
+      'Template DB':       {s:'Match found: Sidharth', l:'ok'},
+      'Wiegand-RS485':     {s:'Wiegand pulse decoded', l:'ok'},
+      'Python Bridge':     {s:'Auth GRANTED — publishing', l:'ok'},
+      'MQTT Connection':   {s:'Published: UNLOCKED', l:'ok'},
+      'lock.server_panel': {s:'UNLOCKED — 5 s timer', l:'warn'},
+      'Electric Strike':   {s:'ENERGISED — door open', l:'warn'},
+    },
+    lockTxt:'UNLOCKED (5s)', strikeTxt:'OPEN', strikeFill:'#f0a500',
+    brTxt:'Auth: Sidharth', mqttTxt:'Published UNLOCK',
+    nodes:{'node-fp':'#bc8cff','node-db':'#39d353','node-conv':'#f0a500','node-br':'#39d353','node-mqtt':'#39d353','node-lk':'#f0a500','node-str':'#f0a500'},
+    wires:{'wa':1,'wc':1,'wd':1,'we':1,'wf':1},
+    grantUser:true
+  },
+  {
+    name:'Access Denied', badge:'amber', badgeText:'Denied',
+    desc:'Unknown fingerprint · access denied · fail counter incremented',
+    alerts:[{level:'warn',text:'Access denied — unknown fingerprint scan — fail count incremented'}],
+    comps:{
+      'Fingerprint Reader':{s:'SCAN — no match found', l:'warn'},
+      'Template DB':       {s:'No match — 4 templates checked', l:'warn'},
+      'Wiegand-RS485':     {s:'Decoded: unknown ID', l:'warn'},
+      'Python Bridge':     {s:'DENIED — publishing reject', l:'warn'},
+      'MQTT Connection':   {s:'Published: DENIED', l:'ok'},
+      'lock.server_panel': {s:'LOCKED — unchanged', l:'ok'},
+      'Electric Strike':   {s:'SECURED — unchanged', l:'ok'},
+    },
+    lockTxt:'LOCKED', strikeTxt:'LOCKED', strikeFill:'#39d353',
+    brTxt:'Auth DENIED', mqttTxt:'Published DENIED',
+    nodes:{'node-fp':'#f0a500','node-db':'#f0a500','node-conv':'#f0a500','node-br':'#f0a500','node-mqtt':'#00d4ff','node-lk':'#39d353','node-str':'#39d353'},
+    wires:{'wa':1,'wc':1,'wd':1,'we':1,'wf':1},
+    denyUser:true
+  },
+  {
+    name:'Suspicious — Multiple Failures', badge:'red', badgeText:'ALERT',
+    desc:'4+ failed scans in short window · lockout triggered · security notified',
+    alerts:[{level:'fault',text:'ALERT: 4 failed fingerprint attempts — possible tailgating — security notified'}],
+    comps:{
+      'Fingerprint Reader':{s:'Repeated unknown scans', l:'fault'},
+      'Template DB':       {s:'No match repeatedly', l:'fault'},
+      'Wiegand-RS485':     {s:'Multiple unknown IDs', l:'warn'},
+      'Python Bridge':     {s:'LOCKOUT — notifying HA', l:'fault'},
+      'MQTT Connection':   {s:'Published: SUSPICIOUS', l:'ok'},
+      'lock.server_panel': {s:'LOCKED · lockout active', l:'ok'},
+      'Electric Strike':   {s:'SECURED', l:'ok'},
+    },
+    lockTxt:'LOCKED (lockout)', strikeTxt:'LOCKED', strikeFill:'#39d353',
+    brTxt:'LOCKOUT ACTIVE', mqttTxt:'Alert published',
+    nodes:{'node-fp':'#f85149','node-db':'#f85149','node-conv':'#f0a500','node-br':'#f85149','node-mqtt':'#00d4ff','node-lk':'#39d353','node-str':'#39d353'},
+    wires:{'wa':1,'wc':1,'wd':1,'we':1,'wf':1},
+    multiDeny:true
+  },
+  {
+    name:'Bridge Offline — Fail Secure', badge:'red', badgeText:'FAULT',
+    desc:'Python bridge crashed · serial port lost · door fail-secure (stays locked)',
+    alerts:[{level:'fault',text:'FAULT: wiegand_bridge.py offline — serial port lost — panel locked (fail-secure)'}],
+    comps:{
+      'Fingerprint Reader':{s:'Powered · scanning (no decode)', l:'warn'},
+      'Template DB':       {s:'On reader chip (unaffected)', l:'ok'},
+      'Wiegand-RS485':     {s:'Sending pulses — unread', l:'warn'},
+      'Python Bridge':     {s:'OFFLINE — process crashed', l:'fault'},
+      'MQTT Connection':   {s:'DISCONNECTED — bridge offline', l:'fault'},
+      'lock.server_panel': {s:'State UNKNOWN — last: LOCKED', l:'unknown'},
+      'Electric Strike':   {s:'SECURED (fail-secure = locked)', l:'ok'},
+    },
+    lockTxt:'UNKNOWN', strikeTxt:'SECURED', strikeFill:'#39d353',
+    brTxt:'OFFLINE', mqttTxt:'DISCONNECTED',
+    nodes:{'node-fp':'#bc8cff','node-db':'#8b949e','node-conv':'#f0a500','node-br':'#f85149','node-mqtt':'#f85149','node-lk':'#8b949e','node-str':'#39d353'},
+    wires:{'wa':0.5,'wc':0.5,'wd':0.08,'we':0.08,'wf':1}
+  },
+  {
+    name:'Strike Relay Fault — CRITICAL', badge:'red', badgeText:'CRITICAL',
+    desc:'Electric strike relay welded OPEN — door physically unlocked — emergency',
+    alerts:[{level:'fault',text:'CRITICAL: Strike relay welded open — door cannot lock — physical intervention required immediately'}],
+    comps:{
+      'Fingerprint Reader':{s:'Operational', l:'ok'},
+      'Template DB':       {s:'Normal', l:'ok'},
+      'Wiegand-RS485':     {s:'Normal', l:'ok'},
+      'Python Bridge':     {s:'Operational · monitoring', l:'ok'},
+      'MQTT Connection':   {s:'Connected', l:'ok'},
+      'lock.server_panel': {s:'Showing LOCKED but strike is open', l:'fault'},
+      'Electric Strike':   {s:'STUCK OPEN — relay welded — CRITICAL', l:'fault'},
+    },
+    lockTxt:'LOCKED (HA state)', strikeTxt:'STUCK OPEN!', strikeFill:'#f85149',
+    brTxt:'Fault flag active', mqttTxt:'Critical alert sent',
+    nodes:{'node-fp':'#bc8cff','node-db':'#8b949e','node-conv':'#f0a500','node-br':'#f0a500','node-mqtt':'#00d4ff','node-lk':'#f85149','node-str':'#f85149'},
+    wires:{'wa':1,'wc':1,'wd':1,'we':1,'wf':0.15}
   }
+];
 
-  document.getElementById('d-lock').textContent   = lockState;
-  document.getElementById('d-lock').className     = 'data-value '+(lockState==='UNLOCKED'?'amber':'green');
-  document.getElementById('d-user').textContent   = log.length ? log[0].user : '--';
-  document.getElementById('d-time').textContent   = log.length ? log[0].time : '--';
-  document.getElementById('d-events').textContent = eventCount;
-  document.getElementById('d-failed').textContent = failCount;
-  document.getElementById('d-bridge').textContent = 'Running';
-
-  const badge = document.getElementById('status-badge');
-  const stxt  = document.getElementById('status-text');
-  if (lockState==='UNLOCKED')     { badge.className='status-badge amber'; stxt.textContent='Panel Open'; }
-  else if (failCount > 2)         { badge.className='status-badge red';   stxt.textContent='Auth Failures'; }
-  else                            { badge.className='status-badge green';  stxt.textContent='Secured'; }
+let si=0,countdown=30,dataTick=5;
+function setNode(id,c){const e=document.getElementById(id);if(e)e.setAttribute('stroke',c);}
+function setWire(id,op){const e=document.getElementById(id);if(e)e.style.opacity=op;}
+function renderComponents(comps){
+  document.getElementById('comp-panel').innerHTML=
+    '<div class="comp-panel-title">Component States</div>'+
+    Object.entries(comps).map(([n,{s,l}])=>`<div class="comp-item ${l}"><div class="comp-dot"></div>${n}: <strong>${s}</strong></div>`).join('');
 }
-
-addEvent('Sidharth', 'GRANTED', 'Morning access');
-addEvent('Astha',    'GRANTED', 'Morning access');
-
-update();
-setInterval(update, 2000);
+function renderAlerts(alerts){
+  const bar=document.getElementById('alert-bar');
+  if(!alerts.length){bar.className='alert-bar';bar.textContent='';return;}
+  bar.className='alert-bar '+(alerts[0].level==='fault'?'fault':'warn');
+  bar.textContent=(alerts[0].level==='fault'?'🔴 ':'⚠ ')+alerts.map(a=>a.text).join(' · ');
+}
+function applyScenario(){
+  const s=SCENARIOS[si];
+  document.getElementById('sc-name').textContent=s.name;
+  document.getElementById('sc-num').textContent=`${si+1} / ${SCENARIOS.length}`;
+  document.getElementById('sc-desc').textContent=s.desc;
+  const badge=document.getElementById('status-badge');
+  badge.className=`status-badge ${s.badge}`;
+  document.getElementById('status-text').textContent=s.badgeText;
+  Object.entries(s.nodes).forEach(([id,c])=>setNode(id,c));
+  Object.entries(s.wires).forEach(([id,op])=>setWire(id,op));
+  renderComponents(s.comps);
+  renderAlerts(s.alerts);
+  if(s.grantUser){
+    const u=USERS[Math.floor(Math.random()*USERS.length)];
+    lockState='UNLOCKED'; eventCount++;
+    document.getElementById('sv-lk').textContent='UNLOCKED — 5s';
+    document.getElementById('sv-str').textContent='OPEN';
+    document.getElementById('sv-str').style.fill='#f0a500';
+    document.getElementById('sv-br').textContent='Auth: '+u;
+    addLog(u,'GRANTED','Strike unlocked 5s');
+    clearTimeout(relockTimer);
+    relockTimer=setTimeout(()=>{lockState='LOCKED';document.getElementById('sv-lk').textContent='LOCKED';document.getElementById('sv-str').textContent='LOCKED';document.getElementById('sv-str').style.fill='#39d353';document.getElementById('sv-br').textContent='Listening…';},5000);
+  }else if(s.denyUser||s.multiDeny){
+    const n=s.multiDeny?4:1;
+    for(let i=0;i<n;i++){failCount++;addLog('UNKNOWN-'+Math.floor(Math.random()*99),'DENIED','No match found');}
+    document.getElementById('denied-wire').style.opacity='0.8';
+    setTimeout(()=>{document.getElementById('denied-wire').style.opacity='0';},2000);
+    document.getElementById('sv-br').textContent=s.brTxt;
+  }else{
+    lockState=s.lockTxt.includes('LOCKED')?'LOCKED':'UNKNOWN';
+    document.getElementById('sv-lk').textContent=s.lockTxt;
+    document.getElementById('sv-str').textContent=s.strikeTxt;
+    document.getElementById('sv-str').style.fill=s.strikeFill;
+    document.getElementById('sv-br').textContent=s.brTxt;
+    document.getElementById('sv-mqtt').textContent=s.mqttTxt;
+  }
+  updateSensors();
+}
+function updateSensors(){
+  const s=SCENARIOS[si];
+  document.getElementById('sv-fp').textContent=s.comps['Fingerprint Reader'].s;
+  document.getElementById('sv-db').textContent=s.comps['Template DB'].s;
+  document.getElementById('sv-conv').textContent=s.comps['Wiegand-RS485'].s;
+  document.getElementById('sv-br2').textContent=failCount>0?failCount+' failures today':'No failures today';
+  document.getElementById('d-lock').textContent=lockState;
+  document.getElementById('d-lock').className='data-value '+(lockState==='UNLOCKED'?'amber':lockState==='UNKNOWN'?'red':'green');
+  document.getElementById('d-user').textContent=LOG.length?LOG[0].user:'--';
+  document.getElementById('d-events').textContent=eventCount;
+  document.getElementById('d-fail').textContent=failCount;
+  document.getElementById('d-fail').className='data-value '+(failCount>3?'red':failCount>0?'amber':'normal');
+  document.getElementById('d-bridge').textContent=s.brTxt.includes('OFFLINE')?'OFFLINE':'Running';
+  document.getElementById('d-bridge').className='data-value '+(s.brTxt.includes('OFFLINE')?'red':'green');
+  document.getElementById('d-mqtt').textContent=s.mqttTxt.includes('DISCON')?'DISCONNECTED':'Connected';
+  document.getElementById('d-mqtt').className='data-value '+(s.mqttTxt.includes('DISCON')?'red':'cyan');
+  document.getElementById('d-strike').textContent=s.strikeTxt;
+  document.getElementById('d-strike').className='data-value '+(s.strikeTxt.includes('STUCK')?'red':s.strikeTxt==='OPEN'?'amber':'green');
+}
+addLog('Sidharth','GRANTED','Morning access');
+addLog('Astha','GRANTED','Morning access');
+applyScenario();
+setInterval(()=>{
+  countdown--;dataTick--;
+  document.getElementById('sc-timer').textContent=`Auto ▶ ${String(countdown).padStart(2,'0')}s`;
+  document.getElementById('ts').textContent=new Date().toLocaleTimeString();
+  if(countdown<=0){si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();}
+  else if(dataTick<=0){dataTick=5;updateSensors();}
+},1000);
+document.getElementById('sc-prev').addEventListener('click',()=>{si=(si-1+SCENARIOS.length)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
+document.getElementById('sc-next').addEventListener('click',()=>{si=(si+1)%SCENARIOS.length;countdown=30;dataTick=5;applyScenario();});
 </script>
 </body>
 </html>
