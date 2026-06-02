@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lucknow Smart Residence — Floor Plans &amp; Systems</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#1a1a1a;color:#e8e0d4}
+h1{text-align:center;padding:18px 0 6px;font-size:1.2rem;letter-spacing:.12em;color:#c8b898;text-transform:uppercase}
+p.sub{text-align:center;font-size:.72rem;color:#888;margin-bottom:12px}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:0 12px 10px}
+.tabs button{
+  padding:7px 14px;border:1px solid #444;border-radius:4px;
+  background:#2a2a2a;color:#b8a888;font-size:.75rem;cursor:pointer;
+  letter-spacing:.06em;transition:.15s}
+.tabs button:hover{background:#3a3020;border-color:#7a6848}
+.tabs button.active{background:#4a3820;border-color:#c8a060;color:#f0d898;font-weight:600}
+.panel{display:none;justify-content:center;align-items:flex-start;padding:8px}
+.panel.active{display:flex}
+svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;height:auto}
+.legend{font-size:.65rem;color:#aaa;text-align:center;padding:6px 0 12px}
+</style>
+</head>
+<body>
+<h1>Lucknow Smart Self-Sufficient Residence</h1>
+<p class="sub">27.4 × 13.7 m plot · G+1+Terrace · East-facing · Lucknow, UP · Scale 1:100</p>
+
+<div class="tabs">
+  <button class="active" onclick="show('gf',this)">Ground Floor</button>
+  <button onclick="show('f1',this)">First Floor</button>
+  <button onclick="show('t',this)">Terrace</button>
+  <button onclick="show('ug',this)">Underground</button>
+  <button onclick="show('af',this)">Airflow / Cooling</button>
+  <button onclick="show('el',this)">Electrical / Solar</button>
+  <button onclick="show('mon',this)">Monitoring / AI</button>
+  <button onclick="show('ha',this)" style="background:#1a2a1a;border-color:#44aa44;color:#88ff88">&#9656; HA Agent Sim</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GROUND FLOOR PLAN
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel active" id="gf">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="1"/>
+  </pattern>
+</defs>
+<!-- Title block -->
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">GROUND FLOOR PLAN — FFL ±0.000 m</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · All dims in metres · North ↑ (+Y)</text>
+
+<!-- S=18px/m; ox=200, oy=310; svg_x=ox+X*18, svg_y=oy-Y*18 -->
+<!-- PLOT BOUNDARY -->
+<rect x="65" y="97" width="493" height="234" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+
+<!-- DRIVEWAY -->
+<rect x="65" y="97" width="135" height="234" fill="#e8e6e0"/>
+<text x="97" y="222" font-size="8" fill="#888" font-family="Arial" transform="rotate(-90,97,222)">DRIVEWAY 7.5m</text>
+
+<!-- EAST LAWN -->
+<rect x="450" y="97" width="108" height="234" fill="#d4e8c8"/>
+<text x="504" y="222" font-size="8" fill="#668855" font-family="Arial" transform="rotate(-90,504,222)">EAST LAWN 6.0m</text>
+
+<!-- BOUNDARY WALL (thick outline) -->
+<rect x="65" y="97" width="493" height="234" fill="none" stroke="#4a4a4a" stroke-width="4"/>
+
+<!-- GATE gap on west (Y:[3.0,7.0] → svg_y 310-7*18=184 to 310-3*18=256) -->
+<line x1="65" y1="184" x2="65" y2="256" stroke="#faf8f4" stroke-width="5"/>
+<line x1="65" y1="184" x2="65" y2="256" stroke="#cc8800" stroke-width="2" stroke-dasharray="3,2"/>
+<text x="38" y="222" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">GATE 4m</text>
+
+<!-- ── HOUSE OUTER WALLS (200mm=3.6px → show as 4px fill, 3px stroke) ── -->
+<!-- South wall  y=310, X[0,13.9] → rect(200,310,250,4) -->
+<rect x="200" y="308" width="250" height="4" fill="#4a4a4a"/>
+<!-- North wall  y=310-10*18=130, X[0,13.9] -->
+<rect x="200" y="128" width="250" height="4" fill="#4a4a4a"/>
+<!-- West wall   x=200, Y[0,10] → rect(200,130,4,180) -->
+<rect x="200" y="130" width="4" height="180" fill="#4a4a4a"/>
+<!-- East wall   x=450, Y[0,10] -->
+<rect x="448" y="130" width="4" height="180" fill="#4a4a4a"/>
+<!-- House outline (thin) -->
+<rect x="200" y="130" width="250" height="180" fill="none" stroke="#2c2c2c" stroke-width="1.5"/>
+
+<!-- ── ROOM FILLS ── -->
+<!-- G1 GARAGE X[0,5.9] Y[0,10] → (200,130) w=106 h=180 -->
+<rect x="200" y="130" width="106" height="180" fill="#ece8e0" opacity=".7"/>
+<!-- G2 STAIR X[5.9,8.4] Y[3,7.5] → (306,165) w=45 h=81 -->
+<rect x="306" y="165" width="45" height="81" fill="#dde8ee" opacity=".8"/>
+<!-- G3 FOYER X[13,13.9] Y[5,7.5] → (434,165) w=16 h=45 -->
+<rect x="434" y="165" width="16" height="45" fill="#eeead8" opacity=".8"/>
+<!-- G4 POWDER X[8.6,10] Y[3.5,5] → (355,237) to (380,210) -->
+<rect x="355" y="210" width="25" height="27" fill="#ddeeff" opacity=".8"/>
+<!-- G5 KITCHEN X[5.9,13.9] Y[5.5,10] → (306,130) w=144 h=81 -->
+<rect x="306" y="130" width="144" height="81" fill="#fdf5e0" opacity=".8"/>
+<!-- G6 LIVING X[8.4,13.9] Y[3.5,7.5] → (351,165) w=99 h=72 -->
+<rect x="351" y="165" width="99" height="72" fill="#f0eee6" opacity=".8"/>
+<!-- G7 GUEST X[10,13.9] Y[0,3.5] → (380,237) w=70 h=63 -->
+<rect x="380" y="237" width="70" height="63" fill="#f5e8ec" opacity=".8"/>
+
+<!-- ── INTERNAL WALLS (115mm≈2px) ── -->
+<!-- CX1 at X=5.9 → x=306, Y[0,10] → y 130 to 310 -->
+<rect x="305" y="130" width="3" height="180" fill="#4a4a4a"/>
+<!-- CX2 at X=8.4 → x=351, Y[3,10] → y 130 to 246 -->
+<rect x="350" y="130" width="3" height="116" fill="#4a4a4a"/>
+<!-- Y=3.5 partition: X[8.4,13.9] → x(351) to x(450) -->
+<rect x="351" y="236" width="101" height="3" fill="#4a4a4a"/>
+<!-- Y=5.5 partition: X[5.9,13.9] -->
+<rect x="306" y="211" width="146" height="3" fill="#4a4a4a"/>
+<!-- Powder bath north wall Y=5.0, X[8.4,10.0] -->
+<rect x="351" y="210" width="27" height="3" fill="#4a4a4a"/>
+<!-- Powder bath east X=10.0, Y[3.5,5.0] -->
+<rect x="378" y="210" width="3" height="29" fill="#4a4a4a"/>
+
+<!-- ── VERANDAH X[13.9,15.4] ── -->
+<rect x="450" y="130" width="27" height="180" fill="#e8e4d4" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="463" y="222" font-size="7" fill="#666" font-family="Arial" text-anchor="middle" transform="rotate(-90,463,222)">VERANDAH 1.5m</text>
+<!-- Columns (2×) -->
+<rect x="472" y="173" width="5" height="5" fill="#c8b090"/>
+<rect x="472" y="285" width="5" height="5" fill="#c8b090"/>
+
+<!-- ── GUEST BALCONY X[13.9,15.9] Y[0.5,3.5] ── -->
+<rect x="450" y="237" width="36" height="54" fill="#e0f0e8" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="468" y="267" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">BALCONY</text>
+
+<!-- ── COOLING TOWER (plan view, SW corner) ──
+     x=-2m → svg_x=200+(-2)*18=164, y=-0.9m → svg_y=310-(-0.9)*18=326
+     Diameter 1.8m → radius 16px -->
+<circle cx="164" cy="326" r="16" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1.5"/>
+<circle cx="164" cy="326" r="9" fill="#b84a18" opacity=".7"/>
+<!-- Solar fan disc at top (plan = circle) -->
+<circle cx="164" cy="326" r="4" fill="#445566" stroke="#334455" stroke-width="1"/>
+<!-- CT dimension lines -->
+<line x1="148" y1="344" x2="180" y2="344" stroke="#c86030" stroke-width=".8"/>
+<text x="164" y="353" font-size="5.5" fill="#c86030" font-family="Arial" text-anchor="middle">∅ 1.8m</text>
+<!-- CT label -->
+<text x="164" y="324" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">CT</text>
+<text x="187" y="322" font-size="6" fill="#c86030" font-family="Arial">COOL</text>
+<text x="187" y="331" font-size="6" fill="#c86030" font-family="Arial">TOWER</text>
+<text x="187" y="340" font-size="5.5" fill="#c86030" font-family="Arial">h=5.5m</text>
+<!-- Airflow entry arrow (CT → house west wall opening) -->
+<line x1="180" y1="320" x2="198" y2="300" stroke="#00ccee" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+<text x="193" y="289" font-size="5.5" fill="#00aabb" font-family="Arial" text-anchor="middle">cool→</text>
+
+<!-- ── FURNITURE ── -->
+<!-- Kitchen island 3.0×1.2m at (8.5,8.5) → svg(353,157) w=54 h=22 -->
+<rect x="353" y="147" width="54" height="22" fill="#c8a870" stroke="#8a6030" stroke-width="1" rx="2"/>
+<text x="380" y="160" font-size="6.5" fill="#5a3010" font-family="Arial" text-anchor="middle">ISLAND</text>
+<!-- Dining table 2.4×1.0m -->
+<rect x="395" y="175" width="43" height="18" fill="#d4b070" stroke="#8a6030" stroke-width="1" rx="1"/>
+<!-- L-sofa: long part 3.0×0.8m, short 0.8×2.0m -->
+<rect x="355" y="185" width="54" height="14" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
+<rect x="355" y="185" width="14" height="36" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
+<!-- Guest bed 1.5×2.0m -->
+<rect x="385" y="247" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<!-- Workbench -->
+<rect x="205" y="290" width="18" height="36" fill="#c8a870" stroke="#806030" stroke-width="1"/>
+<!-- Battery cab -->
+<rect x="205" y="240" width="9" height="29" fill="#8898a8" stroke="#506070" stroke-width="1"/>
+<text x="200" y="258" font-size="5.5" fill="#506070" font-family="Arial">BAT</text>
+<!-- NVR -->
+<rect x="311" y="196" width="8" height="11" fill="#9888a8" stroke="#605070" stroke-width="1"/>
+
+<!-- ── STAIRS ── -->
+<rect x="306" y="187" width="22" height="81" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="317" y="232" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">STAIR</text>
+<!-- Stair direction arrow -->
+<line x1="317" y1="259" x2="317" y2="196" stroke="#666" stroke-width="1" marker-end="url(#arr)"/>
+
+<!-- ── DOOR / WINDOW INDICATORS ── -->
+<!-- Front door (E face Y=5.5-6.5 → svg_y 211-199) -->
+<rect x="448" y="199" width="4" height="18" fill="#c89040"/>
+<!-- Garage roller door -->
+<rect x="197" y="184" width="4" height="72" fill="#a0b8c0"/>
+<text x="186" y="225" font-size="7" fill="#4070a0" font-family="Arial" transform="rotate(-90,186,225)">ROLLER 4.5m</text>
+<!-- East windows (3) -->
+<rect x="448" y="237" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
+<rect x="448" y="158" width="4" height="45" fill="#a8d8ea" opacity=".8"/>
+<rect x="448" y="133" width="4" height="54" fill="#a8d8ea" opacity=".8"/>
+<!-- South window (guest) -->
+<rect x="390" y="307" width="36" height="4" fill="#a8d8ea" opacity=".8"/>
+<!-- North window (kitchen) -->
+<rect x="328" y="128" width="54" height="4" fill="#a8d8ea" opacity=".8"/>
+
+<!-- ── ROOM LABELS ── -->
+<text x="253" y="222" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G1</text>
+<text x="253" y="232" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">GARAGE+BAY</text>
+<text x="253" y="242" font-size="7" fill="#777" font-family="Arial" text-anchor="middle">28 m²</text>
+
+<text x="328" y="209" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G2</text>
+<text x="328" y="219" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">STAIR+LIFT</text>
+<text x="328" y="228" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">12 m²</text>
+
+<text x="380" y="162" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G5</text>
+<text x="380" y="172" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">KITCHEN+DINING</text>
+<text x="380" y="180" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">32 m²</text>
+
+<text x="400" y="202" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G6</text>
+<text x="400" y="211" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">LIVING 36 m²</text>
+
+<text x="364" y="248" font-size="6.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G4</text>
+<text x="364" y="256" font-size="5.5" fill="#666" font-family="Arial" text-anchor="middle">PWD 3m²</text>
+
+<text x="415" y="262" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G7</text>
+<text x="415" y="271" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">GUEST+BATH</text>
+<text x="415" y="280" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">16 m²</text>
+
+<text x="440" y="180" font-size="6.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G3</text>
+<text x="440" y="188" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">FOYER 8m²</text>
+
+<!-- ── DIMENSION LINES ── -->
+<!-- Overall E-W: 13.9m -->
+<line x1="200" y1="322" x2="450" y2="322" stroke="#888" stroke-width="1"/>
+<line x1="200" y1="318" x2="200" y2="326" stroke="#888" stroke-width="1"/>
+<line x1="450" y1="318" x2="450" y2="326" stroke="#888" stroke-width="1"/>
+<text x="325" y="331" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">13.9 m</text>
+<!-- Overall N-S: 10.0m -->
+<line x1="488" y1="130" x2="488" y2="310" stroke="#888" stroke-width="1"/>
+<line x1="484" y1="130" x2="492" y2="130" stroke="#888" stroke-width="1"/>
+<line x1="484" y1="310" x2="492" y2="310" stroke="#888" stroke-width="1"/>
+<text x="498" y="222" font-size="8" fill="#555" font-family="Arial" text-anchor="start" transform="rotate(-90,498,222)">10.0 m</text>
+<!-- Garage width -->
+<line x1="200" y1="342" x2="306" y2="342" stroke="#aaa" stroke-width=".8"/>
+<text x="253" y="351" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">5.9 m</text>
+<!-- Verandah -->
+<line x1="450" y1="342" x2="477" y2="342" stroke="#aaa" stroke-width=".8"/>
+<text x="463" y="351" font-size="6" fill="#888" font-family="Arial" text-anchor="middle">1.5 m</text>
+
+<!-- ── NORTH ARROW ── -->
+<g transform="translate(670,100)">
+  <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
+  <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
+  <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
+  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+</g>
+
+<!-- ── SCALE BAR ── -->
+<g transform="translate(570,420)">
+  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
+  <rect x="0" y="0" width="18" height="7" fill="#555"/>
+  <rect x="36" y="0" width="18" height="7" fill="#555"/>
+  <rect x="72" y="0" width="18" height="7" fill="#555"/>
+  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
+  <text x="18" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">1m</text>
+  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
+  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+</g>
+
+<!-- ── LEGEND ── -->
+<g transform="translate(570,150)">
+  <rect x="0" y="0" width="150" height="130" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="75" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LEGEND</text>
+  <circle cx="15" cy="26" r="7" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1"/>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Cooling Tower (∅1.8m, 5.5m h)</text>
+  <rect x="8" y="36" width="14" height="8" fill="#a8d8ea" opacity=".8"/>
+  <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Window (glazing)</text>
+  <rect x="8" y="50" width="14" height="8" fill="#c89040"/>
+  <text x="26" y="58" font-size="7" fill="#444" font-family="Arial">Door opening</text>
+  <rect x="8" y="64" width="14" height="8" fill="#d4e8c8"/>
+  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">East lawn</text>
+  <rect x="8" y="78" width="14" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
+  <text x="26" y="86" font-size="7" fill="#444" font-family="Arial">Stair / hatch</text>
+  <line x1="8" y1="100" x2="22" y2="100" stroke="#4a4a4a" stroke-width="3"/>
+  <text x="26" y="104" font-size="7" fill="#444" font-family="Arial">Ext wall 200mm</text>
+  <line x1="8" y1="114" x2="22" y2="114" stroke="#4a4a4a" stroke-width="1.5"/>
+  <text x="26" y="118" font-size="7" fill="#444" font-family="Arial">Int wall 115mm</text>
+</g>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FIRST FLOOR PLAN
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="f1">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">FIRST FLOOR PLAN — FFL +3.300 m</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · Ceiling: 3.35 m master, 2.85 m others · Workshop cantilever 3.0 m west</text>
+
+<!-- WRAP BALCONIES (dashed) -->
+<!-- East balcony X[13.9,15.4] Y[0,10] → (450,130) w=27 h=180 -->
+<rect x="450" y="130" width="27" height="180" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="463" y="222" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle" transform="rotate(-90,463,222)">E BALCONY 1.5m</text>
+<!-- North balcony X[0,15.4] Y[10,11.5] → (200,103) to (477,130) - note Y=11.5→svg_y=310-11.5*18=103 -->
+<rect x="146" y="103" width="331" height="27" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="311" y="119" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">N BALCONY 1.5m</text>
+<!-- South balcony X[0,15.4] Y[-1.5,0] → (146,310) to (477,337) -->
+<rect x="146" y="310" width="331" height="27" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="311" y="328" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">S BALCONY 1.5m</text>
+
+<!-- WORKSHOP CANTILEVER X[-3,0] Y[0,10] → (146,130) w=54 h=180 -->
+<rect x="146" y="130" width="54" height="180" fill="#f5eedd" stroke="#cc9040" stroke-width="1.5" stroke-dasharray="5,2"/>
+
+<!-- HOUSE OUTER WALLS -->
+<rect x="200" y="130" width="250" height="180" fill="none" stroke="#2c2c2c" stroke-width="2"/>
+<rect x="200" y="128" width="250" height="4" fill="#4a4a4a"/>
+<rect x="200" y="308" width="250" height="4" fill="#4a4a4a"/>
+<rect x="200" y="130" width="4" height="180" fill="#4a4a4a"/>
+<rect x="448" y="130" width="4" height="180" fill="#4a4a4a"/>
+<!-- Workshop walls -->
+<rect x="146" y="128" width="56" height="4" fill="#4a4a4a"/>
+<rect x="146" y="308" width="56" height="4" fill="#4a4a4a"/>
+<rect x="146" y="130" width="4" height="180" fill="#4a4a4a"/>
+
+<!-- ROOM FILLS F1 -->
+<!-- F1 Master X[8.5,13.9] Y[0.5,5] → (353,220) w=97 h=81 -->
+<rect x="353" y="220" width="97" height="81" fill="#f5e8ec" opacity=".8"/>
+<!-- F2 Master bath X[8.5,11.5] Y[0.5,2.5] → (353,265) w=54 h=36 -->
+<rect x="353" y="265" width="54" height="36" fill="#ddeeff" opacity=".8"/>
+<!-- F3 BR2 X[8.5,13.9] Y[5.5,10] → (353,130) w=97 h=81 -->
+<rect x="353" y="130" width="97" height="81" fill="#f5ece8" opacity=".8"/>
+<!-- F4 BR3 X[0,5.5] Y[5.5,10] → (200,130) w=99 h=81 -->
+<rect x="200" y="130" width="99" height="81" fill="#eaf0f8" opacity=".8"/>
+<!-- F5 Stair X[5.9,8.4] Y[3,5.5] → (306,175) w=45 h=45 -->
+<rect x="306" y="175" width="45" height="45" fill="#dde8ee" opacity=".8"/>
+<!-- F6 Hallway X[5.5,8.5] Y[0,5.5] → (299,220) w=54 h=99 -->
+<rect x="299" y="211" width="54" height="99" fill="#eeeae0" opacity=".8"/>
+<!-- F7 Lounge X[3,5.5] Y[0.5,5] → (254,220) w=45 h=81 -->
+<rect x="254" y="220" width="45" height="81" fill="#eaf5e8" opacity=".8"/>
+<!-- F9 Workshop X[-3,0] Y[0,10] = (146,130) w=54 h=180 -->
+<rect x="150" y="134" width="46" height="172" fill="#fff8e8"/>
+
+<!-- INTERNAL WALLS F1 -->
+<!-- CX2=8.4 → x=351 -->
+<rect x="350" y="130" width="3" height="180" fill="#4a4a4a"/>
+<!-- CX1=5.5 → x=299 -->
+<rect x="298" y="130" width="3" height="180" fill="#4a4a4a"/>
+<!-- Y=5 (F1 master/BR2) X[8.4,13.9] → y=220 -->
+<rect x="351" y="219" width="101" height="3" fill="#4a4a4a"/>
+<!-- Y=2.5 (master ensuite) X[8.4,11.5] → y=265 -->
+<rect x="351" y="264" width="54" height="3" fill="#4a4a4a"/>
+<!-- WIW X=11.5 Y[3,5] → x=407 y 220 to 274 -->
+<rect x="407" y="219" width="3" height="54" fill="#4a4a4a"/>
+<!-- Y=7.5 X[8.4,13.9] → y=175 -->
+<rect x="351" y="174" width="101" height="3" fill="#4a4a4a"/>
+<!-- BR3 ensuite X=3.0 Y[7.5,10] → x=254 y 130 to 175 -->
+<rect x="253" y="130" width="3" height="46" fill="#4a4a4a"/>
+<!-- Lounge Y=0.5 X[3,5.5] → y=301 -->
+<rect x="253" y="301" width="47" height="3" fill="#4a4a4a"/>
+
+<!-- CLERESTORY MONITOR (dashed above) -->
+<rect x="146" y="103" width="54" height="27" fill="#a8d8ea" opacity=".4" stroke="#2288aa" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="173" y="118" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">CLERESTORY</text>
+<text x="173" y="126" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">MONITOR N</text>
+
+<!-- WINDOWS F1 -->
+<rect x="448" y="229" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
+<rect x="448" y="148" width="4" height="45" fill="#a8d8ea" opacity=".8"/>
+<rect x="298" y="128" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
+<rect x="200" y="128" width="4" height="27" fill="#a8d8ea" opacity=".8"/>
+<rect x="331" y="128" width="4" height="27" fill="#a8d8ea" opacity=".8"/>
+
+<!-- FURNITURE F1 -->
+<!-- King bed master -->
+<rect x="360" y="237" width="32" height="38" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<text x="376" y="260" font-size="6" fill="#606" font-family="Arial" text-anchor="middle">KING</text>
+<!-- WIW shelving -->
+<rect x="410" y="228" width="27" height="29" fill="#d4b880" stroke="#806030" stroke-width="1"/>
+<text x="423" y="245" font-size="5.5" fill="#604020" font-family="Arial" text-anchor="middle">WIW</text>
+<!-- BR2 bed -->
+<rect x="365" y="143" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<!-- BR3 bed -->
+<rect x="210" y="147" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<!-- Lounge sofa -->
+<rect x="259" y="267" width="32" height="13" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
+<!-- Workshop tables -->
+<rect x="152" y="155" width="45" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
+<rect x="152" y="230" width="45" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
+<!-- Workshop sink -->
+<rect x="152" y="136" width="14" height="11" fill="#9ab8c8" stroke="#406070" stroke-width="1"/>
+<text x="159" y="144" font-size="5" fill="#406070" font-family="Arial" text-anchor="middle">SINK</text>
+<!-- Drying racks -->
+<line x1="152" y1="205" x2="196" y2="205" stroke="#808080" stroke-width="2"/>
+<line x1="152" y1="218" x2="196" y2="218" stroke="#808080" stroke-width="2"/>
+
+<!-- ROOM LABELS F1 -->
+<text x="400" y="248" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F1</text>
+<text x="400" y="257" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">MASTER+WIW</text>
+<text x="400" y="266" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">36 m² / 3.35m ceil</text>
+<text x="400" y="280" font-size="6" fill="#cc4444" font-family="Arial" text-anchor="middle">★ 3.35m clear</text>
+
+<text x="401" y="152" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F3</text>
+<text x="401" y="161" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">BR2+ENSUITE</text>
+<text x="401" y="170" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">22 m²</text>
+
+<text x="249" y="155" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F4</text>
+<text x="249" y="164" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">BR3+ENSUITE</text>
+<text x="249" y="173" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">22 m²</text>
+
+<text x="328" y="200" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F5</text>
+<text x="328" y="208" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">STAIR+LIFT</text>
+
+<text x="325" y="258" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F6</text>
+<text x="325" y="267" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">HALLWAY 9m²</text>
+<text x="325" y="275" font-size="6" fill="#888" font-family="Arial" text-anchor="middle">2.44m h/r</text>
+
+<text x="276" y="258" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F7</text>
+<text x="276" y="267" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">LOUNGE 8m²</text>
+
+<text x="173" y="222" font-size="7.5" font-weight="bold" fill="#885500" font-family="Arial" text-anchor="middle">F9</text>
+<text x="173" y="232" font-size="6.5" fill="#885500" font-family="Arial" text-anchor="middle">ART WORKSHOP</text>
+<text x="173" y="242" font-size="6" fill="#885500" font-family="Arial" text-anchor="middle">30 m²</text>
+<text x="173" y="252" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">↑ N-LIGHT</text>
+
+<!-- DIMENSION LINES -->
+<line x1="200" y1="360" x2="450" y2="360" stroke="#888" stroke-width="1"/>
+<line x1="200" y1="356" x2="200" y2="364" stroke="#888" stroke-width="1"/>
+<line x1="450" y1="356" x2="450" y2="364" stroke="#888" stroke-width="1"/>
+<text x="325" y="373" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">13.9 m (main rect)</text>
+<line x1="146" y1="360" x2="200" y2="360" stroke="#cc8800" stroke-width="1"/>
+<line x1="146" y1="356" x2="146" y2="364" stroke="#cc8800" stroke-width="1"/>
+<text x="173" y="373" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">3.0 m</text>
+<text x="173" y="383" font-size="6" fill="#cc8800" font-family="Arial" text-anchor="middle">cantilever</text>
+
+<!-- Wrap balcony dim -->
+<line x1="450" y1="130" x2="477" y2="130" stroke="#448844" stroke-width="1"/>
+<text x="463" y="125" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">1.5m</text>
+
+<!-- North arrow -->
+<g transform="translate(670,100)">
+  <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
+  <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
+  <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
+  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+</g>
+
+<!-- Scale bar -->
+<g transform="translate(570,420)">
+  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
+  <rect x="0" y="0" width="18" height="7" fill="#555"/>
+  <rect x="36" y="0" width="18" height="7" fill="#555"/>
+  <rect x="72" y="0" width="18" height="7" fill="#555"/>
+  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
+  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
+  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+</g>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TERRACE PLAN
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="t">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">TERRACE PLAN — FFL +6.950 m</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · Parapet 0.9 m · Burjeel 4.0 m above terrace</text>
+
+<!-- Terrace slab outline -->
+<rect x="200" y="130" width="250" height="180" fill="#f0ede8" stroke="#2c2c2c" stroke-width="2"/>
+<!-- Parapet (shown as thick line) -->
+<rect x="200" y="128" width="250" height="5" fill="#6a6a6a"/>
+<rect x="200" y="307" width="250" height="5" fill="#6a6a6a"/>
+<rect x="200" y="130" width="5" height="180" fill="#6a6a6a"/>
+<rect x="445" y="130" width="5" height="180" fill="#6a6a6a"/>
+
+<!-- VIEWING ROOM X[7.8,13.9] Y[3.9,10] → (340,130) w=110 h=111 -->
+<rect x="340" y="130" width="110" height="111" fill="#d8eef8" stroke="#2288cc" stroke-width="2"/>
+<!-- N+E walls glazed (blue lines) -->
+<line x1="340" y1="130" x2="450" y2="130" stroke="#2288cc" stroke-width="4"/>
+<line x1="448" y1="130" x2="448" y2="241" stroke="#2288cc" stroke-width="4"/>
+<text x="450" y="127" font-size="6.5" fill="#2288cc" font-family="Arial">GLAZED N+E</text>
+<!-- S overhang (dashed) -->
+<rect x="340" y="241" width="110" height="27" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="395" y="256" font-size="6.5" fill="#888" font-family="Arial" text-anchor="middle">S OVERHANG 1.5m</text>
+<text x="395" y="175" font-size="8" font-weight="bold" fill="#1155aa" font-family="Arial" text-anchor="middle">VIEWING</text>
+<text x="395" y="185" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">ROOM</text>
+<text x="395" y="195" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">6.1 × 6.1 m</text>
+<text x="395" y="206" font-size="6.5" fill="#1155aa" font-family="Arial" text-anchor="middle">3.35 m clear ★</text>
+<text x="395" y="218" font-size="6" fill="#4499cc" font-family="Arial" text-anchor="middle">37 m²</text>
+
+<!-- STAIR ENCLOSURE X[5.9,8.9] Y[3,6] → (306,220) w=54 h=54 -->
+<rect x="306" y="220" width="54" height="54" fill="#e0d8c8" stroke="#666" stroke-width="1.5"/>
+<text x="333" y="245" font-size="6.5" font-weight="bold" fill="#555" font-family="Arial" text-anchor="middle">STAIR</text>
+<text x="333" y="254" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">ENCL.</text>
+<text x="333" y="263" font-size="5.5" fill="#888" font-family="Arial" text-anchor="middle">3×3 / h=2.6m</text>
+
+<!-- BURJEEL X[6.2,8.2] Y[3.8,5.8] → (312,220-5.8*18+180=... let me recalc -->
+<!-- svg_y = 310 - Y*18 (Y measured from house SW which is at svg_y=310) -->
+<!-- But house SW is at oy=310, so svg_y = 310-Y*18 -->
+<!-- Burjeel Y[3.8,5.8] → svg_y 310-5.8*18=206 to 310-3.8*18=242 -->
+<!-- Burjeel X[6.2,8.2] → svg_x 200+6.2*18=312 to 200+8.2*18=348 -->
+<rect x="312" y="206" width="36" height="36" fill="#c86030" stroke="#8a3010" stroke-width="2"/>
+<!-- Louver lines on burjeel -->
+<line x1="312" y1="213" x2="348" y2="213" stroke="#ddd" stroke-width="1.5"/>
+<line x1="312" y1="220" x2="348" y2="220" stroke="#ddd" stroke-width="1.5"/>
+<line x1="312" y1="227" x2="348" y2="227" stroke="#ddd" stroke-width="1.5"/>
+<line x1="312" y1="234" x2="348" y2="234" stroke="#ddd" stroke-width="1.5"/>
+<text x="330" y="224" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">BURJEEL</text>
+<text x="330" y="233" font-size="5.5" fill="#ffe0c0" font-family="Arial" text-anchor="middle">2×2×4m</text>
+
+<!-- PV PERGOLA X[0.4,6.4] Y[0.4,5.4] → (207,213) w=108 h=90 -->
+<!-- X:0.4→207.2, 6.4→315.2; Y:5.4→gy=310-5.4*18=213; 0.4→gy=310-0.4*18=303 -->
+<rect x="207" y="213" width="108" height="90" fill="#1a2a40" opacity=".7" stroke="#406080" stroke-width="1.5" rx="2"/>
+<!-- PV panel grid 3×5 -->
+<g fill="#1e3a5a" stroke="#4488cc" stroke-width=".8">
+  <rect x="212" y="218" width="18" height="36" rx="1"/>
+  <rect x="212" y="258" width="18" height="36" rx="1"/>
+  <rect x="234" y="218" width="18" height="36" rx="1"/>
+  <rect x="234" y="258" width="18" height="36" rx="1"/>
+  <rect x="256" y="218" width="18" height="36" rx="1"/>
+  <rect x="256" y="258" width="18" height="36" rx="1"/>
+  <rect x="278" y="218" width="18" height="36" rx="1"/>
+  <rect x="278" y="258" width="18" height="36" rx="1"/>
+  <rect x="300" y="218" width="18" height="36" rx="1"/>
+  <rect x="300" y="258" width="18" height="36" rx="1"/>
+</g>
+<!-- PV label -->
+<text x="261" y="246" font-size="8" font-weight="bold" fill="#88ccff" font-family="Arial" text-anchor="middle">PV PERGOLA</text>
+<text x="261" y="256" font-size="7" fill="#88bbee" font-family="Arial" text-anchor="middle">6 kWp / 15 panels</text>
+<text x="261" y="265" font-size="6.5" fill="#88bbee" font-family="Arial" text-anchor="middle">25° S tilt</text>
+
+<!-- GARDEN BEDS -->
+<rect x="207" y="148" width="22" height="54" fill="#44aa44" opacity=".6" stroke="#228822" stroke-width="1" rx="2"/>
+<rect x="207" y="138" width="22" height="8" fill="#886622" opacity=".5"/>
+<rect x="270" y="148" width="22" height="54" fill="#44aa44" opacity=".6" stroke="#228822" stroke-width="1" rx="2"/>
+<text x="261" y="165" font-size="6.5" fill="#226622" font-family="Arial" text-anchor="middle">GARDEN BEDS</text>
+<text x="261" y="174" font-size="6" fill="#226622" font-family="Arial" text-anchor="middle">4 × 1.2×3.0×0.5m</text>
+
+<!-- WORKSHOP CLERESTORY (dashed, below terrace level) -->
+<rect x="146" y="103" width="54" height="27" fill="#a8d8ea" opacity=".35" stroke="#2288aa" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="173" y="114" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">CLERESTORY</text>
+<text x="173" y="124" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">+1.2m above</text>
+
+<!-- OPEN TERRACE area label -->
+<text x="253" y="175" font-size="7" fill="#666" font-family="Arial" text-anchor="middle">OPEN</text>
+<text x="253" y="185" font-size="7" fill="#666" font-family="Arial" text-anchor="middle">TERRACE</text>
+
+<!-- DIMENSION LINES -->
+<!-- Viewing room 6.1m -->
+<line x1="340" y1="120" x2="450" y2="120" stroke="#1155aa" stroke-width="1"/>
+<text x="395" y="116" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">6.1 m</text>
+<!-- PV pergola 6m -->
+<line x1="207" y1="388" x2="315" y2="388" stroke="#406080" stroke-width="1"/>
+<text x="261" y="398" font-size="7" fill="#406080" font-family="Arial" text-anchor="middle">6.0 m</text>
+<!-- Burjeel -->
+<text x="330" y="194" font-size="6.5" fill="#c86030" font-family="Arial" text-anchor="middle">2.0m × 2.0m</text>
+<text x="330" y="204" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">height = 4.0m ↑</text>
+
+<!-- Parapet note -->
+<text x="205" y="350" font-size="7" fill="#666" font-family="Arial">Parapet h = 0.9m (all perimeter)</text>
+
+<!-- North arrow -->
+<g transform="translate(670,100)">
+  <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
+  <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
+  <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
+  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+</g>
+<!-- Scale bar -->
+<g transform="translate(570,420)">
+  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
+  <rect x="0" y="0" width="18" height="7" fill="#555"/>
+  <rect x="36" y="0" width="18" height="7" fill="#555"/>
+  <rect x="72" y="0" width="18" height="7" fill="#555"/>
+  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
+  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
+  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+</g>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     UNDERGROUND LAYER
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="ug">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">UNDERGROUND LAYER — Z = −1.5 m to 0</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#4488cc" font-family="Arial">RWH tank · Foundations · Recharge pit · Substructure drainage</text>
+
+<!-- Ground plane context (faint) -->
+<rect x="65" y="97" width="493" height="234" fill="#f5f5ee" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
+<rect x="200" y="130" width="250" height="180" fill="#e8e4d8" stroke="#bbb" stroke-width="1" opacity=".5"/>
+<text x="325" y="222" font-size="9" fill="#bbb" font-family="Arial" text-anchor="middle">HOUSE FOOTPRINT (above)</text>
+
+<!-- RWH TANK X[-6.5,-2.5] Y[3.5,6.5] Z[-1.5,0]
+     svg: X=-6.5→ ox-6.5*18=200-117=83; X=-2.5→ ox-2.5*18=155
+     Y=3.5→ oy-3.5*18=310-63=247; Y=6.5→ oy-6.5*18=310-117=193 -->
+<rect x="83" y="193" width="72" height="54" fill="#4488cc" opacity=".25" stroke="#2266aa" stroke-width="2" stroke-dasharray="5,2"/>
+<!-- Tank walls (wireframe thick) -->
+<rect x="83" y="193" width="72" height="54" fill="none" stroke="#2266aa" stroke-width="2.5" stroke-dasharray="5,3"/>
+<!-- Tank label -->
+<text x="119" y="215" font-size="8" font-weight="bold" fill="#1144aa" font-family="Arial" text-anchor="middle">RWH TANK</text>
+<text x="119" y="225" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">18,000 L RCC</text>
+<text x="119" y="235" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">4.0 × 3.0 × 1.5 m</text>
+<text x="119" y="244" font-size="6.5" fill="#2266aa" font-family="Arial" text-anchor="middle">Z = −1.5 to 0 m</text>
+
+<!-- Tank dimensions -->
+<line x1="83" y1="256" x2="155" y2="256" stroke="#2266aa" stroke-width="1"/>
+<text x="119" y="268" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle">4.0 m</text>
+<line x1="72" y1="193" x2="72" y2="247" stroke="#2266aa" stroke-width="1"/>
+<text x="60" y="222" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle" transform="rotate(-90,60,222)">3.0m</text>
+
+<!-- Inlet pipe (first-flush + leaf filter) -->
+<line x1="119" y1="193" x2="119" y2="160" stroke="#2266aa" stroke-width="2"/>
+<rect x="109" y="150" width="20" height="14" fill="#88aacc" stroke="#2266aa" stroke-width="1" rx="2"/>
+<text x="119" y="160" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">FF+LF</text>
+<text x="145" y="158" font-size="6.5" fill="#2266aa" font-family="Arial">First-flush +</text>
+<text x="145" y="168" font-size="6.5" fill="#2266aa" font-family="Arial">leaf filter</text>
+
+<!-- Domestic supply pipe (UV+sediment) -->
+<line x1="155" y1="210" x2="200" y2="210" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
+<circle cx="168" cy="210" r="5" fill="#aaddee" stroke="#22aacc" stroke-width="1"/>
+<text x="161" y="207" font-size="5.5" fill="#22aacc" font-family="Arial">UV</text>
+<text x="175" y="225" font-size="6.5" fill="#22aacc" font-family="Arial">Domestic supply</text>
+<text x="175" y="234" font-size="6" fill="#22aacc" font-family="Arial">(UV + sediment)</text>
+
+<!-- Beehive drip line -->
+<line x1="155" y1="225" x2="200" y2="225" stroke="#e06030" stroke-width="2" stroke-dasharray="3,2"/>
+<text x="175" y="244" font-size="6.5" fill="#e06030" font-family="Arial">Beehive drip</text>
+<text x="175" y="253" font-size="6" fill="#e06030" font-family="Arial">(unfiltered)</text>
+
+<!-- Overflow to recharge pit -->
+<line x1="155" y1="200" x2="530" y2="102" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
+<!-- Recharge pit NE corner (18.5,11) → svg: x=200+18.5*18=533, y=310-11*18=112 -->
+<circle cx="533" cy="112" r="10" fill="#44aa44" opacity=".3" stroke="#228844" stroke-width="1.5"/>
+<text x="545" y="110" font-size="6.5" fill="#228844" font-family="Arial">RECHARGE PIT</text>
+<text x="545" y="120" font-size="6" fill="#228844" font-family="Arial">Ø1.2m gravel</text>
+<text x="545" y="129" font-size="6" fill="#228844" font-family="Arial">NE corner</text>
+
+<!-- Roof drainage → tank (collection arrows) -->
+<!-- From house roof center → tank -->
+<path d="M325 180 C270 180 200 190 155 220" stroke="#2266aa" stroke-width="1.5" fill="none" stroke-dasharray="3,3" marker-end="url(#farr)"/>
+<text x="240" y="175" font-size="6.5" fill="#2266aa" font-family="Arial">Roof runoff →</text>
+
+<!-- Foundation strip (simplified) -->
+<rect x="196" y="126" width="8" height="188" fill="#9a8870" opacity=".4"/>
+<rect x="446" y="126" width="8" height="188" fill="#9a8870" opacity=".4"/>
+<rect x="196" y="126" width="258" height="8" fill="#9a8870" opacity=".4"/>
+<rect x="196" y="306" width="258" height="8" fill="#9a8870" opacity=".4"/>
+<!-- Column footings at CX grid -->
+<circle cx="302" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+<circle cx="302" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+<circle cx="349" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+<circle cx="349" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+<circle cx="450" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+<circle cx="450" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
+
+<!-- LEGEND UG -->
+<g transform="translate(580,150)">
+  <rect x="0" y="0" width="155" height="155" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="77" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">UNDERGROUND LEGEND</text>
+  <rect x="8" y="22" width="18" height="10" fill="none" stroke="#2266aa" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="30" y="31" font-size="7" fill="#444" font-family="Arial">RWH tank (RCC underground)</text>
+  <circle cx="17" cy="48" r="5" fill="#9a8870" opacity=".5"/>
+  <text x="30" y="52" font-size="7" fill="#444" font-family="Arial">Column footing</text>
+  <rect x="8" y="62" width="18" height="5" fill="#9a8870" opacity=".4"/>
+  <text x="30" y="69" font-size="7" fill="#444" font-family="Arial">Foundation strip wall</text>
+  <line x1="8" y1="84" x2="26" y2="84" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="30" y="88" font-size="7" fill="#444" font-family="Arial">Domestic supply (UV)</text>
+  <line x1="8" y1="100" x2="26" y2="100" stroke="#c85a20" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="30" y="104" font-size="7" fill="#444" font-family="Arial">CT water supply (SV-02)</text>
+  <line x1="8" y1="116" x2="26" y2="116" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="30" y="120" font-size="7" fill="#444" font-family="Arial">Overflow → recharge pit</text>
+  <circle cx="17" cy="136" r="5" fill="#44aa44" opacity=".4" stroke="#228844" stroke-width="1"/>
+  <text x="30" y="140" font-size="7" fill="#444" font-family="Arial">Recharge pit (gravel)</text>
+</g>
+
+<!-- North arrow -->
+<g transform="translate(670,100)">
+  <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
+  <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
+  <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
+  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+</g>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     AIRFLOW / PASSIVE COOLING LAYER  (updated: cooling tower)
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="af">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="afArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#00ccee"/>
+  </marker>
+  <marker id="afArrW" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ee8800"/>
+  </marker>
+  <marker id="afArrH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ff5522"/>
+  </marker>
+</defs>
+
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">PASSIVE COOLING — E–W SCHEMATIC SECTION</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#00aabb" font-family="Arial">Cooling tower west intake → workshop / garage cross-flow → stair void → burjeel exhaust  ·  ΔT ≈ 14°C</text>
+
+<!-- ── GROUND + LEVEL LINES ── -->
+<rect x="42" y="322" width="358" height="8" fill="#9a8870"/>
+<line x1="42" y1="322" x2="400" y2="322" stroke="#aaa" stroke-width=".8" stroke-dasharray="2,3"/>
+<line x1="42" y1="202" x2="400" y2="202" stroke="#aaa" stroke-width=".8" stroke-dasharray="2,3"/>
+<line x1="42" y1="134" x2="400" y2="134" stroke="#aaa" stroke-width=".8" stroke-dasharray="2,3"/>
+<line x1="42" y1="66"  x2="400" y2="66"  stroke="#aaa" stroke-width=".8" stroke-dasharray="2,3"/>
+
+<!-- Level labels -->
+<text x="36" y="326" font-size="6" fill="#888" font-family="Arial" text-anchor="end">±0.0m</text>
+<text x="36" y="206" font-size="6" fill="#888" font-family="Arial" text-anchor="end">+3.3m</text>
+<text x="36" y="138" font-size="6" fill="#888" font-family="Arial" text-anchor="end">+6.95m</text>
+<text x="36" y="70"  font-size="6" fill="#888" font-family="Arial" text-anchor="end">+9.55m</text>
+<text x="36" y="45"  font-size="6" fill="#888" font-family="Arial" text-anchor="end">+13.55m</text>
+
+<!-- Zone labels -->
+<text x="44" y="272" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">GF</text>
+<text x="44" y="173" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">F1</text>
+<text x="44" y="108" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">T</text>
+<text x="44" y="50"  font-size="7.5" font-weight="bold" fill="#c86030" font-family="Arial">BJ</text>
+
+<!-- ── WORKSHOP CANTILEVER (F1 level, x=[-3,0]) ──
+     x=-3m → svg_x=100-54=46 ; x=0 → svg_x=100 ; F1 y=202–134 -->
+<rect x="46" y="134" width="4"  height="68" fill="#8a8070"/><!-- W wall F1 -->
+<rect x="46" y="132" width="58" height="4"  fill="#8a8070"/><!-- Workshop_Ceil slab (NEW) -->
+<rect x="46" y="200" width="58" height="4"  fill="#a0a090"/><!-- Workshop floor slab -->
+<rect x="50" y="136" width="46" height="64" fill="#f5eedd" opacity=".6"/><!-- workshop room fill -->
+<text x="73" y="170" font-size="6.5" fill="#885500" font-family="Arial" text-anchor="middle" transform="rotate(-90,73,170)">WORKSHOP F1</text>
+<!-- Clerestory monitor (north-light glazing strip at top of W wall) -->
+<rect x="46" y="118" width="58" height="14" fill="#a8d8ea" opacity=".5" stroke="#2288aa" stroke-width=".8" stroke-dasharray="3,2"/>
+<text x="73" y="128" font-size="5.5" fill="#2288aa" font-family="Arial" text-anchor="middle">CLERESTORY +N</text>
+
+<!-- ── HOUSE SECTION WALLS ── -->
+<!-- GF -->
+<rect x="100" y="202" width="4"   height="120" fill="#8a8070"/><!-- W wall GF -->
+<rect x="350" y="202" width="4"   height="120" fill="#8a8070"/><!-- E wall GF -->
+<rect x="100" y="200" width="254" height="4"   fill="#8a8070"/><!-- GF ceiling slab -->
+<!-- F1 -->
+<rect x="100" y="134" width="4"   height="68"  fill="#8a8070"/>
+<rect x="350" y="134" width="4"   height="68"  fill="#8a8070"/>
+<rect x="100" y="132" width="254" height="4"   fill="#8a8070"/><!-- T slab -->
+<!-- Parapet -->
+<rect x="100" y="116" width="254" height="16"  fill="#6a6a6a"/>
+
+<!-- ── STAIR VOID ── -->
+<rect x="206" y="138" width="45" height="182" fill="#00ccee" opacity=".07" stroke="#00aabb" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="228" y="232" font-size="6" fill="#00aabb" font-family="Arial" text-anchor="middle" transform="rotate(-90,228,232)">STAIR VOID</text>
+
+<!-- ── STAIR ENCLOSURE (above terrace) ── -->
+<rect x="210" y="82" width="40" height="32" fill="#e0d8c8" stroke="#888" stroke-width="1"/>
+
+<!-- ── BURJEEL WIND-CATCHER ── -->
+<rect x="210" y="20" width="36" height="62" fill="#c86030" opacity=".55" stroke="#8a3010" stroke-width="1.5"/>
+<line x1="210" y1="32" x2="246" y2="32" stroke="#fff" stroke-width="1.2"/>
+<line x1="210" y1="44" x2="246" y2="44" stroke="#fff" stroke-width="1.2"/>
+<line x1="210" y1="56" x2="246" y2="56" stroke="#fff" stroke-width="1.2"/>
+<line x1="210" y1="68" x2="246" y2="68" stroke="#fff" stroke-width="1.2"/>
+<text x="228" y="50" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">BURJEEL</text>
+<text x="228" y="60" font-size="5.5" fill="#ffe0c0" font-family="Arial" text-anchor="middle">2×2×4m</text>
+<!-- Exhaust arrow (up) -->
+<path d="M228,20 L228,6" stroke="#ee8800" stroke-width="2.5" fill="none" marker-end="url(#afArrW)"/>
+<text x="252" y="14" font-size="7" fill="#ee8800" font-family="Arial">EXHAUST ~40°C</text>
+
+<!-- ══════════════════════════════════════════════
+     COOLING TOWER (section view, west of workshop)
+     x=-2m → svg_x = 100-36 = 64  (horizontal scale 18px/m)
+     Height 5.5m ≈ 5.5/3.3×120 = 200px max — use schematic 130px
+     Ground y=322, top y=192
+══════════════════════════════════════════════ -->
+<!-- CT foundation -->
+<rect x="55" y="318" width="18" height="6" fill="#8a8070"/>
+<!-- CT terracotta cylinder body -->
+<rect x="55" y="192" width="18" height="126" fill="#c85a20" opacity=".85" stroke="#8a3010" stroke-width="1.5"/>
+<!-- Terracotta cone bands (texture) -->
+<line x1="55" y1="205" x2="73" y2="205" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="218" x2="73" y2="218" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="231" x2="73" y2="231" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="244" x2="73" y2="244" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="257" x2="73" y2="257" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="270" x2="73" y2="270" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="283" x2="73" y2="283" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="296" x2="73" y2="296" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<line x1="55" y1="309" x2="73" y2="309" stroke="#f0c090" stroke-width=".8" opacity=".6"/>
+<!-- Solar EC fan + PV panel at top -->
+<ellipse cx="64" cy="192" rx="9"  ry="4"  fill="#445566" stroke="#334455" stroke-width="1.5"/>
+<rect    x="57"  y="180"  width="14" height="8" fill="#1a2a40" stroke="#4488cc" stroke-width=".8" rx="1"/>
+<text x="64" y="177" font-size="5" fill="#88aacc" font-family="Arial" text-anchor="middle">☀ PV+EC</text>
+<!-- Water drip supply pipe (from RWH supply) -->
+<line x1="64" y1="320" x2="64" y2="318" stroke="#2244aa" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="64" y="338" font-size="5.5" fill="#2244aa" font-family="Arial" text-anchor="middle">RWH/mains</text>
+<text x="64" y="346" font-size="5.5" fill="#2244aa" font-family="Arial" text-anchor="middle">drip supply</text>
+<!-- CT label -->
+<text x="40" y="246" font-size="6.5" font-weight="bold" fill="#c86030" font-family="Arial" text-anchor="middle">COOL</text>
+<text x="40" y="256" font-size="6.5" fill="#c86030" font-family="Arial" text-anchor="middle">TOWER</text>
+<text x="40" y="266" font-size="5.5" fill="#c86030" font-family="Arial" text-anchor="middle">∅1.8m</text>
+<text x="40" y="275" font-size="5.5" fill="#c86030" font-family="Arial" text-anchor="middle">h=5.5m</text>
+
+<!-- ── AIRFLOW ARROWS ── -->
+<!-- 1. Hot air drawn into CT base from outside (south) -->
+<path d="M42,310 Q50,310 55,305" stroke="#ff5522" stroke-width="2" fill="none" marker-end="url(#afArrH)"/>
+<text x="28" y="307" font-size="6.5" fill="#cc3300" font-family="Arial" text-anchor="middle">45°C</text>
+<text x="28" y="316" font-size="6" fill="#cc3300" font-family="Arial" text-anchor="middle">HOT AIR</text>
+
+<!-- 2. Cooled air exits CT upper portion → east toward workshop west wall -->
+<path d="M73,240 L96,240" stroke="#00ccee" stroke-width="2.5" fill="none" marker-end="url(#afArr)"/>
+<text x="84" y="234" font-size="6" fill="#00aabb" font-family="Arial" text-anchor="middle">31°C</text>
+
+<!-- 3. Under-cantilever flow at GF → through west wall opening into garage (y≈262) -->
+<path d="M100,262 L200,262" stroke="#00ccee" stroke-width="2.5" fill="none" marker-end="url(#afArr)"/>
+<text x="152" y="255" font-size="7" fill="#00ccee" font-family="Arial" text-anchor="middle">COOLED AIR ~31°C</text>
+
+<!-- 4. Continue east through living room -->
+<path d="M204,262 L344,262" stroke="#00ccee" stroke-width="1.8" fill="none" marker-end="url(#afArr)" stroke-dasharray="5,3"/>
+<text x="180" y="272" font-size="6" fill="#00bbcc" font-family="Arial">~27°C interior</text>
+
+<!-- 5. Rise in stair void -->
+<path d="M216,262 L216,206" stroke="#00ccee" stroke-width="2.5" fill="none" marker-end="url(#afArr)"/>
+<text x="200" y="240" font-size="5.5" fill="#00aabb" font-family="Arial" text-anchor="end">RISES</text>
+
+<!-- 6. F1 cross-flow + up to terrace -->
+<path d="M228,200 L228,160" stroke="#00ccee" stroke-width="2" fill="none" marker-end="url(#afArr)"/>
+<path d="M228,134 L228,86"  stroke="#00ccee" stroke-width="2" fill="none" marker-end="url(#afArr)"/>
+
+<!-- 7. Clerestory secondary path (workshop) -->
+<path d="M73,175 Q87,165 100,168" stroke="#00ccee" stroke-width="1.5" fill="none" marker-end="url(#afArr)" stroke-dasharray="4,2" opacity=".7"/>
+<text x="68" y="162" font-size="5.5" fill="#00aabb" font-family="Arial" text-anchor="middle">↑ N-light</text>
+
+<!-- ── INFO PANELS (right) ── -->
+<!-- CT Specification -->
+<rect x="415" y="48" width="330" height="100" fill="#f0f8f0" stroke="#448844" stroke-width="1" rx="4"/>
+<text x="580" y="65" font-size="8" font-weight="bold" fill="#226622" font-family="Arial" text-anchor="middle">COOLING TOWER SPEC</text>
+<text x="428" y="81" font-size="7" fill="#226622" font-family="Arial">→ ∅ 1.8 m × h 5.5 m · terracotta cone-lined interior</text>
+<text x="428" y="93" font-size="7" fill="#226622" font-family="Arial">→ Solar-powered EC fan (50–80W) at top · auto-speed ctrl</text>
+<text x="428" y="105" font-size="7" fill="#226622" font-family="Arial">→ Drip supply: RWH primary / mains fallback (SV-02)</text>
+<text x="428" y="117" font-size="7" fill="#226622" font-family="Arial">→ YF-S201 flow meter · SHT31-D humidity+temp probe</text>
+<text x="428" y="129" font-size="7" fill="#226622" font-family="Arial">→ SW corner workshop ext · visible from driveway gate</text>
+<text x="428" y="141" font-size="7" fill="#226622" font-family="Arial">→ Replaces E+S beehive panels (removed from design)</text>
+
+<!-- Monsoon Bypass -->
+<rect x="415" y="158" width="330" height="118" fill="#fff8e0" stroke="#cc8800" stroke-width="1" rx="4"/>
+<text x="580" y="175" font-size="8" font-weight="bold" fill="#cc6600" font-family="Arial" text-anchor="middle">MONSOON BYPASS (RH &gt; 65%)</text>
+<text x="428" y="190" font-size="7" fill="#664400" font-family="Arial">→ CT dampers CLOSE · EC fan OFF</text>
+<text x="428" y="202" font-size="7" fill="#664400" font-family="Arial">→ CT water drip OFF (RWH conservation)</text>
+<text x="428" y="214" font-size="7" fill="#664400" font-family="Arial">→ Cross-ventilation + ceiling fans only</text>
+<text x="428" y="226" font-size="7" fill="#664400" font-family="Arial">→ Portable dehumidifier if RH &gt; 75%</text>
+<text x="428" y="238" font-size="7" fill="#664400" font-family="Arial">→ Humidity sensor (SHT31-D) triggers auto switch</text>
+<text x="428" y="250" font-size="7" fill="#664400" font-family="Arial">Jun–Sep: natural cross-ventilation primary mode</text>
+<text x="428" y="262" font-size="7" fill="#664400" font-family="Arial">→ Burjeel + balcony doors provide stack effect</text>
+
+<!-- Winter Bypass -->
+<rect x="415" y="285" width="330" height="95" fill="#e8f0f8" stroke="#4466aa" stroke-width="1" rx="4"/>
+<text x="580" y="302" font-size="8" font-weight="bold" fill="#224488" font-family="Arial" text-anchor="middle">WINTER BYPASS (Nov–Feb)</text>
+<text x="428" y="318" font-size="7" fill="#224488" font-family="Arial">→ CT OFF · drip OFF</text>
+<text x="428" y="330" font-size="7" fill="#224488" font-family="Arial">→ E+S passive solar gain through low-e glazing</text>
+<text x="428" y="342" font-size="7" fill="#224488" font-family="Arial">→ Thermal mass (brick/RCC) stores daytime heat</text>
+<text x="428" y="354" font-size="7" fill="#224488" font-family="Arial">→ Radiant heat panels in bathrooms only</text>
+<text x="428" y="366" font-size="7" fill="#224488" font-family="Arial">→ Burjeel louvers closed — no stack loss</text>
+<text x="428" y="378" font-size="7" fill="#224488" font-family="Arial">→ Low-e glass reduces night radiation loss</text>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ELECTRICAL / SOLAR LAYER
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="el">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="elArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ffcc00"/>
+  </marker>
+  <marker id="elArrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ff6600"/>
+  </marker>
+</defs>
+
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">ELECTRICAL &amp; SOLAR LAYER</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#ffcc00" font-family="Arial">6 kWp PV · 12 kWh LFP · 5 kW hybrid inverter · Solar microgrid</text>
+
+<!-- House footprint (faint) -->
+<rect x="200" y="130" width="250" height="180" fill="#f5f0e0" stroke="#ddd" stroke-width="1" opacity=".5"/>
+
+<!-- TERRACE level (PV) -->
+<rect x="200" y="97" width="250" height="33" fill="#f8f0d0" stroke="#ccaa00" stroke-width="1" rx="2"/>
+<text x="325" y="115" font-size="8" fill="#886600" font-family="Arial" text-anchor="middle">TERRACE FFL +6.95m</text>
+
+<!-- PV PANELS (terrace) -->
+<g transform="translate(200,60)">
+  <rect x="5" y="5" width="80" height="24" fill="#1a2a40" stroke="#4488cc" stroke-width="1" rx="2"/>
+  <text x="45" y="17" font-size="6.5" fill="#88ccff" font-family="Arial" text-anchor="middle">☀ PV PERGOLA</text>
+  <text x="45" y="26" font-size="6" fill="#88bbee" font-family="Arial" text-anchor="middle">15×400W = 6kWp</text>
+  <!-- Solar rays -->
+  <line x1="45" y1="5" x2="45" y2="-8" stroke="#ffcc00" stroke-width="1.5"/>
+  <line x1="55" y1="2" x2="62" y2="-7" stroke="#ffcc00" stroke-width="1.5"/>
+  <line x1="35" y1="2" x2="28" y2="-7" stroke="#ffcc00" stroke-width="1.5"/>
+  <!-- DC line down -->
+  <line x1="45" y1="29" x2="45" y2="57" stroke="#ffcc00" stroke-width="2" marker-end="url(#elArr)"/>
+  <text x="55" y="48" font-size="6.5" fill="#ffaa00" font-family="Arial">DC ~600V</text>
+</g>
+
+<!-- INVERTER (garage) -->
+<!-- Garage: X[0.4,1.0] Y[8.5,9.1] but let's place it schematically -->
+<rect x="127" y="270" width="54" height="40" fill="#4a4a6a" stroke="#8888cc" stroke-width="1.5" rx="3"/>
+<text x="154" y="286" font-size="7.5" font-weight="bold" fill="#ccccff" font-family="Arial" text-anchor="middle">INVERTER</text>
+<text x="154" y="296" font-size="6.5" fill="#aaaaee" font-family="Arial" text-anchor="middle">5 kW Hybrid</text>
+<text x="154" y="305" font-size="6" fill="#aaaaee" font-family="Arial" text-anchor="middle">Islanding mode</text>
+
+<!-- DC → Inverter -->
+<line x1="245" y1="117" x2="200" y2="117" stroke="#ffcc00" stroke-width="2"/>
+<line x1="200" y1="117" x2="200" y2="270" stroke="#ffcc00" stroke-width="2"/>
+<line x1="200" y1="270" x2="181" y2="290" stroke="#ffcc00" stroke-width="2" marker-end="url(#elArr)"/>
+
+<!-- BATTERY BANK -->
+<rect x="127" y="200" width="54" height="55" fill="#2a4a2a" stroke="#44aa44" stroke-width="1.5" rx="3"/>
+<text x="154" y="218" font-size="7.5" font-weight="bold" fill="#88ff88" font-family="Arial" text-anchor="middle">BATTERY</text>
+<text x="154" y="229" font-size="7" fill="#88ee88" font-family="Arial" text-anchor="middle">2 × 6 kWh</text>
+<text x="154" y="239" font-size="6.5" fill="#88ee88" font-family="Arial" text-anchor="middle">12 kWh LFP</text>
+<text x="154" y="249" font-size="6" fill="#66cc66" font-family="Arial" text-anchor="middle">Ventilated cabinet</text>
+
+<!-- Battery ↔ Inverter -->
+<line x1="154" y1="255" x2="154" y2="270" stroke="#44aa44" stroke-width="2"/>
+
+<!-- Grid connection (bidirectional) -->
+<rect x="50" y="310" width="60" height="30" fill="#555560" stroke="#aaa" stroke-width="1" rx="2"/>
+<text x="80" y="325" font-size="7" fill="#eee" font-family="Arial" text-anchor="middle">GRID</text>
+<text x="80" y="335" font-size="6" fill="#ccc" font-family="Arial" text-anchor="middle">Net metering</text>
+<line x1="127" y1="310" x2="110" y2="325" stroke="#aaa" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="80" y="356" font-size="6.5" fill="#888" font-family="Arial" text-anchor="middle">~10% export</text>
+
+<!-- AC distribution from inverter -->
+<line x1="181" y1="300" x2="181" y2="350" stroke="#ff6600" stroke-width="2"/>
+<!-- Critical loads -->
+<rect x="200" y="340" width="120" height="28" fill="#4a2a2a" stroke="#ff6666" stroke-width="1.5" rx="3"/>
+<text x="260" y="354" font-size="7" font-weight="bold" fill="#ff9999" font-family="Arial" text-anchor="middle">CRITICAL MICROGRID</text>
+<text x="260" y="363" font-size="6.5" fill="#ee8888" font-family="Arial" text-anchor="middle">Security · NVR · Fans · Comms (~600W)</text>
+<line x1="200" y1="354" x2="181" y2="354" stroke="#ff6600" stroke-width="1.5" marker-end="url(#elArrR)"/>
+
+<!-- Non-critical loads -->
+<rect x="200" y="380" width="120" height="28" fill="#3a3a4a" stroke="#8888ff" stroke-width="1" rx="3"/>
+<text x="260" y="394" font-size="7" fill="#aaaaff" font-family="Arial" text-anchor="middle">GENERAL LOADS</text>
+<text x="260" y="403" font-size="6.5" fill="#9999ee" font-family="Arial" text-anchor="middle">Kitchen · Lighting · EV · HVAC</text>
+<line x1="200" y1="394" x2="181" y2="370" stroke="#8888ff" stroke-width="1.5" marker-end="url(#elArrR)"/>
+
+<!-- KNX/Smart home bus -->
+<rect x="380" y="200" width="160" height="80" fill="#2a3a4a" stroke="#6699cc" stroke-width="1.5" rx="4"/>
+<text x="460" y="218" font-size="8" font-weight="bold" fill="#99ccff" font-family="Arial" text-anchor="middle">SMART HOME BUS</text>
+<text x="393" y="232" font-size="6.5" fill="#88bbee" font-family="Arial">• KNX wired bus (primary)</text>
+<text x="393" y="244" font-size="6.5" fill="#88bbee" font-family="Arial">• Zigbee wireless (fallback)</text>
+<text x="393" y="256" font-size="6.5" fill="#88bbee" font-family="Arial">• Local server (no cloud)</text>
+<text x="393" y="268" font-size="6.5" fill="#88bbee" font-family="Arial">• Mobile/voice optional</text>
+
+<!-- KNX to loads -->
+<line x1="380" y1="240" x2="330" y2="240" stroke="#6699cc" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+<!-- Solar yield stats -->
+<rect x="380" y="60" width="200" height="120" fill="#f8f4e0" stroke="#cc9900" stroke-width="1" rx="4"/>
+<text x="480" y="78" font-size="8.5" font-weight="bold" fill="#664400" font-family="Arial" text-anchor="middle">SOLAR SUMMARY</text>
+<text x="393" y="94" font-size="7" fill="#664400" font-family="Arial">Array:   15 × 400 W = 6 kWp</text>
+<text x="393" y="107" font-size="7" fill="#664400" font-family="Arial">Tilt:    25° south (optimised Lucknow)</text>
+<text x="393" y="120" font-size="7" fill="#664400" font-family="Arial">Yield:   ~25 kWh/day avg</text>
+<text x="393" y="133" font-size="7" fill="#664400" font-family="Arial">Battery: 12 kWh LFP (≈20 hr critical)</text>
+<text x="393" y="146" font-size="7" fill="#664400" font-family="Arial">Export:  ~10% via net metering</text>
+<text x="393" y="159" font-size="7" fill="#664400" font-family="Arial">CO₂ offset: ~5 t/yr</text>
+
+<!-- Autonomy bar -->
+<rect x="393" y="170" width="160" height="5" fill="#dddddd" rx="2"/>
+<rect x="393" y="170" width="130" height="5" fill="#44aa44" rx="2"/>
+<text x="393" y="183" font-size="6.5" fill="#448844" font-family="Arial">Critical autonomy: ~20 hrs</text>
+</svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MONITORING / AI / SECURITY LAYER
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="mon">
+<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">MONITORING, SECURITY &amp; AI LAYER</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#ff6666" font-family="Arial">7 IP cameras · 8 PIR/IR sensors · NVR 30-day · KNX+Zigbee · Local AI inference</text>
+
+<!-- Plot boundary -->
+<rect x="65" y="97" width="493" height="234" fill="#f8f5f0" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
+<!-- House footprint -->
+<rect x="200" y="130" width="250" height="180" fill="#eee8d8" stroke="#aaa" stroke-width="1"/>
+<!-- Driveway -->
+<rect x="65" y="97" width="135" height="234" fill="#e8e6e0"/>
+<!-- East lawn -->
+<rect x="450" y="97" width="108" height="234" fill="#d4e8c4"/>
+
+<!-- GATE area -->
+<line x1="65" y1="184" x2="65" y2="256" stroke="#cc8800" stroke-width="2"/>
+<text x="44" y="222" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,44,222)">GATE</text>
+
+<!-- ── CCTV CAMERAS (red triangles with FOV cones) ── -->
+<!-- 1. Gate cam (on west boundary Y=5→svg_y=220) -->
+<g transform="translate(72,220)">
+  <polygon points="0,0 12,-8 12,8" fill="#ff4444" opacity=".8"/>
+  <path d="M12,-8 L50,-20 L50,20 L12,8 Z" fill="#ff4444" opacity=".12" stroke="#ff4444" stroke-width=".5"/>
+  <text x="0" y="-10" font-size="6" fill="#cc0000" font-family="Arial">CAM1:Gate</text>
+</g>
+<!-- 2. Driveway cam -->
+<g transform="translate(130,145)">
+  <circle cx="0" cy="0" r="5" fill="#ff4444" opacity=".9"/>
+  <path d="M0,5 L-25,40 L25,40 Z" fill="#ff4444" opacity=".15" stroke="#ff4444" stroke-width=".5"/>
+  <text x="0" y="-8" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM2:Drive</text>
+</g>
+<!-- 3. Front door cam -->
+<g transform="translate(450,202)">
+  <polygon points="0,0 -12,-8 -12,8" fill="#ff4444" opacity=".8"/>
+  <path d="M-12,-8 L-60,-20 L-60,20 L-12,8 Z" fill="#ff4444" opacity=".12" stroke="#ff4444" stroke-width=".5"/>
+  <text x="8" y="4" font-size="6" fill="#cc0000" font-family="Arial">CAM3:Front</text>
+</g>
+<!-- 4. NE perimeter -->
+<g transform="translate(450,130)">
+  <polygon points="0,0 -8,-12 8,-12" fill="#ff4444" opacity=".8"/>
+  <path d="M-8,-12 L-25,-55 L25,-55 Z" fill="#ff4444" opacity=".12"/>
+  <text x="10" y="0" font-size="6" fill="#cc0000" font-family="Arial">CAM4:NE</text>
+</g>
+<!-- 5. SW perimeter -->
+<g transform="translate(200,310)">
+  <polygon points="0,0 -8,12 8,12" fill="#ff4444" opacity=".8"/>
+  <path d="M-8,12 L-25,55 L25,55 Z" fill="#ff4444" opacity=".12"/>
+  <text x="10" y="15" font-size="6" fill="#cc0000" font-family="Arial">CAM5:SW</text>
+</g>
+<!-- 6. Terrace cam -->
+<g transform="translate(325,160)">
+  <circle cx="0" cy="0" r="5" fill="#ff4444" opacity=".9"/>
+  <path d="M0,5 L-25,45 L25,45 Z" fill="#ff4444" opacity=".1"/>
+  <text x="0" y="-9" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM6:Terrace</text>
+</g>
+<!-- 7. Garage cam -->
+<g transform="translate(220,220)">
+  <polygon points="0,0 8,-8 8,8" fill="#ff4444" opacity=".8"/>
+  <path d="M8,-8 L45,-20 L45,20 L8,8 Z" fill="#ff4444" opacity=".12"/>
+  <text x="-2" y="-10" font-size="6" fill="#cc0000" font-family="Arial">CAM7:Garage</text>
+</g>
+
+<!-- ── PIR/IR SENSORS (orange circles, boundary) ── -->
+<!-- 8 sensors along boundary wall (W side & N/S) -->
+<circle cx="72" cy="115" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="72" cy="148" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="72" cy="180" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="72" cy="260" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="72" cy="295" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="72" cy="320" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="150" cy="101" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<circle cx="400" cy="101" r="6" fill="#ff8800" opacity=".8" stroke="#cc5500" stroke-width="1"/>
+<text x="30" y="222" font-size="6.5" fill="#cc5500" font-family="Arial" text-anchor="middle" transform="rotate(-90,30,222)">PIR+IR sensors</text>
+
+<!-- FLOODLIGHTS (yellow stars) -->
+<text x="68" y="108" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+<text x="60" y="104" font-size="5.5" fill="#cc9900" font-family="Arial">FLOOD</text>
+<text x="96" y="102" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+<text x="455" y="120" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+<text x="328" y="122" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+
+<!-- NVR box -->
+<rect x="310" y="193" width="50" height="35" fill="#2a2a4a" stroke="#6666cc" stroke-width="1.5" rx="3"/>
+<text x="335" y="207" font-size="6.5" font-weight="bold" fill="#aaaaff" font-family="Arial" text-anchor="middle">NVR</text>
+<text x="335" y="216" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">30-day enc.</text>
+<text x="335" y="224" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">+KNX server</text>
+
+<!-- Connection lines from cameras to NVR -->
+<g stroke="#ff4444" stroke-width=".8" stroke-dasharray="3,3" opacity=".5">
+  <line x1="84" y1="220" x2="310" y2="210"/>
+  <line x1="130" y1="145" x2="310" y2="205"/>
+  <line x1="438" y1="202" x2="360" y2="210"/>
+  <line x1="442" y1="130" x2="358" y2="196"/>
+  <line x1="200" y1="322" x2="315" y2="225"/>
+  <line x1="325" y1="160" x2="335" y2="193"/>
+  <line x1="228" y1="212" x2="312" y2="208"/>
+</g>
+
+<!-- AI / LOCAL SERVER block -->
+<rect x="500" y="140" width="220" height="180" fill="#1a2a1a" stroke="#44aa44" stroke-width="1.5" rx="6"/>
+<text x="610" y="160" font-size="9" font-weight="bold" fill="#88ff88" font-family="Arial" text-anchor="middle">LOCAL AI SERVER</text>
+<text x="510" y="178" font-size="7" fill="#66cc66" font-family="Arial">• Object detection (IP cams, local)</text>
+<text x="510" y="192" font-size="7" fill="#66cc66" font-family="Arial">• Anomaly alerts (PIR + camera)</text>
+<text x="510" y="206" font-size="7" fill="#66cc66" font-family="Arial">• Energy mgmt (PV, battery, loads)</text>
+<text x="510" y="220" font-size="7" fill="#66cc66" font-family="Arial">• Cooling tower ctrl (EC fan + drip + flow)</text>
+<text x="510" y="234" font-size="7" fill="#66cc66" font-family="Arial">• RWH level monitoring</text>
+<text x="510" y="248" font-size="7" fill="#66cc66" font-family="Arial">• Voice/mobile (local LLM, optional)</text>
+<text x="510" y="262" font-size="7" fill="#44aa44" font-family="Arial">KNX bus → all devices</text>
+<text x="510" y="275" font-size="7" fill="#44aa44" font-family="Arial">Zigbee → wireless fallback</text>
+<text x="510" y="288" font-size="7" fill="#44aa44" font-family="Arial">No cloud dependency for core</text>
+<text x="510" y="301" font-size="6.5" fill="#888" font-family="Arial">Runs on local edge hardware (NUC/RPi5)</text>
+
+<!-- KNX bus line -->
+<line x1="360" y1="210" x2="500" y2="210" stroke="#4466cc" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="430" y="205" font-size="6.5" fill="#4466cc" font-family="Arial" text-anchor="middle">KNX bus</text>
+
+<!-- Privacy note -->
+<rect x="500" y="335" width="220" height="40" fill="#2a2a2a" stroke="#666" stroke-width="1" rx="3"/>
+<text x="610" y="352" font-size="7" fill="#aaa" font-family="Arial" text-anchor="middle">No offensive deterrents · No cloud for core</text>
+<text x="610" y="365" font-size="7" fill="#aaa" font-family="Arial" text-anchor="middle">Optional cloud backup (encrypted, consent)</text>
+
+<!-- Legend -->
+<g transform="translate(68,395)">
+  <polygon points="0,0 8,-5 8,5" fill="#ff4444" opacity=".8"/>
+  <text x="12" y="4" font-size="7" fill="#444" font-family="Arial">CCTV camera (×7)</text>
+  <circle cx="4" cy="22" r="5" fill="#ff8800" opacity=".8"/>
+  <text x="12" y="26" font-size="7" fill="#444" font-family="Arial">PIR / IR beam-break sensor (×8)</text>
+  <text x="0" y="44" font-size="12" fill="#ffcc00">★</text>
+  <text x="12" y="47" font-size="7" fill="#444" font-family="Arial">Floodlight (×4)</text>
+</g>
+</svg>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HA AGENT SIMULATION
+══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="ha">
+<style>
+.sc-btn{padding:6px 11px;border:1px solid #2a4a2a;border-radius:3px;background:#0a140a;color:#77bb77;font-size:.72rem;cursor:pointer;letter-spacing:.03em;transition:.15s}
+.sc-btn:hover{background:#142814;border-color:#44aa44}
+.sc-btn.running{background:#1a3a1a;border-color:#44ff44;color:#ccffcc;font-weight:600}
+.sc-btn:disabled{opacity:.4;cursor:default}
+.s-card{background:#070e07;border:1px solid #142214;border-radius:3px;padding:5px 7px;min-width:0}
+.s-name{font-size:.58rem;color:#335533;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-val{font-size:.92rem;font-weight:700;color:#66cc88;font-family:monospace;margin-top:1px;white-space:nowrap}
+.s-unit{font-size:.58rem;color:#335533;font-weight:400}
+.s-card.warn .s-val{color:#ffaa33}
+.s-card.crit .s-val{color:#ff4433}
+.s-card.ok .s-val{color:#44ee88}
+.log-line{border-bottom:1px solid #0a140a;padding:2px 0;margin:0;white-space:pre-wrap;word-break:break-word}
+</style>
+<div style="width:100%;max-width:1180px;padding:8px 14px;display:flex;flex-direction:column;gap:7px">
+
+<!-- Scenario selector -->
+<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+  <span style="color:#335533;font-size:.68rem;letter-spacing:.07em;flex-shrink:0">SCENARIO ▸</span>
+  <button class="sc-btn" id="sb-dry_day"    onclick="startScenario('dry_day')">💧 Dry Day / RWH Crisis</button>
+  <button class="sc-btn" id="sb-storm"      onclick="startScenario('storm')">⛈ Storm Warning</button>
+  <button class="sc-btn" id="sb-security"   onclick="startScenario('security')">🔒 Night Security</button>
+  <button class="sc-btn" id="sb-grid_fail"  onclick="startScenario('grid_fail')">⚡ Grid Failure</button>
+  <button class="sc-btn" id="sb-pump_fault" onclick="startScenario('pump_fault')">🔧 Pump Fault</button>
+  <div style="margin-left:auto;display:flex;gap:5px">
+    <button id="ha-pause" onclick="haPause()" style="padding:5px 11px;background:#111a11;border:1px solid #2a4a2a;color:#77bb77;border-radius:3px;cursor:pointer;font-size:.72rem">⏸ Pause</button>
+    <button onclick="haReset()" style="padding:5px 11px;background:#111;border:1px solid #333;color:#777;border-radius:3px;cursor:pointer;font-size:.72rem">↺ Reset</button>
+  </div>
+</div>
+
+<!-- Progress bar -->
+<div style="background:#080e08;border:1px solid #142214;border-radius:3px;height:19px;position:relative;overflow:hidden">
+  <div id="ha-prog" style="height:100%;width:0%;background:linear-gradient(90deg,#0d2a0d,#22aa44);transition:width .35s ease"></div>
+  <span id="ha-time" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.63rem;color:#558855;font-family:monospace;white-space:nowrap;pointer-events:none">▸ Select a scenario — 60 s · 12 ticks · 5 s/tick</span>
+</div>
+
+<!-- Main split -->
+<div style="display:flex;gap:9px;align-items:flex-start">
+
+  <!-- LEFT: live system map -->
+  <div style="flex:0 0 360px">
+    <div style="font-size:.58rem;color:#335533;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px">Live System Map</div>
+    <svg id="ha-map" viewBox="0 0 360 305" width="360" style="background:#040c04;border:1px solid #142214;border-radius:4px;display:block">
+
+      <!-- Site boundary -->
+      <rect x="5" y="5" width="350" height="295" fill="none" stroke="#0e180e" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- Driveway west -->
+      <rect x="5" y="5" width="70" height="295" fill="#080e08"/>
+      <!-- East lawn -->
+      <rect x="260" y="5" width="95" height="295" fill="#070d07"/>
+
+      <!-- Workshop cantilever -->
+      <rect x="38" y="55" width="37" height="155" fill="#090e09" stroke="#121e12" stroke-width="1" stroke-dasharray="3,2"/>
+      <!-- House GF footprint -->
+      <rect x="75" y="55" width="185" height="155" fill="#0b140b" stroke="#1e2e1e" stroke-width="1.5"/>
+      <!-- Internal wall CX1 (garage/living divide) -->
+      <line x1="137" y1="55" x2="137" y2="210" stroke="#162216" stroke-width="1"/>
+      <!-- Horizontal wall Y=5.5m -->
+      <line x1="137" y1="127" x2="260" y2="127" stroke="#162216" stroke-width="1"/>
+
+      <!-- PV ARRAY (terrace band) -->
+      <rect x="80" y="8" width="95" height="40" fill="#060610" stroke="#1e2e4e" stroke-width="1" rx="2"/>
+      <line x1="112" y1="8" x2="112" y2="48" stroke="#121e32" stroke-width=".5"/>
+      <line x1="144" y1="8" x2="144" y2="48" stroke="#121e32" stroke-width=".5"/>
+      <line x1="80" y1="28" x2="175" y2="28" stroke="#121e32" stroke-width=".5"/>
+      <text x="128" y="22" font-size="6" fill="#2a3a6a" font-family="Arial" text-anchor="middle">PV ARRAY</text>
+      <text x="128" y="37" font-size="9" font-weight="bold" fill="#4466bb" font-family="Arial" text-anchor="middle" id="m-pv">4200W</text>
+
+      <!-- BURJEEL (terrace, above stair core) -->
+      <rect x="188" y="8" width="34" height="40" fill="#0e0808" stroke="#553322" stroke-width="1" rx="2" id="m-burj-bg"/>
+      <text x="205" y="24" font-size="6" fill="#885533" font-family="Arial" text-anchor="middle">BURJ</text>
+      <text x="205" y="37" font-size="8" font-weight="bold" fill="#664422" font-family="Arial" text-anchor="middle" id="m-burj">100%</text>
+
+      <!-- BATTERY (garage) -->
+      <rect x="78" y="148" width="28" height="42" fill="#080e0e" stroke="#1a3a2a" stroke-width="1.5" rx="2"/>
+      <rect x="79" y="149" id="m-bat-fill" width="26" height="40" fill="#1a4433" rx="2"/>
+      <text x="92" y="166" font-size="5.5" fill="#33aa66" font-family="Arial" text-anchor="middle">BAT</text>
+      <text x="92" y="178" font-size="8" font-weight="bold" fill="#33cc77" font-family="Arial" text-anchor="middle" id="m-bat">88%</text>
+
+      <!-- COOLING TOWER (SW corner near workshop) -->
+      <circle cx="38" cy="238" r="16" fill="#0e0a06" stroke="#aa6622" stroke-width="1.5" id="m-ct-ring"/>
+      <circle cx="38" cy="238" r="8" fill="#150e08" stroke="#884422" stroke-width="1" id="m-ct-inner"/>
+      <text x="38" y="235" font-size="6.5" fill="#cc8833" font-family="Arial" text-anchor="middle" font-weight="bold">CT</text>
+      <text x="38" y="246" font-size="6" fill="#aa6622" font-family="Arial" text-anchor="middle" id="m-ct">100%</text>
+
+      <!-- RWH TANK (underground, plot SW) -->
+      <rect x="5" y="238" width="24" height="56" fill="#06080e" stroke="#1a2a5a" stroke-width="1.5" rx="2"/>
+      <rect x="6" y="239" id="m-rwh-fill" width="22" height="54" fill="#1a3a7a" rx="2"/>
+      <text x="17" y="258" font-size="5.5" fill="#3366aa" font-family="Arial" text-anchor="middle" font-weight="bold">RWH</text>
+      <text x="17" y="268" font-size="7" font-weight="bold" fill="#3366aa" font-family="Arial" text-anchor="middle" id="m-rwh">82%</text>
+
+      <!-- Mains pipe west boundary → house -->
+      <line x1="5" y1="190" x2="75" y2="190" stroke="#2244aa" stroke-width="2" stroke-dasharray="4,3" id="m-mains-pipe" opacity=".25"/>
+      <circle cx="40" cy="190" r="5" fill="#060e18" stroke="#224488" stroke-width="1.5" id="m-mains-v"/>
+      <text x="40" y="204" font-size="5.5" fill="#224488" font-family="Arial" text-anchor="middle" id="m-mains-lbl">CLOSED</text>
+
+      <!-- GRID + WIND panel (right) -->
+      <rect x="265" y="55" width="88" height="85" fill="#040c04" stroke="#142214" stroke-width="1" rx="2"/>
+      <text x="309" y="70" font-size="6" fill="#335533" font-family="Arial" text-anchor="middle">GRID</text>
+      <circle cx="309" cy="84" r="10" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.5" id="m-grid-dot"/>
+      <text x="309" y="88" font-size="6" fill="#33ff33" font-family="Arial" text-anchor="middle" id="m-grid-v">230V</text>
+      <text x="309" y="104" font-size="5.5" fill="#335544" font-family="Arial" text-anchor="middle">WIND</text>
+      <text x="309" y="117" font-size="11" font-weight="bold" fill="#55aaaa" font-family="Arial" text-anchor="middle" id="m-wind">8</text>
+      <text x="309" y="128" font-size="5.5" fill="#336655" font-family="Arial" text-anchor="middle">km/h</text>
+
+      <!-- TEMP panel (right) -->
+      <rect x="265" y="148" width="88" height="62" fill="#040c04" stroke="#142214" stroke-width="1" rx="2"/>
+      <text x="309" y="163" font-size="5.5" fill="#554433" font-family="Arial" text-anchor="middle">OUT / IN</text>
+      <text x="289" y="181" font-size="10" font-weight="bold" fill="#bb7733" font-family="Arial" text-anchor="middle" id="m-tout">38°C</text>
+      <text x="329" y="181" font-size="10" font-weight="bold" fill="#aaaa33" font-family="Arial" text-anchor="middle" id="m-tin">27°C</text>
+      <line x1="309" y1="165" x2="309" y2="198" stroke="#1a2a1a" stroke-width=".8"/>
+
+      <!-- CAMERAS (7 dots) -->
+      <!-- C1 Gate -->   <circle cx="18" cy="150" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c0"/><text x="18" y="163" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C1</text>
+      <!-- C2 Drive -->  <circle cx="52" cy="78" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c1"/><text x="52" y="91" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C2</text>
+      <!-- C3 Front --> <circle cx="262" cy="128" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c2"/><text x="262" y="141" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C3</text>
+      <!-- C4 NE -->    <circle cx="262" cy="57" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c3"/><text x="262" y="70" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C4</text>
+      <!-- C5 SW -->    <circle cx="18" cy="215" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c4"/><text x="18" y="228" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C5</text>
+      <!-- C6 Terr -->  <circle cx="165" cy="34" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c5"/><text x="165" y="47" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C6</text>
+      <!-- C7 Garage --><circle cx="108" cy="128" r="5" fill="#0e2a0e" stroke="#33aa33" stroke-width="1.2" id="m-c6"/><text x="108" y="141" font-size="5" fill="#225522" font-family="Arial" text-anchor="middle">C7</text>
+
+      <!-- AGENT STATUS BOX (bottom centre) -->
+      <rect x="75" y="220" width="185" height="72" fill="#010801" stroke="#142214" stroke-width="1.2" rx="3" opacity=".97"/>
+      <line x1="78" y1="233" x2="257" y2="233" stroke="#142214" stroke-width=".8"/>
+      <text x="167" y="231" font-size="6.5" font-weight="bold" fill="#22ff44" font-family="Arial" text-anchor="middle" id="m-phase">STANDBY</text>
+      <text x="167" y="246" font-size="5.8" fill="#33aa44" font-family="Arial" text-anchor="middle" id="m-thought">Select a scenario above…</text>
+      <text x="167" y="259" font-size="5.5" fill="#226622" font-family="Arial" text-anchor="middle" id="m-action">—</text>
+      <text x="167" y="272" font-size="5" fill="#113311" font-family="Arial" text-anchor="middle" id="m-ticklbl">— / 12 ticks</text>
+      <text x="167" y="285" font-size="5" fill="#0a1a0a" font-family="Arial" text-anchor="middle" id="m-pred">prediction horizon: —</text>
+    </svg>
+  </div>
+
+  <!-- RIGHT: sensors + log -->
+  <div style="flex:1;display:flex;flex-direction:column;gap:7px;min-width:0">
+
+    <!-- 12 sensor cards 4×3 -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px" id="ha-sensors"></div>
+
+    <!-- Action log -->
+    <div style="font-size:.58rem;color:#2a4a2a;text-transform:uppercase;letter-spacing:.07em">Agent Decision Log</div>
+    <div id="ha-log" style="background:#020902;border:1px solid #0e180e;border-radius:4px;height:218px;overflow-y:auto;padding:6px 8px;font-family:'Courier New',monospace;font-size:.69rem;display:flex;flex-direction:column">
+      <p class="log-line" style="color:#1a3a1a;margin:0">[ HA Agent v0.1 · Local LLM simulation mode ]</p>
+      <p class="log-line" style="color:#1a3a1a;margin:0">[ 5-second tick · 60-second scenarios · 12 ticks/run ]</p>
+      <p class="log-line" style="color:#1a3a1a;margin:0">[ Sensor data injected per tick · agent responds in SENSE→PREDICT→ACT→VERIFY cycle ]</p>
+      <p class="log-line" style="color:#1a3a1a;margin:0">[ Select scenario above to begin ]</p>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+<p class="legend">
+  SketchUp model: <strong>lucknow_smart_home_skp.skp</strong> · 174 geometry groups · 5 material layers · Lucknow, UP · 26.85°N 80.95°E
+</p>
+
+<script>
+function show(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  HA AGENT SIMULATION ENGINE
+//  Sensor data injected every 5s · Agent cycles: SENSE→PREDICT→ACT→VERIFY
+// ════════════════════════════════════════════════════════════════
+
+const HA_SENSORS = [
+  {id:'rwh',    name:'RWH Level',   unit:'%',   lo:10, loWarn:25},
+  {id:'flow',   name:'CT Flow',     unit:'L/m', lo:1,  loWarn:5 },
+  {id:'mains',  name:'Mains Flow',  unit:'L/m', lo:-1, loWarn:-1},
+  {id:'pv',     name:'PV Output',   unit:'W',   lo:100,loWarn:800, hiAlarm:true},
+  {id:'bat',    name:'Battery',     unit:'%',   lo:20, loWarn:40},
+  {id:'grid',   name:'Grid',        unit:'V',   lo:180,loWarn:210},
+  {id:'wind',   name:'Wind',        unit:'km/h',lo:-1, loWarn:-1, hiAlarm:true, hiWarn:50, hiCrit:75},
+  {id:'tout',   name:'Temp Out',    unit:'°C',  lo:-1, loWarn:-1, hiAlarm:true, hiWarn:40, hiCrit:46},
+  {id:'tin',    name:'Temp In',     unit:'°C',  lo:-1, loWarn:-1, hiAlarm:true, hiWarn:30, hiCrit:33},
+  {id:'ct_pct', name:'CT Duty',     unit:'%',   lo:20, loWarn:50},
+  {id:'burj',   name:'Burjeel',     unit:'%',   lo:20, loWarn:50},
+  {id:'pir',    name:'PIR Status',  unit:'',    lo:-1, loWarn:-1},
+];
+
+let haState={}, haTick=0, haTimer=null, haPaused=false, haScId=null;
+
+const HA_SCENARIOS = {
+
+dry_day:{
+  name:'💧 Dry Day — RWH Crisis', color:'#224488',
+  init:{rwh:15,flow:13.5,mains:0,pv:3800,bat:82,grid:230,wind:6,tout:43,tin:28,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false},
+  steps:[
+    {t:0,  d:{},                                              ph:'SENSE',   th:'RWH 15% · temp 43°C · CT demand high',           act:'Baseline scan — all water sensors on elevated watch',           pred:'Tank empty in ~2 ticks at current drawdown rate'},
+    {t:1,  d:{rwh:10,flow:14.2},                             ph:'PREDICT', th:'Drawdown 5%/tick · empty predicted T+10s',        act:'Model: 10% ÷ 5% → 2 ticks → pre-empt before empty',           pred:'Pre-empt opening mains SV-01 next tick'},
+    {t:2,  d:{rwh:6,mains:9.0,mainsOpen:true,ct_pct:80},    ph:'ACT',     th:'Opening mains SV-01 before tank empties',          act:'CMD: SV-01 OPEN · CT duty 100%→80% conservation mode',         pred:'Mains should confirm 9L/min within 1 tick'},
+    {t:3,  d:{rwh:3,ct_pct:60},                             ph:'ACT',     th:'Mains confirmed 9L/min · Tank critical 3%',        act:'CMD: CT duty → 60% · ALERT: water conservation mode sent',     pred:'Tank empty next tick — close RWH pump'},
+    {t:4,  d:{rwh:0,ct_pct:40},                             ph:'ACT',     th:'Tank empty — closing pump (dry-run protect)',      act:'CMD: RWH pump STOP · CT → 40% · Mains now primary',           pred:'40% duty holds indoor at ~29°C at 43°C outside'},
+    {t:5,  d:{flow:5.6,tin:29},                             ph:'VERIFY',  th:'Mains 9L/min stable · CT 40% · indoor 29°C',      act:'Budget: 3.6L/min to CT · 5.4L/min domestic ✓',                pred:'Stable for remainder of scenario at 40% duty'},
+    {t:6,  d:{},                                             ph:'MONITOR', th:'All stable · Conservation mode effective',         act:'Logging usage · Scheduling RWH inspect notification',          pred:'Rain forecast in 72hrs — recharge feasible'},
+    {t:7,  d:{},                                             ph:'PREDICT', th:'Weather API: rain in ~72hrs',                     act:'Plan queued: resume RWH pump when level > 20%',               pred:'No action needed this tick'},
+    {t:8,  d:{ct_pct:45,tin:30},                            ph:'ADAPT',   th:'Temp rising 29→30°C · micro-increase CT duty',    act:'CMD: CT → 45% · Recalculate budget — within mains cap',       pred:'45% holds 29-30°C range acceptably'},
+    {t:9,  d:{},                                             ph:'MONITOR', th:'Stable 45% duty · PV nominal · Bat 82%',          act:'No change — continuous monitoring',                           pred:'Sustained stable — scenario concluding'},
+    {t:10, d:{},                                             ph:'MONITOR', th:'Occupant alert acknowledged · Override available', act:'Holding conservation mode · Operator notified',               pred:'Normal resume when RWH refills'},
+    {t:11, d:{},                                             ph:'STABLE',  th:'✓ 60s done · Optimal perf maintained on mains',   act:'SCENARIO COMPLETE — all systems stable',                      pred:'—'},
+  ]
+},
+
+storm:{
+  name:'⛈ Storm Warning — Multi-System', color:'#224455',
+  init:{rwh:72,flow:12.5,mains:0,pv:4200,bat:68,grid:230,wind:22,tout:30,tin:26,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false,pvTilt:25},
+  steps:[
+    {t:0,  d:{},                                                        ph:'SENSE',   th:'Weather API: storm in ~30min · wind 22→90km/h', act:'Threat assessment: PV, Burjeel, CT, grid all at risk',           pred:'Wind >60km/h in ~10min · action window closing'},
+    {t:1,  d:{wind:38,pv:3500},                                        ph:'PREDICT', th:'Wind 38km/h · PV safe for now',               act:'Sequence plan: PV tilt→0° · close burjeel → shelter CT',          pred:'At 60km/h structural risk to PV at 25° tilt'},
+    {t:2,  d:{wind:55,pv:2500,pvTilt:10,burj:40},                     ph:'ACT',     th:'Wind 55km/h · PV 25°→10° · Burjeel 40%',      act:'CMD: PV actuator → 10° · Burjeel → 40% · pre-charge bat',         pred:'At 70km/h go flat + close burjeel fully'},
+    {t:3,  d:{wind:72,pv:800,pvTilt:0,burj:0,ct_pct:20},              ph:'ACT',     th:'Wind 72km/h · Shelter all passive systems',    act:'CMD: PV → 0° flat · Burjeel CLOSE · CT dampers → 20%',           pred:'Grid instability likely next tick'},
+    {t:4,  d:{wind:87,pv:100,ct_pct:0,grid:190},                      ph:'ACT',     th:'Wind 87km/h · Grid brownout 190V',             act:'CMD: CT dampers CLOSE · Inverter → UPS standby · shed EV+HVAC',   pred:'Grid cut imminent — full battery switch next tick'},
+    {t:5,  d:{wind:93,pv:0,grid:0,bat:86},                            ph:'ACT',     th:'PEAK · Grid cut · Inverter → battery <30ms',   act:'CMD: Battery ONLINE · Shed 3.2kW (EV+HVAC) · Security UPS ✓',    pred:'Battery 86% · 9.4hrs runtime at shed load'},
+    {t:6,  d:{wind:90,bat:83},                                        ph:'VERIFY',  th:'Battery 83% · Load 1.4kW shed · Runtime ~9h',  act:'Verify: all cams on UPS · passive systems sheltered ✓',           pred:'Hold posture until wind <60km/h'},
+    {t:7,  d:{wind:78,bat:81},                                        ph:'MONITOR', th:'Storm passing · Wind 78km/h — still dangerous', act:'Hold shelter — no premature re-opening',                          pred:'Safe to begin restore at <60km/h'},
+    {t:8,  d:{wind:58,pv:350,burj:15},                                ph:'ADAPT',   th:'Wind 58km/h · Cautious burjeel test 15%',     act:'CMD: Burjeel → 15% (test) · Monitor vibration sensor',            pred:'If vibration OK → stepwise restore'},
+    {t:9,  d:{wind:38,pv:2100,pvTilt:10,ct_pct:50,grid:226,bat:82},  ph:'ACT',     th:'Grid restored 226V · Wind safe · Restore begin', act:'CMD: Grid reconnect · PV → 10° · CT → 50% · EV resume',          pred:'Full restore over next 2 ticks'},
+    {t:10, d:{wind:22,pv:3700,pvTilt:20,burj:70,ct_pct:80},          ph:'ACT',     th:'Near-normal · Stepwise restoration',           act:'CMD: PV → 20° · Burjeel → 70% · CT → 80%',                       pred:'Final restore next tick'},
+    {t:11, d:{wind:14,pv:4100,pvTilt:25,burj:100,ct_pct:100},        ph:'STABLE',  th:'✓ All systems restored · Zero damage',         act:'SCENARIO COMPLETE — full normal operation',                       pred:'—'},
+  ]
+},
+
+security:{
+  name:'🔒 Night Security Breach', color:'#442211',
+  init:{rwh:78,flow:11.8,mains:0,pv:0,bat:74,grid:230,wind:5,tout:28,tin:25,ct_pct:55,burj:0,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false,flood:false},
+  steps:[
+    {t:0,  d:{},                                         ph:'SENSE',   th:'02:15 · Perimeter quiet · Cams nominal',       act:'Night mode: 1fps recording · Perimeter watch active',             pred:'No threat indicators'},
+    {t:1,  d:{pir:'elevated',flood:true},               ph:'SENSE',   th:'PIR trigger NW gate zone · Motion detected',   act:'CMD: Gate floodlight ON · All cams → 4K 30fps · queue alert',     pred:'Confirm via CAM1 — may be tamper attempt'},
+    {t:2,  d:{cams:[0,1,1,1,1,1,1]},                   ph:'PREDICT', th:'CAM1 feed LOST (tampered) · NW blind zone',    act:'Predict: hostile approach from NW · CMD: PIR gate → HIGH',        pred:'Expand CAM2 FOV to partially cover gate sector'},
+    {t:3,  d:{pir:'high'},                              ph:'ACT',     th:'Expanding coverage: CAM2 FOV +25°',            act:'CMD: CAM2 motor → wide · IR beam-break gate ARMED',               pred:'CAM4 NE may also be targeted'},
+    {t:4,  d:{cams:[0,1,1,0,1,1,1]},                   ph:'ACT',     th:'CAM4 NE also offline · Two blind zones',       act:'CMD: ALL floodlights ON · CAM3+CAM5 expand FOV · Alert send',     pred:'Coverage: 73% with PIR fill — acceptable'},
+    {t:5,  d:{},                                        ph:'VERIFY',  th:'Coverage map: N+NE PIR HIGH · CAM3/5 wide',   act:'Verify: 73% zone coverage confirmed ✓ · All entry points armed',  pred:'Occupant alert should trigger response'},
+    {t:6,  d:{},                                        ph:'ACT',     th:'Occupant alert: vibrate+local audio',          act:'CMD: Entry door sensors ARMED · Push notification sent (local)',   pred:'Occupant awake in ~1-2 ticks'},
+    {t:7,  d:{},                                        ph:'MONITOR', th:'Occupant online · 7min elapsed · Area quiet',  act:'Logging all events to NVR (encrypted) · Police alert available',  pred:'Possible retreat — monitor 3 more ticks'},
+    {t:8,  d:{},                                        ph:'MONITOR', th:'No new motion · Suspect may have withdrawn',   act:'Continuing high-sensitivity recording · No deescalation yet',     pred:'Wait 2 quiet ticks before deescalation'},
+    {t:9,  d:{},                                        ph:'ADAPT',   th:'10min no new motion · Begin deescalation',     act:'CMD: PIR → elevated (down from high) · Cams maintain wide FOV',   pred:'Cam1+Cam4 fault check at dawn'},
+    {t:10, d:{},                                        ph:'MONITOR', th:'Area clear per PIR + active cams · Quiet',     act:'Schedule cam1+cam4 repair check 06:00 · Incident log filed',      pred:'Normal security posture by morning'},
+    {t:11, d:{pir:'normal'},                           ph:'STABLE',  th:'✓ Incident contained · 2 cams for repair AM', act:'SCENARIO COMPLETE — security posture stable',                     pred:'—'},
+  ]
+},
+
+grid_fail:{
+  name:'⚡ Grid Power Failure', color:'#444411',
+  init:{rwh:68,flow:11.8,mains:0,pv:3600,bat:85,grid:230,wind:10,tout:36,tin:27,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false},
+  steps:[
+    {t:0,  d:{},                                       ph:'SENSE',   th:'All nominal · PV 3600W · Grid 230V · Bat 85%', act:'Normal monitoring · Baseline consumption 2.3kW logged',          pred:'No anomalies detected'},
+    {t:1,  d:{grid:195,bat:86,pv:3800},               ph:'PREDICT', th:'Grid brownout 195V · Instability detected',    act:'Pre-charge: divert PV surplus to battery · Inverter pre-sync',    pred:'Outage likely within 1-2 ticks'},
+    {t:2,  d:{grid:0,bat:84},                         ph:'ACT',     th:'GRID CUT · Inverter → battery (<30ms)',        act:'CMD: Inverter BATTERY mode · Log cut time · Notify occupant',     pred:'PV 3600W > Load 2.3kW → positive balance'},
+    {t:3,  d:{bat:82,pv:3600},                        ph:'VERIFY',  th:'Battery 82% · PV 3.6kW · Load 2.1kW → +bal',  act:'Load calc: surplus 1.5kW → no shed needed (daytime)',             pred:'Cloud passing — PV may drop within 1 tick'},
+    {t:4,  d:{pv:1500,bat:80},                        ph:'PREDICT', th:'Cloud — PV 1.5kW · Deficit ~600W',            act:'Shed: EV charger (-1.8kW) → positive balance restored',           pred:'Battery recovering after shed'},
+    {t:5,  d:{bat:81,pv:1900},                        ph:'ACT',     th:'EV charger shed · Surplus 400W → bat charging', act:'CMD: EV charger PAUSE · Loads balanced ✓',                       pred:'Battery charging at +400W'},
+    {t:6,  d:{pv:2900,bat:82},                        ph:'MONITOR', th:'PV recovering 2.9kW · Positive balance',      act:'Runtime estimate: 9.3hrs at current load · comfortable',          pred:'Target 95% bat before evening loads'},
+    {t:7,  d:{pv:3500,bat:84},                        ph:'MONITOR', th:'Midday surge · Bat charging +1.4kW',          act:'Priority recharge mode · All essential loads on',                 pred:'Grid restoration check next tick'},
+    {t:8,  d:{bat:86},                                ph:'MONITOR', th:'Bat 86% · 35min outage · Grid still down',     act:'Continue monitoring utility status · All systems stable',         pred:''},
+    {t:9,  d:{grid:226,bat:87},                       ph:'SENSE',   th:'Grid detected 226V · Restoration imminent',   act:'Pre-sync: check frequency match before reconnect',               pred:'Safe to reconnect next tick if stable'},
+    {t:10, d:{grid:230,bat:87},                       ph:'ACT',     th:'Grid stable 230V · Safe to reconnect',         act:'CMD: Grid reconnect · EV charger RESUME · Log: 45min outage',    pred:'Battery 87% — minimal impact'},
+    {t:11, d:{bat:88},                                ph:'STABLE',  th:'✓ Grid restored · 5% bat used · Zero shed',   act:'SCENARIO COMPLETE — seamless transition, no interruption',       pred:'—'},
+  ]
+},
+
+pump_fault:{
+  name:'🔧 Cooling Tower Pump Fault', color:'#442211',
+  init:{rwh:72,flow:12.5,mains:0,pv:3200,bat:79,grid:230,wind:8,tout:40,tin:27,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false},
+  steps:[
+    {t:0,  d:{},                                      ph:'SENSE',   th:'Normal · CT flow 12.5L/min · Indoor 27°C',    act:'Monitoring — all actuators nominal, baseline stable',             pred:'No anomalies'},
+    {t:1,  d:{flow:2.1},                             ph:'SENSE',   th:'ANOMALY: CT flow 12.5→2.1L/min',             act:'Alert: partial blockage or pump fault · Escalate pump speed',     pred:'If flow stays <3L/min → pump failure'},
+    {t:2,  d:{flow:0.1,ct_pct:0},                   ph:'PREDICT', th:'Flow near zero despite max pump cmd',          act:'Diagnose: pressure OK + flow 0 = pump not rotating',             pred:'Pump fault confirmed — valve close next'},
+    {t:3,  d:{ct_pct:0},                            ph:'ACT',     th:'Pump fault confirmed · Close supply valve',    act:'CMD: CT supply valve CLOSE · Log fault · Maintenance alert',      pred:'Indoor temp will rise ~0.5°C/tick without CT'},
+    {t:4,  d:{tin:28},                              ph:'ACT',     th:'Indoor 27→28°C · Activate passive cooling',   act:'CMD: Balcony doors OPEN · Ceiling fans MAX · S-blinds CLOSE',    pred:'Passive cooling targets 29°C max at 40°C outside'},
+    {t:5,  d:{tin:28.5,burj:100},                   ph:'ACT',     th:'28.5°C · Burjeel 100% for stack ventilation', act:'CMD: Burjeel → 100% · Cross-ventilation path confirmed',          pred:'Thermal model: 29°C plateau achievable'},
+    {t:6,  d:{tin:29},                              ph:'VERIFY',  th:'29°C · Passive target reached · Trending flat', act:'Calc: passive holds ~29°C at 40°C outside — acceptable ✓',       pred:'Stable for next 5 ticks without CT'},
+    {t:7,  d:{},                                    ph:'MONITOR', th:'Temp stable 29°C · PV+bat nominal',           act:'Monitoring every tick · Occupant alert: cooling reduced',         pred:'Nightfall: temp drops — 29°C will be easy'},
+    {t:8,  d:{tin:29.2},                            ph:'ADAPT',   th:'Slight rise 29.2°C · Fine-tune fan balance',  act:'CMD: Redistribute fans — bedrooms max, garage reduce',            pred:'Fan rebalance should hold 29°C'},
+    {t:9,  d:{tin:29},                              ph:'MONITOR', th:'Back to 29°C · Passive system holding',       act:'Maintenance booking queued · Part order placed via local API',    pred:'Repair arrival in ~4hrs'},
+    {t:10, d:{},                                    ph:'MONITOR', th:'Stable 3 ticks · High confidence in passive',  act:'Night plan: sunset temp drop → 29°C trivially maintained',       pred:'Partial restore if backup pump available'},
+    {t:11, d:{flow:3.2,ct_pct:25},                 ph:'STABLE',  th:'✓ Backup pump partial restore · 25% available', act:'SCENARIO COMPLETE — passive + partial CT maintaining comfort',   pred:'—'},
+  ]
+},
+
+};
+
+// ── ENGINE ──────────────────────────────────────────────────────
+function initHaState(init){
+  haState = Object.assign({rwh:82,flow:12.5,mains:0,pv:4200,bat:88,grid:230,wind:8,tout:38,tin:27,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false,flood:false,pvTilt:25}, init||{});
+}
+
+function startScenario(id){
+  if(haTimer) clearInterval(haTimer);
+  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('running'));
+  const btn = document.getElementById('sb-'+id);
+  if(btn) btn.classList.add('running');
+  haScId=id; haTick=0; haPaused=false;
+  document.getElementById('ha-pause').textContent='⏸ Pause';
+  initHaState(HA_SCENARIOS[id].init);
+  haLogClear();
+  haLog('━━━ '+HA_SCENARIOS[id].name+' ━━━','#22bb44');
+  haLog('[ 60s · 12 ticks · 5s/tick · SENSE→PREDICT→ACT→VERIFY ]','#1a4a1a');
+  haRenderAll();
+  haTick=0;
+  doTick();
+  haTimer = setInterval(()=>{ if(!haPaused) doTick(); }, 5000);
+}
+
+function doTick(){
+  const sc = HA_SCENARIOS[haScId];
+  if(!sc || haTick >= sc.steps.length){ clearInterval(haTimer); return; }
+  const step = sc.steps[haTick];
+  Object.assign(haState, step.d||{});
+  // progress
+  const pct = ((haTick+1)/12*100).toFixed(0);
+  document.getElementById('ha-prog').style.width = pct+'%';
+  document.getElementById('ha-time').textContent = 'T+'+(haTick*5)+'s  ['+step.ph+']  tick '+(haTick+1)+'/12';
+  // log
+  const phCol = {SENSE:'#44aaff',PREDICT:'#bbbb33',ACT:'#ff7733',VERIFY:'#33ffaa',MONITOR:'#33aa44',ADAPT:'#aa44ff',STABLE:'#33ffcc',STANDBY:'#338833'}[step.ph]||'#44aa44';
+  haLog('T+'+(haTick*5)+'s ['+step.ph+'] '+step.th, phCol);
+  haLog('  ▸ '+step.act,'#226622');
+  if(step.pred && step.pred!=='—') haLog('  ~ predict: '+step.pred,'#1a3a2a');
+  // map agent box
+  haSetText('m-phase', step.ph);
+  haSetText('m-thought', trunc(step.th,44));
+  haSetText('m-action', trunc(step.act,46));
+  haSetText('m-ticklbl','tick '+(haTick+1)+'/12  T+'+(haTick*5)+'s');
+  haSetText('m-pred', step.pred&&step.pred!=='—'?'~ '+trunc(step.pred,46):'');
+  // phase color on SVG
+  const pp = document.getElementById('m-phase');
+  if(pp) pp.style.fill = phCol;
+  haRenderAll();
+  haTick++;
+}
+
+function haRenderAll(){
+  const s = haState;
+  // RWH fill (height proportional)
+  const rwh = clamp(s.rwh||0,0,100);
+  const rwh_h = Math.round(rwh/100*54);
+  const rf = document.getElementById('m-rwh-fill');
+  if(rf){ rf.setAttribute('y',String(239+(54-rwh_h))); rf.setAttribute('height',String(rwh_h));
+    rf.style.fill = rwh<10?'#aa2211':rwh<25?'#aa6611':'#1a3a7a'; }
+  haSetText('m-rwh', rwh.toFixed(0)+'%');
+  // Battery fill
+  const bat = clamp(s.bat||0,0,100);
+  const bat_h = Math.round(bat/100*40);
+  const bf = document.getElementById('m-bat-fill');
+  if(bf){ bf.setAttribute('y',String(149+(40-bat_h))); bf.setAttribute('height',String(bat_h));
+    bf.style.fill = bat<20?'#aa2211':bat<40?'#aa7711':'#1a4433'; }
+  haSetText('m-bat', bat.toFixed(0)+'%');
+  // PV
+  const pv = s.pv||0;
+  haSetText('m-pv', pv+'W');
+  const pvEl=document.getElementById('m-pv');
+  if(pvEl) pvEl.style.fill = pv>2000?'#4466bb':pv>400?'#445599':'#443333';
+  // Grid
+  const gv = s.grid||0;
+  const gOk = gv>200;
+  const gd=document.getElementById('m-grid-dot');
+  if(gd){ gd.style.fill=gOk?'#0e2a0e':'#2a0e0e'; gd.style.stroke=gOk?'#33aa33':'#ff3333'; }
+  haSetText('m-grid-v', gv>0 ? Math.round(gv)+'V' : 'CUT');
+  const gl=document.getElementById('m-grid-v');
+  if(gl) gl.style.fill=gOk?'#33ff33':'#ff3333';
+  // Wind
+  const wnd = s.wind||0;
+  haSetText('m-wind', Math.round(wnd));
+  const we=document.getElementById('m-wind');
+  if(we) we.style.fill = wnd>75?'#ff3333':wnd>50?'#ffaa33':'#44aaaa';
+  // Temps
+  haSetText('m-tout',(s.tout||0)+'°C');
+  haSetText('m-tin',(s.tin||0)+'°C');
+  // CT
+  const ct=s.ct_pct||0;
+  haSetText('m-ct',ct+'%');
+  const ctR=document.getElementById('m-ct-ring');
+  if(ctR) ctR.style.stroke = ct>60?'#aa6622':ct>20?'#aa8833':'#224422';
+  // Burjeel
+  const bj=s.burj||0;
+  haSetText('m-burj',bj+'%');
+  const bjb=document.getElementById('m-burj-bg');
+  if(bjb) bjb.style.stroke = bj>50?'#553322':'#224422';
+  // Mains
+  const mp=document.getElementById('m-mains-pipe');
+  const mv=document.getElementById('m-mains-v');
+  const ml=document.getElementById('m-mains-lbl');
+  if(s.mainsOpen||s.mains>0){
+    if(mp) mp.style.opacity='0.9';
+    if(mv){ mv.style.fill='#0e2040'; mv.style.stroke='#3366ff'; }
+    if(ml){ ml.textContent='OPEN '+(Math.round(s.mains||0))+'L/m'; ml.style.fill='#3366ff'; }
+  } else {
+    if(mp) mp.style.opacity='0.2';
+    if(mv){ mv.style.fill='#060e18'; mv.style.stroke='#224488'; }
+    if(ml){ ml.textContent='CLOSED'; ml.style.fill='#224488'; }
+  }
+  // Cameras
+  const cams = s.cams||[1,1,1,1,1,1,1];
+  for(let i=0;i<7;i++){
+    const el=document.getElementById('m-c'+i);
+    if(el){ el.style.fill=cams[i]?'#0e2a0e':'#2a0e0e'; el.style.stroke=cams[i]?'#33aa33':'#ff3333'; }
+  }
+  // Sensor cards
+  haUpdateCards();
+}
+
+function haUpdateCards(){
+  const g=document.getElementById('ha-sensors');
+  if(!g) return;
+  const s=haState;
+  g.innerHTML=HA_SENSORS.map(def=>{
+    let val = s[def.id];
+    let disp, cls='ok';
+    if(def.id==='pir'){ disp=val||'normal'; cls=disp==='high'?'crit':disp==='elevated'?'warn':'ok'; }
+    else if(def.id==='mains'){ disp=(s.mainsOpen||(s.mains>0))?((s.mains||0).toFixed(1)):0; cls=(disp>0)?'ok':''; }
+    else if(typeof val==='number'){
+      disp=val>=100?Math.round(val):val.toFixed(val<10?1:0);
+      if(def.hiAlarm){ cls=val>=def.hiCrit?'crit':val>=def.hiWarn?'warn':'ok'; }
+      else { cls=val<=def.lo?'crit':val<=def.loWarn?'warn':'ok'; }
+    } else { disp=val??'—'; }
+    return '<div class="s-card '+cls+'"><div class="s-name">'+def.name+'</div><div class="s-val">'+disp+'<span class="s-unit"> '+def.unit+'</span></div></div>';
+  }).join('');
+}
+
+function haPause(){ haPaused=!haPaused; document.getElementById('ha-pause').textContent=haPaused?'▶ Resume':'⏸ Pause'; }
+
+function haReset(){
+  if(haTimer) clearInterval(haTimer); haTimer=null;
+  haTick=0; haPaused=false; haScId=null;
+  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('running'));
+  document.getElementById('ha-pause').textContent='⏸ Pause';
+  document.getElementById('ha-prog').style.width='0%';
+  document.getElementById('ha-time').textContent='▸ Select a scenario — 60 s · 12 ticks · 5 s/tick';
+  initHaState();
+  haLogClear();
+  haLog('[ System reset · Select scenario above ]','#1a4a1a');
+  haSetText('m-phase','STANDBY');
+  haSetText('m-thought','Select a scenario above…');
+  haSetText('m-action','—'); haSetText('m-ticklbl','— / 12 ticks'); haSetText('m-pred','');
+  const pp=document.getElementById('m-phase'); if(pp) pp.style.fill='#22ff44';
+  haRenderAll();
+}
+
+function haLog(txt,col){
+  const log=document.getElementById('ha-log'); if(!log) return;
+  const d=document.createElement('p');
+  d.className='log-line'; d.style.color=col||'#336633'; d.style.margin='0';
+  d.textContent=txt; log.appendChild(d); log.scrollTop=log.scrollHeight;
+}
+function haLogClear(){ const l=document.getElementById('ha-log'); if(l) l.innerHTML=''; }
+function haSetText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function trunc(s,n){ return s&&s.length>n?s.slice(0,n-1)+'…':s||''; }
+
+// boot
+(function(){ initHaState(); haUpdateCards(); })();
+</script>
+</body>
+</html>
