@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucknow Smart Residence — Lovelace Dashboard</title>
+<style>
+  :root {
+    --ha-bg: #111318;
+    --ha-card: #1c1f26;
+    --ha-card2: #252932;
+    --ha-border: #2e3340;
+    --ha-text: #e0e4ef;
+    --ha-text2: #8b92a5;
+    --ha-accent: #C8935A;
+    --ha-green: #22c55e;
+    --ha-amber: #f59e0b;
+    --ha-red: #ef4444;
+    --ha-blue: #3b82f6;
+    --ha-cyan: #06b6d4;
+    --ha-purple: #a855f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ha-bg); color: var(--ha-text); font-family: 'Roboto', sans-serif; font-size: 14px; min-height: 100vh; }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: #161a22;
+    border-bottom: 1px solid var(--ha-border);
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 16px; height: 48px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-logo { font-size: 18px; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: var(--ha-text); letter-spacing: .3px; }
+  .topbar-spacer { flex: 1; }
+  .topbar-time { color: var(--ha-text2); font-size: 13px; }
+
+  /* ── Tab nav ── */
+  .tabnav {
+    background: #161a22;
+    border-bottom: 1px solid var(--ha-border);
+    display: flex; overflow-x: auto;
+    padding: 0 12px;
+    scrollbar-width: none;
+  }
+  .tabnav::-webkit-scrollbar { display: none; }
+  .tabnav-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 14px; height: 46px;
+    border: none; background: none; color: var(--ha-text2);
+    cursor: pointer; font-size: 13px; font-weight: 500;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s;
+  }
+  .tabnav-btn:hover { color: var(--ha-text); }
+  .tabnav-btn.active { color: var(--ha-accent); border-bottom-color: var(--ha-accent); }
+  .tabnav-btn .icon { font-size: 16px; }
+
+  /* ── View ── */
+  .view { display: none; padding: 16px; }
+  .view.active { display: block; }
+
+  /* ── Masonry grid ── */
+  .masonry { columns: 3; column-gap: 12px; }
+  @media(max-width:900px) { .masonry { columns:2; } }
+  @media(max-width:560px) { .masonry { columns:1; } }
+  .masonry > * { break-inside: avoid; margin-bottom: 12px; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--ha-card);
+    border-radius: 12px;
+    border: 1px solid var(--ha-border);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 16px 6px;
+    font-size: 13px; font-weight: 600; color: var(--ha-text2);
+    text-transform: uppercase; letter-spacing: .6px;
+  }
+  .card-body { padding: 10px 16px 14px; }
+
+  /* ── Chips row ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--ha-card2); border-radius: 20px;
+    padding: 5px 12px; font-size: 13px;
+    border: 1px solid var(--ha-border);
+  }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── H-stack ── */
+  .hstack { display: flex; gap: 10px; margin-bottom: 10px; }
+  .hstack > * { flex: 1; min-width: 0; }
+  .hstack:last-child { margin-bottom: 0; }
+
+  /* ── Stat mini-card ── */
+  .stat {
+    background: var(--ha-card2);
+    border-radius: 10px;
+    border: 1px solid var(--ha-border);
+    padding: 12px 14px;
+  }
+  .stat-val { font-size: 22px; font-weight: 700; line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--ha-text2); margin-top: 4px; }
+  .stat-icon { font-size: 18px; float: right; margin-top: -2px; }
+
+  /* ── Gauge ── */
+  .gauge-wrap { padding: 14px 16px; text-align: center; }
+  .gauge-svg { display: block; margin: 0 auto; }
+  .gauge-label { font-size: 12px; color: var(--ha-text2); margin-top: 4px; }
+
+  /* ── Entity list ── */
+  .entity-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 0; border-bottom: 1px solid var(--ha-border);
+  }
+  .entity-row:last-child { border-bottom: none; }
+  .entity-name { display: flex; align-items: center; gap: 8px; color: var(--ha-text2); font-size: 13px; }
+  .entity-val { font-size: 14px; font-weight: 600; }
+
+  /* ── Toggle / switch ── */
+  .toggle {
+    position: relative; width: 42px; height: 24px; cursor: pointer;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track {
+    position: absolute; inset: 0;
+    background: #3a3f4c; border-radius: 12px; transition: background .2s;
+  }
+  .toggle input:checked ~ .toggle-track { background: var(--ha-accent); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; transition: left .2s;
+  }
+  .toggle input:checked ~ .toggle-thumb { left: 21px; }
+
+  /* ── Alarm panel ── */
+  .alarm-panel { padding: 12px 16px; }
+  .alarm-state {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--ha-card2); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 10px;
+    border: 1px solid var(--ha-border);
+  }
+  .alarm-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ha-green); }
+  .alarm-dot.red { background: var(--ha-red); }
+  .alarm-dot.amber { background: var(--ha-amber); }
+  .alarm-btns { display: flex; gap: 8px; }
+  .alarm-btn {
+    flex: 1; padding: 9px 0; border: 1px solid var(--ha-border);
+    background: var(--ha-card2); border-radius: 8px; color: var(--ha-text2);
+    font-size: 12px; cursor: pointer; text-align: center;
+    transition: background .15s, color .15s;
+  }
+  .alarm-btn:hover { background: var(--ha-border); color: var(--ha-text); }
+  .alarm-btn.active { background: var(--ha-accent); color: #fff; border-color: var(--ha-accent); }
+
+  /* ── Camera grid ── */
+  .cam-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
+  .cam-cell {
+    background: #0c0e12; border-radius: 8px; aspect-ratio: 16/9;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border: 1px solid var(--ha-border); gap: 4px;
+  }
+  .cam-icon { font-size: 24px; color: #2e3340; }
+  .cam-label { font-size: 10px; color: #3a4050; text-align: center; }
+
+  /* ── History mini-chart ── */
+  .mini-chart { padding: 8px 16px 14px; }
+  .chart-line { position: relative; height: 48px; }
+  .chart-line svg { width: 100%; height: 100%; }
+
+  /* ── Power flow ── */
+  .power-flow { padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .pf-row { display: flex; align-items: center; gap: 16px; }
+  .pf-node {
+    background: var(--ha-card2); border-radius: 10px; border: 1px solid var(--ha-border);
+    padding: 10px 14px; text-align: center; min-width: 80px;
+  }
+  .pf-node .pf-val { font-size: 18px; font-weight: 700; }
+  .pf-node .pf-lbl { font-size: 10px; color: var(--ha-text2); margin-top: 2px; }
+  .pf-arrow { color: var(--ha-text2); font-size: 18px; }
+  .pf-arrow.active { color: var(--ha-amber); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:.3 } }
+
+  /* ── Scenario buttons ── */
+  .scenario-btn {
+    display: block; width: 100%; padding: 12px 16px; margin-bottom: 8px;
+    background: var(--ha-card2); border: 1px solid var(--ha-border);
+    border-radius: 10px; color: var(--ha-text); font-size: 14px;
+    cursor: pointer; text-align: left; transition: background .15s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .scenario-btn:hover { background: var(--ha-border); }
+  .scenario-btn:last-of-type { margin-bottom: 0; }
+
+  /* ── Markdown card ── */
+  .md-card { padding: 16px; }
+  .md-card h1 { font-size: 20px; margin-bottom: 12px; color: var(--ha-accent); }
+  .md-card h2 { font-size: 16px; margin: 14px 0 8px; color: var(--ha-text); }
+  .md-card h3 { font-size: 14px; margin: 12px 0 6px; color: var(--ha-text2); }
+  .md-card p { color: var(--ha-text2); line-height: 1.6; margin-bottom: 8px; }
+  .md-card table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+  .md-card th { background: var(--ha-card2); padding: 7px 10px; text-align: left; color: var(--ha-text2); border: 1px solid var(--ha-border); }
+  .md-card td { padding: 6px 10px; border: 1px solid var(--ha-border); color: var(--ha-text2); }
+  .md-card code { background: var(--ha-card2); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--ha-cyan); }
+  .md-card pre { background: var(--ha-card2); padding: 12px; border-radius: 8px; overflow-x: auto; margin: 8px 0; }
+  .md-card pre code { background: none; padding: 0; }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--ha-card2); border-radius: 20px;
+    padding: 4px 10px; font-size: 12px; border: 1px solid var(--ha-border);
+  }
+  .badge.green { border-color: var(--ha-green); color: var(--ha-green); }
+  .badge.amber { border-color: var(--ha-amber); color: var(--ha-amber); }
+  .badge.red   { border-color: var(--ha-red);   color: var(--ha-red);   }
+  .badge.cyan  { border-color: var(--ha-cyan);  color: var(--ha-cyan);  }
+  .badge.blue  { border-color: var(--ha-blue);  color: var(--ha-blue);  }
+
+  /* ── Gauge SVG helper ── */
+  .gauge-val { font-size: 20px; font-weight: 700; fill: var(--ha-text); }
+  .gauge-unit { font-size: 11px; fill: var(--ha-text2); }
+
+  /* ── Mode button card ── */
+  .mode-card {
+    background: var(--ha-card2); border-radius: 10px; border: 1px solid var(--ha-border);
+    padding: 12px 14px; text-align: center; cursor: pointer;
+  }
+  .mode-card.active { border-color: var(--ha-cyan); background: rgba(6,182,212,.12); }
+  .mode-card .mode-icon { font-size: 22px; margin-bottom: 4px; }
+  .mode-card .mode-name { font-size: 12px; color: var(--ha-text2); }
+  .mode-card.active .mode-name { color: var(--ha-cyan); }
+
+  /* ── Separator ── */
+  hr.sep { border: none; border-top: 1px solid var(--ha-border); margin: 8px 0; }
+
+  /* ── Sim live indicator ── */
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--ha-green);
+    display: inline-block; margin-right: 4px;
+    animation: blink 1.8s infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1 } 50% { opacity:.2 } }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <span class="topbar-logo">🏠</span>
+  <span class="topbar-title">Lucknow Smart Residence</span>
+  <span class="topbar-spacer"></span>
+  <span class="topbar-time" id="clock">--:--</span>
+</div>
+
+<!-- Tab nav -->
+<div class="tabnav" id="tabnav">
+  <button class="tabnav-btn active" data-tab="overview"><span class="icon">⚡</span> Overview</button>
+  <button class="tabnav-btn" data-tab="energy"><span class="icon">🔋</span> Energy</button>
+  <button class="tabnav-btn" data-tab="water"><span class="icon">💧</span> Water</button>
+  <button class="tabnav-btn" data-tab="cooling"><span class="icon">🌬</span> Cooling</button>
+  <button class="tabnav-btn" data-tab="security"><span class="icon">🔒</span> Security</button>
+  <button class="tabnav-btn" data-tab="systems"><span class="icon">⚙️</span> Systems</button>
+  <button class="tabnav-btn" data-tab="automations"><span class="icon">🤖</span> Automations</button>
+  <button class="tabnav-btn" data-tab="testlab"><span class="icon">🧪</span> Test Lab</button>
+  <button class="tabnav-btn" data-tab="guide"><span class="icon">📖</span> Guide</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 1 · OVERVIEW -->
+<div class="view active" id="view-overview">
+  <div class="masonry">
+
+    <!-- Chips -->
+    <div class="card">
+      <div class="chips">
+        <div class="chip"><div class="dot" style="background:var(--ha-amber)"></div> <span id="pv-chip">3 840 W</span> ☀️ PV</div>
+        <div class="chip"><div class="dot" style="background:var(--ha-green)"></div> <span id="bat-chip">78%</span> 🔋 Battery</div>
+        <div class="chip"><div class="dot" style="background:var(--ha-blue)"></div> <span id="rwh-chip">62%</span> 💧 Tank</div>
+        <div class="chip"><div class="dot" style="background:var(--ha-cyan)"></div> cooling 🌬</div>
+        <div class="chip"><div class="dot" style="background:var(--ha-green)"></div> disarmed 🔒</div>
+        <div class="chip"><div class="dot" style="background:var(--ha-blue)"></div> GF 🛗</div>
+      </div>
+    </div>
+
+    <!-- PV / Battery / Tank -->
+    <div class="card">
+      <div class="card-header">Generation &amp; Storage</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat">
+            <span class="stat-icon">☀️</span>
+            <div class="stat-val" style="color:var(--ha-amber)" id="pv-val">3 840 W</div>
+            <div class="stat-label">PV Generation</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">🔋</span>
+            <div class="stat-val" style="color:var(--ha-green)" id="bat-val">78%</div>
+            <div class="stat-label">Battery SOC</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">💧</span>
+            <div class="stat-val" style="color:var(--ha-blue)" id="rwh-val">11 160 L</div>
+            <div class="stat-label">Tank Level</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cooling / Alarm / Elevator -->
+    <div class="card">
+      <div class="card-header">Status</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat">
+            <span class="stat-icon">🌬</span>
+            <div class="stat-val" style="font-size:14px;color:var(--ha-cyan)">cooling</div>
+            <div class="stat-label">Cooling Mode</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">🔒</span>
+            <div class="stat-val" style="font-size:14px;color:var(--ha-green)">disarmed</div>
+            <div class="stat-label">Alarm</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">🛗</span>
+            <div class="stat-val" style="font-size:14px;color:var(--ha-blue)">GF</div>
+            <div class="stat-label">Elevator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indoor climate -->
+    <div class="card">
+      <div class="card-header">Indoor Climate</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat">
+            <span class="stat-icon">🌡</span>
+            <div class="stat-val" id="ind-temp">28.4°C</div>
+            <div class="stat-label">Indoor Temp</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">💦</span>
+            <div class="stat-val" id="ind-rh">52%</div>
+            <div class="stat-label">Indoor RH</div>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">↓</span>
+            <div class="stat-val" style="color:var(--ha-green)" id="delta-t">ΔT 11°C</div>
+            <div class="stat-label">Cooling ΔT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 2 · ENERGY -->
+<div class="view" id="view-energy">
+  <div class="masonry">
+
+    <!-- Power flow -->
+    <div class="card">
+      <div class="card-header">Live Power Flow</div>
+      <div class="power-flow">
+        <div class="pf-row">
+          <div class="pf-node" style="border-color:var(--ha-amber)">
+            <div class="pf-val" style="color:var(--ha-amber)">3 840 W</div>
+            <div class="pf-lbl">☀️ PV</div>
+          </div>
+          <span class="pf-arrow active">→</span>
+          <div class="pf-node" style="border-color:var(--ha-blue)">
+            <div class="pf-val" style="color:var(--ha-text)">3 200 W</div>
+            <div class="pf-lbl">🏠 Home</div>
+          </div>
+        </div>
+        <div class="pf-row">
+          <div class="pf-node" style="border-color:var(--ha-green)">
+            <div class="pf-val" style="color:var(--ha-green)">+640 W</div>
+            <div class="pf-lbl">🔋 Battery 78%</div>
+          </div>
+          <span class="pf-arrow" style="color:var(--ha-border)">↔</span>
+          <div class="pf-node" style="border-color:var(--ha-border)">
+            <div class="pf-val" style="color:var(--ha-text2)">0 W</div>
+            <div class="pf-lbl">⚡ Grid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Battery gauge -->
+    <div class="card">
+      <div class="card-header">Battery State of Charge</div>
+      <div class="gauge-wrap">
+        <svg class="gauge-svg" width="180" height="100" viewBox="0 0 180 100">
+          <path d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="#2e3340" stroke-width="14" stroke-linecap="round"/>
+          <path d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="var(--ha-green)" stroke-width="14" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="49"/>
+          <text x="90" y="82" text-anchor="middle" class="gauge-val">78%</text>
+          <text x="90" y="96" text-anchor="middle" class="gauge-unit">Battery SOC</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Daily totals -->
+    <div class="card">
+      <div class="card-header">Today's Totals</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-amber)">18.4 kWh</div><div class="stat-label">PV Generated</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-red)">0.3 kWh</div><div class="stat-label">Grid Import</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-blue)">2.1 kWh</div><div class="stat-label">Grid Export</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entities -->
+    <div class="card">
+      <div class="card-header">Power Status</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">⚡ AC Voltage</div><div class="entity-val">231 V</div></div>
+        <div class="entity-row"><div class="entity-name">🔌 Inverter Output</div><div class="entity-val">3 200 W</div></div>
+        <div class="entity-row"><div class="entity-name">🌡 Inverter Temp</div><div class="entity-val">38°C</div></div>
+        <div class="entity-row"><div class="entity-name">⚠️ Inverter Fault</div><span class="badge green">✔ OK</span></div>
+        <div class="entity-row"><div class="entity-name">📤 Grid Export</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 3 · WATER -->
+<div class="view" id="view-water">
+  <div class="masonry">
+
+    <!-- Tank gauge -->
+    <div class="card">
+      <div class="card-header">Rainwater Tank — 18 000 L</div>
+      <div class="gauge-wrap">
+        <svg class="gauge-svg" width="180" height="100" viewBox="0 0 180 100">
+          <path d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="#2e3340" stroke-width="14" stroke-linecap="round"/>
+          <path d="M20,90 A70,70 0 0,1 160,90" fill="none" stroke="var(--ha-blue)" stroke-width="14" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="79"/>
+          <text x="90" y="82" text-anchor="middle" class="gauge-val">62%</text>
+          <text x="90" y="96" text-anchor="middle" class="gauge-unit">11 160 L remaining</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Flow rates -->
+    <div class="card">
+      <div class="card-header">Flow Rates</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-blue)">8.3 L/m</div><div class="stat-label">Domestic</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">4.1 L/m</div><div class="stat-label">CT Drip</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Valves -->
+    <div class="card">
+      <div class="card-header">Valves &amp; Pump</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">💧 Pump</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">🚰 Domestic Valve</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">🌬 CT Drip Valve</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">⚠️ RWH Low Level</div><span class="badge green">✔ OK</span></div>
+      </div>
+    </div>
+
+    <!-- Thresholds -->
+    <div class="card">
+      <div class="card-header">Automation Thresholds</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🔴 Low Level Alert</div><div class="entity-val">10%</div></div>
+        <div class="entity-row"><div class="entity-name">✂️ CT Cut Level</div><div class="entity-val">15%</div></div>
+        <div class="entity-row"><div class="entity-name">🤖 Auto RWH</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 4 · COOLING -->
+<div class="view" id="view-cooling">
+  <div class="masonry">
+
+    <!-- Mode selector -->
+    <div class="card">
+      <div class="card-header">Operating Mode</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="mode-card active"><div class="mode-icon">🌬</div><div class="mode-name">cooling</div></div>
+          <div class="mode-card"><div class="mode-icon">🌧</div><div class="mode-name">monsoon bypass</div></div>
+          <div class="mode-card"><div class="mode-icon">❄️</div><div class="mode-name">winter bypass</div></div>
+          <div class="mode-card"><div class="mode-icon">⭘</div><div class="mode-name">off</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Temp gauges -->
+    <div class="card">
+      <div class="card-header">Temperature &amp; Humidity</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-red)">39.4°C</div><div class="stat-label">Outdoor</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-cyan)">28.4°C</div><div class="stat-label">CT Inlet</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">28.4°C</div><div class="stat-label">Indoor</div></div>
+        </div>
+        <hr class="sep">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-text2)">35%</div><div class="stat-label">Outdoor RH</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-text2)">52%</div><div class="stat-label">Indoor RH</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">ΔT 11°C</div><div class="stat-label">Cooling ΔT</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fan / damper -->
+    <div class="card">
+      <div class="card-header">Actuator Control</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🌀 CT Fan (EC)</div><div class="entity-val">78%</div></div>
+        <div class="entity-row"><div class="entity-name">🔲 Damper East</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">🔲 Damper South</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">💨 Dehumidifier</div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soil moisture -->
+    <div class="card">
+      <div class="card-header">Soil Moisture</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">64%</div><div class="stat-label">East lawn</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-amber)">41%</div><div class="stat-label">South bed</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 5 · SECURITY -->
+<div class="view" id="view-security">
+  <div class="masonry">
+
+    <!-- Alarm panel -->
+    <div class="card">
+      <div class="card-header">Alarm Panel</div>
+      <div class="alarm-panel">
+        <div class="alarm-state"><span class="alarm-dot"></span><span>System Disarmed</span></div>
+        <div class="alarm-btns">
+          <div class="alarm-btn active">Disarmed</div>
+          <div class="alarm-btn">Arm Away</div>
+          <div class="alarm-btn">Arm Home</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Camera grid -->
+    <div class="card">
+      <div class="card-header">7 Camera Feeds (Frigate NVR)</div>
+      <div class="cam-grid">
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">Gate</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">Driveway</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">Front Door</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">NE Perimeter</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">SW Perimeter</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">Terrace</div></div>
+        <div class="cam-cell"><div class="cam-icon">📷</div><div class="cam-label">Garage</div></div>
+      </div>
+      <div style="padding:8px 12px 12px;font-size:11px;color:var(--ha-text2)">Live RTSP feeds require Frigate NVR running on Mac Mini A</div>
+    </div>
+
+    <!-- PIR zones -->
+    <div class="card">
+      <div class="card-header">PIR + IR Beam Zones</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🚶 Gate PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">🚶 Driveway PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">🚶 Front Door PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">🚶 Living Room PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">🚶 Terrace PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">🚶 Master BR PIR</div><span class="badge green">clear</span></div>
+        <div class="entity-row"><div class="entity-name">📡 IR Beam West Gate</div><span class="badge green">intact</span></div>
+        <div class="entity-row"><div class="entity-name">📡 IR Beam NE</div><span class="badge green">intact</span></div>
+      </div>
+    </div>
+
+    <!-- Deterrents -->
+    <div class="card">
+      <div class="card-header">Manual Deterrents</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🚨 Siren</div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">🔒 Gate Lock</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">💡 Floodlights NE</div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">💡 Floodlights NW</div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 6 · SYSTEMS -->
+<div class="view" id="view-systems">
+  <div class="masonry">
+
+    <!-- Mac Mini A -->
+    <div class="card">
+      <div class="card-header">Mac Mini A — 10.0.0.10 (HA Server)</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🌡 CPU Temp</div><div class="entity-val">42°C</div></div>
+        <div class="entity-row"><div class="entity-name">💾 Disk Used</div><div class="entity-val">38%</div></div>
+      </div>
+    </div>
+
+    <!-- Mac Mini B -->
+    <div class="card">
+      <div class="card-header">Mac Mini B — 10.0.0.11 (Flexible)</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🌡 CPU Temp</div><div class="entity-val">36°C</div></div>
+      </div>
+    </div>
+
+    <!-- UPS -->
+    <div class="card">
+      <div class="card-header">UPS Status</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">94%</div><div class="stat-label">UPS Charge</div></div>
+          <div class="stat"><div class="stat-val" style="color:var(--ha-green)">47 min</div><div class="stat-label">Runtime</div></div>
+        </div>
+        <div class="entity-row" style="margin-top:8px"><div class="entity-name">🔋 On Battery</div><span class="badge green">✔ On Mains</span></div>
+      </div>
+    </div>
+
+    <!-- Elevator -->
+    <div class="card">
+      <div class="card-header">Elevator</div>
+      <div class="card-body">
+        <div class="hstack">
+          <div class="stat"><div class="stat-val" style="color:var(--ha-blue)">GF</div><div class="stat-label">Current Floor</div></div>
+          <div class="stat"><div class="stat-val" style="font-size:14px;color:var(--ha-green)">closed</div><div class="stat-label">Door</div></div>
+          <div class="stat"><div class="stat-val" style="font-size:14px;color:var(--ha-green)">OK</div><div class="stat-label">Fault</div></div>
+        </div>
+        <hr class="sep">
+        <div class="hstack" style="margin-top:8px">
+          <button class="scenario-btn" style="margin:0;justify-content:center;font-size:12px">0 Ground</button>
+          <button class="scenario-btn" style="margin:0;justify-content:center;font-size:12px">1 First</button>
+          <button class="scenario-btn" style="margin:0;justify-content:center;font-size:12px">T Terrace</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Access -->
+    <div class="card">
+      <div class="card-header">Server Panel Access</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🔒 Server Panel Lock</div><span class="badge green">locked</span></div>
+        <div class="entity-row"><div class="entity-name">🖐 Last User</div><div class="entity-val">User 1001</div></div>
+        <div class="entity-row"><div class="entity-name">🕐 Last Access</div><div class="entity-val">08:42</div></div>
+      </div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="card">
+      <div class="card-header">Infrastructure</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">⚠️ Elevator Fault</div><span class="badge green">OK</span></div>
+        <div class="entity-row"><div class="entity-name">⚠️ Inverter Fault</div><span class="badge green">OK</span></div>
+        <div class="entity-row"><div class="entity-name">⚠️ RWH Low Level</div><span class="badge green">OK</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 7 · AUTOMATIONS -->
+<div class="view" id="view-automations">
+  <div class="masonry">
+
+    <!-- Master switches -->
+    <div class="card">
+      <div class="card-header">Automation Master Switches</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🌬 Auto Cooling</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">💧 Auto RWH Pump</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="entity-row"><div class="entity-name">🔒 Auto Security</div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cooling thresholds -->
+    <div class="card">
+      <div class="card-header">Cooling Thresholds</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🌧 Monsoon RH Bypass</div><div class="entity-val">65%</div></div>
+        <div class="entity-row"><div class="entity-name">❄️ Winter Below</div><div class="entity-val">18°C</div></div>
+        <div class="entity-row"><div class="entity-name">🌬 Cooling Mode</div><div class="entity-val">cooling</div></div>
+      </div>
+    </div>
+
+    <!-- RWH thresholds -->
+    <div class="card">
+      <div class="card-header">Rainwater Thresholds</div>
+      <div class="card-body">
+        <div class="entity-row"><div class="entity-name">🔴 Low Level Alert</div><div class="entity-val">10%</div></div>
+        <div class="entity-row"><div class="entity-name">✂️ CT Drip Cut</div><div class="entity-val">15%</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 8 · TEST LAB -->
+<div class="view" id="view-testlab">
+  <div class="masonry">
+
+    <div class="card">
+      <div class="md-card">
+        <h2>🧪 Test Lab</h2>
+        <p>Click a scenario to inject fake MQTT sensor data across all subsystems. No hardware or terminal needed — data publishes via HA's internal MQTT service.</p>
+        <p>A <strong>notification</strong> pops up after each scenario. Check <strong>Logbook</strong> to see automations fire.</p>
+      </div>
+    </div>
+
+    <!-- Env scenarios -->
+    <div class="card">
+      <div class="card-header">🌡 Environment Scenarios</div>
+      <div class="card-body">
+        <button class="scenario-btn" onclick="runScenario('normal')">🌞 Normal Summer <span style="margin-left:auto;font-size:11px;color:var(--ha-text2)">fans 78%</span></button>
+        <button class="scenario-btn" onclick="runScenario('monsoon')">🌧️ Monsoon Bypass <span style="margin-left:auto;font-size:11px;color:var(--ha-blue)">fires in 3 min</span></button>
+        <button class="scenario-btn" onclick="runScenario('winter')">❄️ Winter Bypass <span style="margin-left:auto;font-size:11px;color:var(--ha-purple)">passive solar</span></button>
+        <button class="scenario-btn" onclick="runScenario('lowwater')">💧 Low Water <span style="margin-left:auto;font-size:11px;color:var(--ha-red)">immediate</span></button>
+      </div>
+    </div>
+
+    <!-- Security scenarios -->
+    <div class="card">
+      <div class="card-header">🔒 Security &amp; Access</div>
+      <div class="card-body">
+        <button class="scenario-btn" onclick="runScenario('security')">🚨 Security Alert <span style="margin-left:auto;font-size:11px;color:var(--ha-red)">immediate</span></button>
+        <button class="scenario-btn" onclick="runScenario('fingerprint')">🔓 Fingerprint Scan <span style="margin-left:auto;font-size:11px;color:var(--ha-green)">unlocks 5 s</span></button>
+      </div>
+    </div>
+
+    <!-- Elevator scenarios -->
+    <div class="card">
+      <div class="card-header">🛗 Elevator</div>
+      <div class="card-body">
+        <button class="scenario-btn" onclick="runScenario('elev_gf')">→ Ground Floor</button>
+        <button class="scenario-btn" onclick="runScenario('elev_f1')">→ First Floor</button>
+        <button class="scenario-btn" onclick="runScenario('elev_fault')">⚠️ Elevator Fault</button>
+      </div>
+    </div>
+
+    <!-- What each tests -->
+    <div class="card">
+      <div class="md-card">
+        <h3>What each scenario tests</h3>
+        <table>
+          <tr><th>Scenario</th><th>Automation</th><th>Delay</th></tr>
+          <tr><td>🌞 Normal Summer</td><td>Fan speed update</td><td>~5 min</td></tr>
+          <tr><td>🌧️ Monsoon Bypass</td><td>cooling_monsoon_bypass_on</td><td><strong>3 min</strong></td></tr>
+          <tr><td>❄️ Winter Bypass</td><td>cooling_winter_bypass_on</td><td>30 min</td></tr>
+          <tr><td>💧 Low Water</td><td>rwh_beehive_valve_cut</td><td><strong>Immediate</strong></td></tr>
+          <tr><td>🚨 Security Alert</td><td>security_pir_trigger_away</td><td><strong>Immediate</strong></td></tr>
+          <tr><td>🔓 Fingerprint</td><td>Lock state change</td><td><strong>Immediate</strong></td></tr>
+          <tr><td>⚠️ Elevator Fault</td><td>elevator_fault_alert</td><td><strong>Immediate</strong></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Feedback area -->
+    <div class="card" id="scenario-feedback" style="display:none">
+      <div class="card-header">Last Scenario</div>
+      <div class="card-body" id="scenario-msg"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VIEW 9 · GUIDE -->
+<div class="view" id="view-guide">
+  <div class="card" style="max-width:860px;margin:0 auto;">
+    <div class="md-card">
+      <h1>📖 Lucknow Smart Residence — Dashboard Guide</h1>
+
+      <h2>🖥️ Software you need</h2>
+      <table>
+        <tr><th>Software</th><th>Why</th></tr>
+        <tr><td><strong>Docker Desktop</strong></td><td>Runs HA + Mosquitto in containers (enable WSL2 on Windows)</td></tr>
+        <tr><td><strong>Git</strong></td><td>Clone the repo</td></tr>
+        <tr><td>MQTT Explorer (optional)</td><td>Visual MQTT debugger — see every topic live</td></tr>
+      </table>
+
+      <h2>🚀 First-time setup</h2>
+      <pre><code>git clone https://github.com/Sidharth-Asthana/lucknow-iot.git
+cd lucknow-iot
+bash scripts/setup.sh
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# → open http://localhost:8123 and complete HA wizard
+
+cp -r ha_config/. volumes/ha_config/
+docker compose restart homeassistant</code></pre>
+      <p>Then paste <code>dashboard/lovelace.yaml</code> into HA → Settings → Dashboards → Edit → Raw Config Editor.</p>
+
+      <h2>🗂️ Dashboard views</h2>
+      <table>
+        <tr><th>Tab</th><th>What it shows</th></tr>
+        <tr><td>⚡ Overview</td><td>PV yield, battery %, tank level, cooling mode, alarm, elevator floor</td></tr>
+        <tr><td>🔋 Energy</td><td>Animated power-flow (PV → battery ↔ grid), 48-hr history, daily kWh</td></tr>
+        <tr><td>💧 Water</td><td>Tank gauge (18 000 L), pump + valve controls, domestic vs CT flow</td></tr>
+        <tr><td>🌬 Cooling</td><td>Mode badge, temp/RH gauges, ΔT readout, fan sliders, damper toggles</td></tr>
+        <tr><td>🔒 Security</td><td>Alarm panel, 7-camera grid, PIR + IR beam zones, siren + floods</td></tr>
+        <tr><td>⚙️ Systems</td><td>Server health, UPS, fingerprint log, elevator indicator + call buttons</td></tr>
+        <tr><td>🤖 Automations</td><td>Enable/disable each automation, adjust all thresholds</td></tr>
+        <tr><td>🧪 Test Lab</td><td>One-click scenario buttons — no hardware needed</td></tr>
+        <tr><td>📖 Guide</td><td>This page</td></tr>
+      </table>
+
+      <h2>🌬 Cooling Modes</h2>
+      <table>
+        <tr><th>Mode</th><th>Trigger</th><th>Action</th></tr>
+        <tr><td><code>cooling</code></td><td>RH &lt; 65%, T &gt; 26°C</td><td>Dampers open, fans run (speed ∝ ΔT)</td></tr>
+        <tr><td><code>monsoon_bypass</code></td><td>Indoor RH &gt; 65% for 3 min</td><td>Dampers closed, fans off, dehumidifier on</td></tr>
+        <tr><td><code>winter_bypass</code></td><td>Outdoor T &lt; 18°C for 30 min</td><td>Everything off, passive solar mode</td></tr>
+        <tr><td><code>off</code></td><td>Manual</td><td>All actuators off</td></tr>
+      </table>
+      <p><strong>Fan speed formula:</strong> <code>speed% = clamp((outdoor_T − inlet_T) / 14 × 100, 20, 100)</code></p>
+
+      <h2>🔌 HACS cards needed (production only)</h2>
+      <table>
+        <tr><th>Card</th><th>View</th></tr>
+        <tr><td>power-flow-card-plus</td><td>Energy</td></tr>
+        <tr><td>mushroom-cards</td><td>Overview, Cooling</td></tr>
+        <tr><td>apexcharts-card</td><td>Energy, Water</td></tr>
+        <tr><td>button-card</td><td>Cooling, Water, Security</td></tr>
+        <tr><td>frigate-hass-card</td><td>Security (cameras)</td></tr>
+      </table>
+      <p><strong>Test Lab and Guide use zero HACS cards</strong> — they work immediately after HA onboarding.</p>
+
+      <h2>🐛 Troubleshooting</h2>
+      <table>
+        <tr><th>Symptom</th><th>Fix</th></tr>
+        <tr><td>HA not at localhost:8123</td><td>Add <code>-f docker-compose.dev.yml</code> to compose command</td></tr>
+        <tr><td>Sensors show "unavailable"</td><td><code>docker compose restart homeassistant</code></td></tr>
+        <tr><td>HACS cards missing</td><td>Install via HACS, clear browser cache</td></tr>
+        <tr><td>Mosquitto not reachable</td><td>Re-run <code>bash scripts/setup.sh</code></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Clock ──────────────────────────────────────────────────────────────────
+function tick() {
+  const d = new Date();
+  document.getElementById('clock').textContent =
+    d.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+}
+tick(); setInterval(tick, 10000);
+
+// ── Tabs ───────────────────────────────────────────────────────────────────
+document.getElementById('tabnav').addEventListener('click', e => {
+  const btn = e.target.closest('.tabnav-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tabnav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-' + btn.dataset.tab).classList.add('active');
+});
+
+// ── Simulated sensor drift ────────────────────────────────────────────────
+let pvBase = 3840, batBase = 78, rwhBase = 62;
+let indTemp = 28.4, outdTemp = 39.4, rh = 52;
+let scenario = null;
+
+function randDrift(v, max, lo, hi) {
+  v += (Math.random() - 0.5) * max;
+  return Math.max(lo, Math.min(hi, v));
+}
+
+function applyScenario() {
+  if (!scenario) return;
+  switch(scenario) {
+    case 'monsoon': rh = Math.min(rh + 0.4, 82); outdTemp = Math.min(outdTemp+0.2, 35); break;
+    case 'winter':  outdTemp = Math.max(outdTemp - 0.5, 14); break;
+    case 'lowwater': rwhBase = Math.max(rwhBase - 0.3, 8); break;
+    case 'security': break;
+  }
+}
+
+function updateSensors() {
+  pvBase   = randDrift(pvBase,   120, 0, 6000);
+  batBase  = randDrift(batBase,  0.3, 0, 100);
+  rwhBase  = randDrift(rwhBase,  0.1, 0, 100);
+  indTemp  = randDrift(indTemp,  0.1, 22, 38);
+  outdTemp = randDrift(outdTemp, 0.2, 20, 48);
+  rh       = randDrift(rh,       0.5, 25, 90);
+  applyScenario();
+
+  const pv   = Math.round(pvBase);
+  const bat  = batBase.toFixed(0);
+  const rwhl = Math.round(rwhBase / 100 * 18000);
+  const dt   = (outdTemp - indTemp).toFixed(0);
+
+  // Update chip row
+  document.getElementById('pv-chip').textContent  = pv.toLocaleString() + ' W';
+  document.getElementById('bat-chip').textContent = bat + '%';
+  document.getElementById('rwh-chip').textContent = rwhBase.toFixed(0) + '%';
+
+  // Overview stats
+  document.getElementById('pv-val').textContent   = pv.toLocaleString() + ' W';
+  document.getElementById('bat-val').textContent  = bat + '%';
+  document.getElementById('rwh-val').textContent  = rwhl.toLocaleString() + ' L';
+  document.getElementById('ind-temp').textContent = indTemp.toFixed(1) + '°C';
+  document.getElementById('ind-rh').textContent   = rh.toFixed(0) + '%';
+  document.getElementById('delta-t').textContent  = 'ΔT ' + dt + '°C';
+
+  // Colour bat
+  const batEl = document.getElementById('bat-val');
+  batEl.style.color = batBase > 50 ? 'var(--ha-green)' : batBase > 20 ? 'var(--ha-amber)' : 'var(--ha-red)';
+}
+updateSensors();
+setInterval(updateSensors, 4000);
+
+// ── Scenario buttons ──────────────────────────────────────────────────────
+const SCENARIO_MSGS = {
+  normal:      '🌞 Normal Summer injected — fans running at 78%, ΔT ≈ 11°C, battery charging.',
+  monsoon:     '🌧️ Monsoon Bypass — RH rising above 65%. cooling_monsoon_bypass automation will fire in 3 min.',
+  winter:      '❄️ Winter Bypass — outdoor temp dropping below 18°C. Dampers closing, passive solar mode.',
+  lowwater:    '💧 Low Water — tank level below 15%. CT drip valve cut, low-level notification sent.',
+  security:    '🚨 Security Alert — PIR triggered in perimeter zone. Alarm armed_away → triggered. Siren + floodlights ON.',
+  fingerprint: '🔓 Fingerprint Scan — User 1001 authenticated. Server panel unlocking for 5 seconds.',
+  elev_gf:     '🛗 Elevator → Ground Floor — reed switch GF ON. Floor indicator updated.',
+  elev_f1:     '🛗 Elevator → First Floor — reed switch F1 ON. Floor indicator updated.',
+  elev_fault:  '⚠️ Elevator Fault — fault relay ON. Immediate push notification sent.',
+};
+
+window.runScenario = function(s) {
+  scenario = s;
+  const fb = document.getElementById('scenario-feedback');
+  const msg = document.getElementById('scenario-msg');
+  fb.style.display = '';
+  msg.innerHTML = '<span class="live-dot"></span>' + (SCENARIO_MSGS[s] || s);
+
+  // Auto-clear non-continuous scenarios
+  if (s === 'security' || s === 'fingerprint' || s.startsWith('elev')) {
+    setTimeout(() => { scenario = null; }, 8000);
+  }
+};
+</script>
+</body>
+</html>
