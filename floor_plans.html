@@ -23,7 +23,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </head>
 <body>
 <h1>Lucknow Smart Self-Sufficient Residence</h1>
-<p class="sub">27.4 × 13.7 m plot · G+1+Terrace · East-facing · Lucknow, UP · Scale 1:100</p>
+<p class="sub">27.4 × 13.1 m plot · G+1+Terrace · West-facing · B-274 DLF Garden City · Lucknow, UP</p>
 
 <div class="tabs">
   <button class="active" onclick="show('gf',this)">Ground Floor</button>
@@ -37,523 +37,499 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     GROUND FLOOR PLAN
+     GROUND FLOOR PLAN  (50ft E-W × 30ft N-S · 8px/ft)
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel active" id="gf">
-<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
     <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="1"/>
   </pattern>
+  <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+  </marker>
 </defs>
-<!-- Title block -->
-<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">GROUND FLOOR PLAN — FFL ±0.000 m</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · All dims in metres · North ↑ (+Y)</text>
+<!-- ── COORDINATE SYSTEM: 8px/ft · BX0=190(W) BX1=590(E) BY0=340(S) BY1=100(N) ── -->
+<!-- Title -->
+<text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">GROUND FLOOR PLAN — FFL ±0.000 m</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:80 · 8 px/ft · North ↑ · West-facing front</text>
 
-<!-- S=18px/m; ox=200, oy=310; svg_x=ox+X*18, svg_y=oy-Y*18 -->
-<!-- PLOT BOUNDARY -->
-<rect x="65" y="97" width="493" height="234" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+<!-- SCALE 8px/ft · BX0=190(W) BX1=590(E) BY1=100(N) BY0=340(S) · Building 50×30ft = 400×240px -->
+<!-- PLOT BOUNDARY: 90ft E-W = 720px, 43ft N-S = 344px; left margin=30 -->
+<rect x="30" y="60" width="720" height="344" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="6,4"/>
 
-<!-- DRIVEWAY -->
-<rect x="65" y="97" width="135" height="234" fill="#e8e6e0"/>
-<text x="97" y="222" font-size="8" fill="#888" font-family="Arial" transform="rotate(-90,97,222)">DRIVEWAY 7.5m</text>
+<!-- WEST GARDEN/DRIVEWAY AREA (between boundary and building west face) -->
+<rect x="30" y="60" width="160" height="344" fill="#ede9e0"/>
+<text x="88" y="242" font-size="7" fill="#888" font-family="Arial" text-anchor="middle" transform="rotate(-90,88,242)">DRIVEWAY (curved)</text>
 
-<!-- EAST LAWN -->
-<rect x="450" y="97" width="108" height="234" fill="#d4e8c8"/>
-<text x="504" y="222" font-size="8" fill="#668855" font-family="Arial" transform="rotate(-90,504,222)">EAST LAWN 6.0m</text>
+<!-- EAST GARDEN: 25ft = 200px east of building -->
+<rect x="590" y="60" width="160" height="344" fill="#d4e8c8"/>
+<text x="660" y="242" font-size="7" fill="#558844" font-family="Arial" text-anchor="middle" transform="rotate(-90,660,242)">EAST GARDEN</text>
 
-<!-- BOUNDARY WALL (thick outline) -->
-<rect x="65" y="97" width="493" height="234" fill="none" stroke="#4a4a4a" stroke-width="4"/>
+<!-- BOUNDARY WALLS -->
+<rect x="30" y="60" width="4" height="344" fill="#555"/>   <!-- west -->
+<rect x="746" y="60" width="4" height="344" fill="#555"/>  <!-- east -->
+<rect x="30" y="60" width="720" height="4" fill="#555"/>   <!-- north -->
+<rect x="30" y="400" width="720" height="4" fill="#555"/>  <!-- south -->
 
-<!-- GATE gap on west (Y:[3.0,7.0] → svg_y 310-7*18=184 to 310-3*18=256) -->
-<line x1="65" y1="184" x2="65" y2="256" stroke="#faf8f4" stroke-width="5"/>
-<line x1="65" y1="184" x2="65" y2="256" stroke="#cc8800" stroke-width="2" stroke-dasharray="3,2"/>
-<text x="38" y="222" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">GATE 4m</text>
+<!-- MAIN GATE (SW corner, 3m gap, Y≈60-148 = north portion of west wall = the south part since plot is 344px tall -->
+<!-- Gate at bottom-left of west wall: y=330-60=270px from top = SW in N-up plan (south=bottom) -->
+<!-- SW gate: y=332 to y=404 = off screen. Let me place gate at bottom of west boundary -->
+<!-- In our SVG: top=N, bottom=S. SW corner = bottom-left. Gate gap in west boundary near bottom: -->
+<line x1="30" y1="340" x2="30" y2="404" stroke="#faf8f4" stroke-width="6"/>
+<line x1="30" y1="340" x2="30" y2="404" stroke="#cc8800" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="14" y="374" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,14,374)">MAIN GATE</text>
 
-<!-- ── HOUSE OUTER WALLS (200mm=3.6px → show as 4px fill, 3px stroke) ── -->
-<!-- South wall  y=310, X[0,13.9] → rect(200,310,250,4) -->
-<rect x="200" y="308" width="250" height="4" fill="#4a4a4a"/>
-<!-- North wall  y=310-10*18=130, X[0,13.9] -->
-<rect x="200" y="128" width="250" height="4" fill="#4a4a4a"/>
-<!-- West wall   x=200, Y[0,10] → rect(200,130,4,180) -->
-<rect x="200" y="130" width="4" height="180" fill="#4a4a4a"/>
-<!-- East wall   x=450, Y[0,10] -->
-<rect x="448" y="130" width="4" height="180" fill="#4a4a4a"/>
-<!-- House outline (thin) -->
-<rect x="200" y="130" width="250" height="180" fill="none" stroke="#2c2c2c" stroke-width="1.5"/>
+<!-- MAID GATE (just north of main) -->
+<line x1="30" y1="300" x2="30" y2="336" stroke="#faf8f4" stroke-width="6"/>
+<line x1="30" y1="300" x2="30" y2="336" stroke="#cc8800" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="7" y="320" font-size="6" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,7,320)">MAID GATE</text>
+
+<!-- BACK GATE (east boundary, center) -->
+<line x1="746" y1="200" x2="746" y2="248" stroke="#faf8f4" stroke-width="6"/>
+<line x1="746" y1="200" x2="746" y2="248" stroke="#886600" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="756" y="226" font-size="6" fill="#886600" font-family="Arial" text-anchor="middle" transform="rotate(-90,756,226)">BACK GATE</text>
+
+<!-- ── CT (plan view, NW exterior of building) ── -->
+<circle cx="155" cy="102" r="24" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="2"/>
+<circle cx="155" cy="102" r="12" fill="#b84a18" opacity=".7"/>
+<circle cx="155" cy="102" r="4" fill="#445566"/>
+<text x="155" y="100" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">CT</text>
+<text x="155" y="109" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">∅1.8m</text>
+<text x="155" y="140" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">COOLING</text>
+<text x="155" y="148" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">TOWER</text>
+
+<!-- ── HOUSE OUTER WALLS ── -->
+<!-- Building: x=190 to x=590, y=100 to y=340 -->
+<rect x="190" y="100" width="400" height="240" fill="#f4f0ea" stroke="#2c2c2c" stroke-width="3"/>
+
+<!-- ── INTERNAL WALLS ── -->
+<!-- CX1: west 20ft = x=190+160=350 (garage/living div) -->
+<rect x="349" y="100" width="3" height="240" fill="#4a4a4a"/>
+<!-- CX2: east 12ft from east = x=590-96=494 (kitchen west wall) -->
+<rect x="493" y="100" width="3" height="240" fill="#4a4a4a"/>
+<!-- CY_mid: N-S midpoint 15ft from north = y=100+120=220 -->
+<rect x="190" y="219" width="300" height="3" fill="#4a4a4a"/>
+<!-- South partition living/pantry: x=350 to x=494, y=260 -->
+<rect x="350" y="259" width="146" height="3" fill="#4a4a4a"/>
+<!-- Guest ensuite: x=190 to x=298, y=276 -->
+<rect x="298" y="219" width="3" height="121" fill="#4a4a4a"/>  <!-- ensuite east wall -->
+<!-- Powder room: x=350 to x=414, y=219 to y=340 -->
+<rect x="350" y="279" width="80" height="3" fill="#4a4a4a"/>
+<rect x="430" y="219" width="3" height="63" fill="#4a4a4a"/>
+<!-- L-Stair NE: north arm y=100..132, x=430..590; east arm x=562..590, y=100..220 -->
+<rect x="429" y="131" width="3" height="89" fill="#4a4a4a"/>  <!-- stair south wall -->
+<rect x="561" y="100" width="3" height="120" fill="#4a4a4a"/>  <!-- stair west wall -->
 
 <!-- ── ROOM FILLS ── -->
-<!-- G1 GARAGE X[0,5.9] Y[0,10] → (200,130) w=106 h=180 -->
-<rect x="200" y="130" width="106" height="180" fill="#ece8e0" opacity=".7"/>
-<!-- G2 STAIR X[5.9,8.4] Y[3,7.5] → (306,165) w=45 h=81 -->
-<rect x="306" y="165" width="45" height="81" fill="#dde8ee" opacity=".8"/>
-<!-- G3 FOYER X[13,13.9] Y[5,7.5] → (434,165) w=16 h=45 -->
-<rect x="434" y="165" width="16" height="45" fill="#eeead8" opacity=".8"/>
-<!-- G4 POWDER X[8.6,10] Y[3.5,5] → (355,237) to (380,210) -->
-<rect x="355" y="210" width="25" height="27" fill="#ddeeff" opacity=".8"/>
-<!-- G5 KITCHEN X[5.9,13.9] Y[5.5,10] → (306,130) w=144 h=81 -->
-<rect x="306" y="130" width="144" height="81" fill="#fdf5e0" opacity=".8"/>
-<!-- G6 LIVING X[8.4,13.9] Y[3.5,7.5] → (351,165) w=99 h=72 -->
-<rect x="351" y="165" width="99" height="72" fill="#f0eee6" opacity=".8"/>
-<!-- G7 GUEST X[10,13.9] Y[0,3.5] → (380,237) w=70 h=63 -->
-<rect x="380" y="237" width="70" height="63" fill="#f5e8ec" opacity=".8"/>
+<rect x="191" y="101" width="158" height="237" fill="#ece8e0" opacity=".7"/>   <!-- Garage NW -->
+<rect x="352" y="101" width="140" height="118" fill="#f0ece6" opacity=".8"/>   <!-- Living -->
+<rect x="352" y="220" width="78" height="39" fill="#fdf5e0" opacity=".8"/>     <!-- Dining -->
+<rect x="352" y="262" width="78" height="77" fill="#ddeeff" opacity=".8"/>     <!-- Powder Rm + Guest ensuite strip -->
+<rect x="432" y="220" width="60" height="119" fill="#fdf5e0" opacity=".8"/>    <!-- Pantry -->
+<rect x="496" y="101" width="93" height="238" fill="#fff8e8" opacity=".8"/>    <!-- Kitchen E strip -->
+<rect x="191" y="220" width="106" height="119" fill="#f5e8ec" opacity=".8"/>   <!-- Guest Bed SW -->
+<rect x="430" y="101" width="130" height="30" fill="#dde8ee" opacity=".8"/>    <!-- Stair N arm top -->
+<rect x="562" y="101" width="27" height="118" fill="#dde8ee" opacity=".8"/>    <!-- Stair E arm -->
 
-<!-- ── INTERNAL WALLS (115mm≈2px) ── -->
-<!-- CX1 at X=5.9 → x=306, Y[0,10] → y 130 to 310 -->
-<rect x="305" y="130" width="3" height="180" fill="#4a4a4a"/>
-<!-- CX2 at X=8.4 → x=351, Y[3,10] → y 130 to 246 -->
-<rect x="350" y="130" width="3" height="116" fill="#4a4a4a"/>
-<!-- Y=3.5 partition: X[8.4,13.9] → x(351) to x(450) -->
-<rect x="351" y="236" width="101" height="3" fill="#4a4a4a"/>
-<!-- Y=5.5 partition: X[5.9,13.9] -->
-<rect x="306" y="211" width="146" height="3" fill="#4a4a4a"/>
-<!-- Powder bath north wall Y=5.0, X[8.4,10.0] -->
-<rect x="351" y="210" width="27" height="3" fill="#4a4a4a"/>
-<!-- Powder bath east X=10.0, Y[3.5,5.0] -->
-<rect x="378" y="210" width="3" height="29" fill="#4a4a4a"/>
+<!-- ── STAIR L-SHAPE hatch ── -->
+<rect x="430" y="101" width="130" height="30" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<rect x="562" y="101" width="27" height="118" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="500" y="118" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">STAIR (N arm →)</text>
+<text x="575" y="160" font-size="6" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,575,160)">STAIR E↑</text>
 
-<!-- ── VERANDAH X[13.9,15.4] ── -->
-<rect x="450" y="130" width="27" height="180" fill="#e8e4d4" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
-<text x="463" y="222" font-size="7" fill="#666" font-family="Arial" text-anchor="middle" transform="rotate(-90,463,222)">VERANDAH 1.5m</text>
-<!-- Columns (2×) -->
-<rect x="472" y="173" width="5" height="5" fill="#c8b090"/>
-<rect x="472" y="285" width="5" height="5" fill="#c8b090"/>
+<!-- ELEVATOR BOX (NE, against north+east walls) -->
+<rect x="544" y="101" width="45" height="45" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="566" y="122" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
 
-<!-- ── GUEST BALCONY X[13.9,15.9] Y[0.5,3.5] ── -->
-<rect x="450" y="237" width="36" height="54" fill="#e0f0e8" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
-<text x="468" y="267" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">BALCONY</text>
+<!-- ── WINDOWS / DOORS ── -->
+<!-- Garage door (north area of west wall) -->
+<rect x="187" y="108" width="4" height="80" fill="#a0b8c0"/>
+<text x="178" y="150" font-size="6" fill="#4070a0" font-family="Arial" text-anchor="middle" transform="rotate(-90,178,150)">GARAGE 10ft</text>
+<!-- Front door (west wall, center) -->
+<rect x="187" y="210" width="4" height="28" fill="#c89040"/>
+<text x="174" y="228" font-size="6" fill="#8a5000" font-family="Arial" text-anchor="middle" transform="rotate(-90,174,228)">FRONT DOOR</text>
+<!-- Windows west wall -->
+<rect x="187" y="264" width="4" height="30" fill="#a8d8ea" opacity=".9"/>
+<!-- East face windows -->
+<rect x="587" y="115" width="4" height="40" fill="#a8d8ea" opacity=".9"/>
+<rect x="587" y="200" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
+<rect x="587" y="285" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
+<!-- North face windows -->
+<rect x="280" y="97" width="40" height="4" fill="#a8d8ea" opacity=".9"/>
+<rect x="400" y="97" width="50" height="4" fill="#a8d8ea" opacity=".9"/>
+<!-- South face windows -->
+<rect x="300" y="337" width="30" height="4" fill="#a8d8ea" opacity=".9"/>
+<rect x="460" y="337" width="30" height="4" fill="#a8d8ea" opacity=".9"/>
 
-<!-- ── COOLING TOWER (plan view, SW corner) ──
-     x=-2m → svg_x=200+(-2)*18=164, y=-0.9m → svg_y=310-(-0.9)*18=326
-     Diameter 1.8m → radius 16px -->
-<circle cx="164" cy="326" r="16" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1.5"/>
-<circle cx="164" cy="326" r="9" fill="#b84a18" opacity=".7"/>
-<!-- Solar fan disc at top (plan = circle) -->
-<circle cx="164" cy="326" r="4" fill="#445566" stroke="#334455" stroke-width="1"/>
-<!-- CT dimension lines -->
-<line x1="148" y1="344" x2="180" y2="344" stroke="#c86030" stroke-width=".8"/>
-<text x="164" y="353" font-size="5.5" fill="#c86030" font-family="Arial" text-anchor="middle">∅ 1.8m</text>
-<!-- CT label -->
-<text x="164" y="324" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">CT</text>
-<text x="187" y="322" font-size="6" fill="#c86030" font-family="Arial">COOL</text>
-<text x="187" y="331" font-size="6" fill="#c86030" font-family="Arial">TOWER</text>
-<text x="187" y="340" font-size="5.5" fill="#c86030" font-family="Arial">h=5.5m</text>
-<!-- Airflow entry arrow (CT → house west wall opening) -->
-<line x1="180" y1="320" x2="198" y2="300" stroke="#00ccee" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>
-<text x="193" y="289" font-size="5.5" fill="#00aabb" font-family="Arial" text-anchor="middle">cool→</text>
-
-<!-- ── FURNITURE ── -->
-<!-- Kitchen island 3.0×1.2m at (8.5,8.5) → svg(353,157) w=54 h=22 -->
-<rect x="353" y="147" width="54" height="22" fill="#c8a870" stroke="#8a6030" stroke-width="1" rx="2"/>
-<text x="380" y="160" font-size="6.5" fill="#5a3010" font-family="Arial" text-anchor="middle">ISLAND</text>
-<!-- Dining table 2.4×1.0m -->
-<rect x="395" y="175" width="43" height="18" fill="#d4b070" stroke="#8a6030" stroke-width="1" rx="1"/>
-<!-- L-sofa: long part 3.0×0.8m, short 0.8×2.0m -->
-<rect x="355" y="185" width="54" height="14" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
-<rect x="355" y="185" width="14" height="36" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
-<!-- Guest bed 1.5×2.0m -->
-<rect x="385" y="247" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<!-- Workbench -->
-<rect x="205" y="290" width="18" height="36" fill="#c8a870" stroke="#806030" stroke-width="1"/>
-<!-- Battery cab -->
-<rect x="205" y="240" width="9" height="29" fill="#8898a8" stroke="#506070" stroke-width="1"/>
-<text x="200" y="258" font-size="5.5" fill="#506070" font-family="Arial">BAT</text>
-<!-- NVR -->
-<rect x="311" y="196" width="8" height="11" fill="#9888a8" stroke="#605070" stroke-width="1"/>
-
-<!-- ── STAIRS ── -->
-<rect x="306" y="187" width="22" height="81" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
-<text x="317" y="232" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">STAIR</text>
-<!-- Stair direction arrow -->
-<line x1="317" y1="259" x2="317" y2="196" stroke="#666" stroke-width="1" marker-end="url(#arr)"/>
-
-<!-- ── DOOR / WINDOW INDICATORS ── -->
-<!-- Front door (E face Y=5.5-6.5 → svg_y 211-199) -->
-<rect x="448" y="199" width="4" height="18" fill="#c89040"/>
-<!-- Garage roller door -->
-<rect x="197" y="184" width="4" height="72" fill="#a0b8c0"/>
-<text x="186" y="225" font-size="7" fill="#4070a0" font-family="Arial" transform="rotate(-90,186,225)">ROLLER 4.5m</text>
-<!-- East windows (3) -->
-<rect x="448" y="237" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
-<rect x="448" y="158" width="4" height="45" fill="#a8d8ea" opacity=".8"/>
-<rect x="448" y="133" width="4" height="54" fill="#a8d8ea" opacity=".8"/>
-<!-- South window (guest) -->
-<rect x="390" y="307" width="36" height="4" fill="#a8d8ea" opacity=".8"/>
-<!-- North window (kitchen) -->
-<rect x="328" y="128" width="54" height="4" fill="#a8d8ea" opacity=".8"/>
+<!-- ── FURNITURE HINTS ── -->
+<!-- Kitchen island -->
+<rect x="510" y="200" width="60" height="20" fill="#c8a870" stroke="#806030" stroke-width="1" rx="2"/>
+<text x="540" y="212" font-size="6" fill="#5a3010" font-family="Arial" text-anchor="middle">ISLAND</text>
+<!-- Dining table -->
+<rect x="360" y="228" width="50" height="24" fill="#d4b070" stroke="#8a6030" stroke-width="1" rx="1"/>
+<!-- Sofa in living -->
+<rect x="360" y="140" width="80" height="16" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
+<rect x="360" y="140" width="16" height="50" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
+<!-- Guest bed -->
+<rect x="204" y="240" width="55" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<text x="231" y="278" font-size="6.5" fill="#604040" font-family="Arial" text-anchor="middle">GUEST BED</text>
 
 <!-- ── ROOM LABELS ── -->
-<text x="253" y="222" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G1</text>
-<text x="253" y="232" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">GARAGE+BAY</text>
-<text x="253" y="242" font-size="7" fill="#777" font-family="Arial" text-anchor="middle">28 m²</text>
-
-<text x="328" y="209" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G2</text>
-<text x="328" y="219" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">STAIR+LIFT</text>
-<text x="328" y="228" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">12 m²</text>
-
-<text x="380" y="162" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G5</text>
-<text x="380" y="172" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">KITCHEN+DINING</text>
-<text x="380" y="180" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">32 m²</text>
-
-<text x="400" y="202" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G6</text>
-<text x="400" y="211" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">LIVING 36 m²</text>
-
-<text x="364" y="248" font-size="6.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G4</text>
-<text x="364" y="256" font-size="5.5" fill="#666" font-family="Arial" text-anchor="middle">PWD 3m²</text>
-
-<text x="415" y="262" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G7</text>
-<text x="415" y="271" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">GUEST+BATH</text>
-<text x="415" y="280" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">16 m²</text>
-
-<text x="440" y="180" font-size="6.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">G3</text>
-<text x="440" y="188" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">FOYER 8m²</text>
+<text x="265" y="210" font-size="9" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">GARAGE</text>
+<text x="265" y="222" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">20×30ft</text>
+<text x="412" y="145" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LIVING</text>
+<text x="412" y="156" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">18×15ft open</text>
+<text x="383" y="245" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">DINING</text>
+<text x="383" y="256" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">open plan</text>
+<text x="383" y="297" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">POWDER</text>
+<text x="383" y="308" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">ROOM</text>
+<text x="456" y="265" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">PANTRY</text>
+<text x="540" y="200" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">KITCHEN</text>
+<text x="540" y="212" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">12×30ft</text>
+<text x="228" y="305" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
 
 <!-- ── DIMENSION LINES ── -->
-<!-- Overall E-W: 13.9m -->
-<line x1="200" y1="322" x2="450" y2="322" stroke="#888" stroke-width="1"/>
-<line x1="200" y1="318" x2="200" y2="326" stroke="#888" stroke-width="1"/>
-<line x1="450" y1="318" x2="450" y2="326" stroke="#888" stroke-width="1"/>
-<text x="325" y="331" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">13.9 m</text>
-<!-- Overall N-S: 10.0m -->
-<line x1="488" y1="130" x2="488" y2="310" stroke="#888" stroke-width="1"/>
-<line x1="484" y1="130" x2="492" y2="130" stroke="#888" stroke-width="1"/>
-<line x1="484" y1="310" x2="492" y2="310" stroke="#888" stroke-width="1"/>
-<text x="498" y="222" font-size="8" fill="#555" font-family="Arial" text-anchor="start" transform="rotate(-90,498,222)">10.0 m</text>
-<!-- Garage width -->
-<line x1="200" y1="342" x2="306" y2="342" stroke="#aaa" stroke-width=".8"/>
-<text x="253" y="351" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">5.9 m</text>
-<!-- Verandah -->
-<line x1="450" y1="342" x2="477" y2="342" stroke="#aaa" stroke-width=".8"/>
-<text x="463" y="351" font-size="6" fill="#888" font-family="Arial" text-anchor="middle">1.5 m</text>
+<line x1="190" y1="360" x2="590" y2="360" stroke="#888" stroke-width="1"/>
+<line x1="190" y1="355" x2="190" y2="365" stroke="#888" stroke-width="1"/>
+<line x1="590" y1="355" x2="590" y2="365" stroke="#888" stroke-width="1"/>
+<text x="390" y="372" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">15.24 m (50 ft)</text>
+<line x1="620" y1="100" x2="620" y2="340" stroke="#888" stroke-width="1"/>
+<line x1="615" y1="100" x2="625" y2="100" stroke="#888" stroke-width="1"/>
+<line x1="615" y1="340" x2="625" y2="340" stroke="#888" stroke-width="1"/>
+<text x="640" y="222" font-size="8" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,640,222)">9.14 m (30 ft)</text>
+<!-- Workshop dim (F1, shown as context) -->
+<line x1="30" y1="380" x2="190" y2="380" stroke="#cc9040" stroke-width="1"/>
+<text x="110" y="392" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m (15ft) WS ext ↑F1</text>
 
 <!-- ── NORTH ARROW ── -->
-<g transform="translate(670,100)">
+<g transform="translate(820,100)">
   <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
   <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
   <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
-  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
-</g>
-
-<!-- ── SCALE BAR ── -->
-<g transform="translate(570,420)">
-  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
-  <rect x="0" y="0" width="18" height="7" fill="#555"/>
-  <rect x="36" y="0" width="18" height="7" fill="#555"/>
-  <rect x="72" y="0" width="18" height="7" fill="#555"/>
-  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
-  <text x="18" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">1m</text>
-  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
-  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+  <text x="0" y="-24" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+  <text x="22" y="4" font-size="7" fill="#555" font-family="Arial">E</text>
+  <text x="-22" y="4" font-size="7" fill="#555" font-family="Arial" text-anchor="end">W</text>
+  <text x="0" y="30" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">S</text>
 </g>
 
 <!-- ── LEGEND ── -->
-<g transform="translate(570,150)">
-  <rect x="0" y="0" width="150" height="130" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
-  <text x="75" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LEGEND</text>
-  <circle cx="15" cy="26" r="7" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1"/>
-  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Cooling Tower (∅1.8m, 5.5m h)</text>
-  <rect x="8" y="36" width="14" height="8" fill="#a8d8ea" opacity=".8"/>
-  <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Window (glazing)</text>
-  <rect x="8" y="50" width="14" height="8" fill="#c89040"/>
-  <text x="26" y="58" font-size="7" fill="#444" font-family="Arial">Door opening</text>
-  <rect x="8" y="64" width="14" height="8" fill="#d4e8c8"/>
-  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">East lawn</text>
-  <rect x="8" y="78" width="14" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
-  <text x="26" y="86" font-size="7" fill="#444" font-family="Arial">Stair / hatch</text>
-  <line x1="8" y1="100" x2="22" y2="100" stroke="#4a4a4a" stroke-width="3"/>
-  <text x="26" y="104" font-size="7" fill="#444" font-family="Arial">Ext wall 200mm</text>
-  <line x1="8" y1="114" x2="22" y2="114" stroke="#4a4a4a" stroke-width="1.5"/>
-  <text x="26" y="118" font-size="7" fill="#444" font-family="Arial">Int wall 115mm</text>
+<g transform="translate(680,180)">
+  <rect x="0" y="0" width="165" height="145" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="82" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LEGEND</text>
+  <circle cx="14" cy="26" r="8" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1"/>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Cooling Tower (GF, NW ext.)</text>
+  <rect x="6" y="38" width="16" height="8" fill="#a8d8ea" opacity=".9"/>
+  <text x="26" y="46" font-size="7" fill="#444" font-family="Arial">Window / glazing</text>
+  <rect x="6" y="52" width="16" height="8" fill="#c89040"/>
+  <text x="26" y="60" font-size="7" fill="#444" font-family="Arial">Door opening</text>
+  <rect x="6" y="66" width="16" height="8" fill="#a0b8c0"/>
+  <text x="26" y="74" font-size="7" fill="#444" font-family="Arial">Roller shutter</text>
+  <rect x="6" y="80" width="16" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
+  <text x="26" y="88" font-size="7" fill="#444" font-family="Arial">L-Stair (NE corner)</text>
+  <rect x="6" y="94" width="16" height="8" fill="#8898a8"/>
+  <text x="26" y="102" font-size="7" fill="#444" font-family="Arial">Elevator shaft</text>
+  <line x1="6" y1="116" x2="22" y2="116" stroke="#4a4a4a" stroke-width="3"/>
+  <text x="26" y="120" font-size="7" fill="#444" font-family="Arial">Ext wall (200mm)</text>
+  <line x1="6" y1="130" x2="22" y2="130" stroke="#4a4a4a" stroke-width="1.5"/>
+  <text x="26" y="134" font-size="7" fill="#444" font-family="Arial">Int wall (115mm)</text>
 </g>
 </svg>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     FIRST FLOOR PLAN
+     FIRST FLOOR PLAN  (50ft E-W × 30ft N-S + 15ft workshop · 8px/ft)
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel" id="f1">
-<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
-<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">FIRST FLOOR PLAN — FFL +3.300 m</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · Ceiling: 3.35 m master, 2.85 m others · Workshop cantilever 3.0 m west</text>
+<svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">FIRST FLOOR PLAN — FFL +3.300 m</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Workshop 15ft cantilever west · Balconies E/N/S 5ft · L-stair NE corner</text>
 
-<!-- WRAP BALCONIES (dashed) -->
-<!-- East balcony X[13.9,15.4] Y[0,10] → (450,130) w=27 h=180 -->
-<rect x="450" y="130" width="27" height="180" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
-<text x="463" y="222" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle" transform="rotate(-90,463,222)">E BALCONY 1.5m</text>
-<!-- North balcony X[0,15.4] Y[10,11.5] → (200,103) to (477,130) - note Y=11.5→svg_y=310-11.5*18=103 -->
-<rect x="146" y="103" width="331" height="27" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
-<text x="311" y="119" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">N BALCONY 1.5m</text>
-<!-- South balcony X[0,15.4] Y[-1.5,0] → (146,310) to (477,337) -->
-<rect x="146" y="310" width="331" height="27" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
-<text x="311" y="328" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">S BALCONY 1.5m</text>
+<!-- F1: Building x=190..590 (50ft), y=100..340 (30ft). Workshop x=70..190 (15ft). Balconies 5ft=40px -->
 
-<!-- WORKSHOP CANTILEVER X[-3,0] Y[0,10] → (146,130) w=54 h=180 -->
-<rect x="146" y="130" width="54" height="180" fill="#f5eedd" stroke="#cc9040" stroke-width="1.5" stroke-dasharray="5,2"/>
+<!-- WORKSHOP CANTILEVER (full west face 30ft NS × 15ft EW) -->
+<rect x="70" y="100" width="120" height="240" fill="#fff8e8" stroke="#cc9040" stroke-width="2" stroke-dasharray="6,3"/>
+<rect x="70" y="100" width="4" height="240" fill="#cc9040"/>  <!-- west wall -->
+<rect x="70" y="100" width="120" height="4" fill="#cc9040"/>  <!-- north wall -->
+<rect x="70" y="336" width="120" height="4" fill="#cc9040"/>  <!-- south wall -->
+<text x="130" y="220" font-size="8.5" font-weight="bold" fill="#885500" font-family="Arial" text-anchor="middle">WKSP</text>
+<text x="130" y="232" font-size="7" fill="#885500" font-family="Arial" text-anchor="middle">15×30 ft</text>
+<!-- Workshop window (west wall, large) -->
+<rect x="67" y="148" width="4" height="140" fill="#a8d8ea" opacity=".9"/>
+<text x="56" y="220" font-size="6" fill="#4070a0" font-family="Arial" text-anchor="middle" transform="rotate(-90,56,220)">LARGE WINDOW W</text>
+<!-- Workshop benches -->
+<rect x="76" y="112" width="110" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
+<rect x="76" y="314" width="110" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
+
+<!-- BALCONIES (dashed, 5ft=40px) -->
+<rect x="590" y="100" width="40" height="240" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="610" y="222" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle" transform="rotate(-90,610,222)">E BAL 5ft</text>
+<rect x="190" y="60" width="400" height="40" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="390" y="83" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">N BALCONY 5ft</text>
+<rect x="190" y="340" width="400" height="40" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="390" y="363" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">S BALCONY 5ft</text>
 
 <!-- HOUSE OUTER WALLS -->
-<rect x="200" y="130" width="250" height="180" fill="none" stroke="#2c2c2c" stroke-width="2"/>
-<rect x="200" y="128" width="250" height="4" fill="#4a4a4a"/>
-<rect x="200" y="308" width="250" height="4" fill="#4a4a4a"/>
-<rect x="200" y="130" width="4" height="180" fill="#4a4a4a"/>
-<rect x="448" y="130" width="4" height="180" fill="#4a4a4a"/>
-<!-- Workshop walls -->
-<rect x="146" y="128" width="56" height="4" fill="#4a4a4a"/>
-<rect x="146" y="308" width="56" height="4" fill="#4a4a4a"/>
-<rect x="146" y="130" width="4" height="180" fill="#4a4a4a"/>
-
-<!-- ROOM FILLS F1 -->
-<!-- F1 Master X[8.5,13.9] Y[0.5,5] → (353,220) w=97 h=81 -->
-<rect x="353" y="220" width="97" height="81" fill="#f5e8ec" opacity=".8"/>
-<!-- F2 Master bath X[8.5,11.5] Y[0.5,2.5] → (353,265) w=54 h=36 -->
-<rect x="353" y="265" width="54" height="36" fill="#ddeeff" opacity=".8"/>
-<!-- F3 BR2 X[8.5,13.9] Y[5.5,10] → (353,130) w=97 h=81 -->
-<rect x="353" y="130" width="97" height="81" fill="#f5ece8" opacity=".8"/>
-<!-- F4 BR3 X[0,5.5] Y[5.5,10] → (200,130) w=99 h=81 -->
-<rect x="200" y="130" width="99" height="81" fill="#eaf0f8" opacity=".8"/>
-<!-- F5 Stair X[5.9,8.4] Y[3,5.5] → (306,175) w=45 h=45 -->
-<rect x="306" y="175" width="45" height="45" fill="#dde8ee" opacity=".8"/>
-<!-- F6 Hallway X[5.5,8.5] Y[0,5.5] → (299,220) w=54 h=99 -->
-<rect x="299" y="211" width="54" height="99" fill="#eeeae0" opacity=".8"/>
-<!-- F7 Lounge X[3,5.5] Y[0.5,5] → (254,220) w=45 h=81 -->
-<rect x="254" y="220" width="45" height="81" fill="#eaf5e8" opacity=".8"/>
-<!-- F9 Workshop X[-3,0] Y[0,10] = (146,130) w=54 h=180 -->
-<rect x="150" y="134" width="46" height="172" fill="#fff8e8"/>
+<rect x="190" y="100" width="400" height="240" fill="#f4f0ea" stroke="#2c2c2c" stroke-width="3"/>
 
 <!-- INTERNAL WALLS F1 -->
-<!-- CX2=8.4 → x=351 -->
-<rect x="350" y="130" width="3" height="180" fill="#4a4a4a"/>
-<!-- CX1=5.5 → x=299 -->
-<rect x="298" y="130" width="3" height="180" fill="#4a4a4a"/>
-<!-- Y=5 (F1 master/BR2) X[8.4,13.9] → y=220 -->
-<rect x="351" y="219" width="101" height="3" fill="#4a4a4a"/>
-<!-- Y=2.5 (master ensuite) X[8.4,11.5] → y=265 -->
-<rect x="351" y="264" width="54" height="3" fill="#4a4a4a"/>
-<!-- WIW X=11.5 Y[3,5] → x=407 y 220 to 274 -->
-<rect x="407" y="219" width="3" height="54" fill="#4a4a4a"/>
-<!-- Y=7.5 X[8.4,13.9] → y=175 -->
-<rect x="351" y="174" width="101" height="3" fill="#4a4a4a"/>
-<!-- BR3 ensuite X=3.0 Y[7.5,10] → x=254 y 130 to 175 -->
-<rect x="253" y="130" width="3" height="46" fill="#4a4a4a"/>
-<!-- Lounge Y=0.5 X[3,5.5] → y=301 -->
-<rect x="253" y="301" width="47" height="3" fill="#4a4a4a"/>
+<!-- CX_mid at 26ft from west = x=190+208=398 (master / BR div) -->
+<rect x="397" y="100" width="3" height="240" fill="#4a4a4a"/>
+<!-- CX_stair west at 40ft = x=190+320=510 -->
+<rect x="509" y="100" width="3" height="120" fill="#4a4a4a"/>
+<!-- CY sitting/BR div at 15ft from N = y=220 -->
+<rect x="190" y="219" width="208" height="3" fill="#4a4a4a"/>
+<!-- BR3 ensuite south: x=190..310, y=219 -->
+<rect x="309" y="100" width="3" height="119" fill="#4a4a4a"/>
+<!-- BR2 ensuite north: x=190..310, y=220 -->
+<rect x="309" y="220" width="3" height="120" fill="#4a4a4a"/>
+<!-- Master ensuite: x=400..494 y=220 -->
+<rect x="400" y="219" width="94" height="3" fill="#4a4a4a"/>
+<rect x="493" y="220" width="3" height="120" fill="#4a4a4a"/>
+<!-- Store box: NE corner x=512..590, y=100..160 -->
+<rect x="511" y="159" width="79" height="3" fill="#4a4a4a"/>
+<!-- Sitting area south wall: x=400..510, y=219 already done -->
+<!-- L-stair NE -->
+<rect x="430" y="131" width="3" height="88" fill="#4a4a4a"/>
+<rect x="561" y="100" width="3" height="120" fill="#4a4a4a"/>
 
-<!-- CLERESTORY MONITOR (dashed above) -->
-<rect x="146" y="103" width="54" height="27" fill="#a8d8ea" opacity=".4" stroke="#2288aa" stroke-width="1" stroke-dasharray="3,2"/>
-<text x="173" y="118" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">CLERESTORY</text>
-<text x="173" y="126" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">MONITOR N</text>
+<!-- ROOM FILLS F1 -->
+<rect x="191" y="101" width="118" height="118" fill="#eaf0f8" opacity=".8"/>  <!-- BR3 NW -->
+<rect x="191" y="220" width="118" height="119" fill="#f5ece8" opacity=".8"/>  <!-- BR2 SW -->
+<rect x="312" y="101" width="85" height="118" fill="#eeeae0" opacity=".8"/>   <!-- Sitting/Landing N -->
+<rect x="312" y="220" width="85" height="119" fill="#eeeae0" opacity=".8"/>   <!-- Sitting S -->
+<rect x="400" y="101" width="109" height="118" fill="#f5e8ec" opacity=".8"/>  <!-- Master NE -->
+<rect x="400" y="222" width="93" height="117" fill="#ddeeff" opacity=".8"/>   <!-- Master Ensuite -->
+<rect x="496" y="220" width="93" height="119" fill="#f5ece8" opacity=".8"/>   <!-- Master bed S -->
+<rect x="512" y="101" width="77" height="58" fill="#e0e8d0" opacity=".8"/>    <!-- Store -->
+<rect x="430" y="101" width="130" height="30" fill="#dde8ee" opacity=".7"/>   <!-- Stair N arm -->
+<rect x="562" y="101" width="27" height="118" fill="#dde8ee" opacity=".7"/>   <!-- Stair E arm -->
+
+<!-- STAIR HATCH -->
+<rect x="430" y="101" width="130" height="30" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<rect x="562" y="101" width="27" height="118" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+
+<!-- ELEVATOR -->
+<rect x="544" y="101" width="45" height="45" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="566" y="127" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
 
 <!-- WINDOWS F1 -->
-<rect x="448" y="229" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
-<rect x="448" y="148" width="4" height="45" fill="#a8d8ea" opacity=".8"/>
-<rect x="298" y="128" width="4" height="36" fill="#a8d8ea" opacity=".8"/>
-<rect x="200" y="128" width="4" height="27" fill="#a8d8ea" opacity=".8"/>
-<rect x="331" y="128" width="4" height="27" fill="#a8d8ea" opacity=".8"/>
+<rect x="187" y="150" width="4" height="40" fill="#a8d8ea" opacity=".9"/>   <!-- west -->
+<rect x="187" y="240" width="4" height="40" fill="#a8d8ea" opacity=".9"/>
+<rect x="587" y="120" width="4" height="40" fill="#a8d8ea" opacity=".9"/>   <!-- east -->
+<rect x="587" y="200" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
+<rect x="587" y="280" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
+<!-- Sliding doors onto balconies -->
+<rect x="587" y="155" width="4" height="40" fill="#c89040"/>  <!-- E balcony door -->
+<rect x="350" y="97" width="40" height="4" fill="#c89040"/>   <!-- N balcony door -->
+<rect x="350" y="337" width="40" height="4" fill="#c89040"/>  <!-- S balcony door -->
 
-<!-- FURNITURE F1 -->
-<!-- King bed master -->
-<rect x="360" y="237" width="32" height="38" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<text x="376" y="260" font-size="6" fill="#606" font-family="Arial" text-anchor="middle">KING</text>
-<!-- WIW shelving -->
-<rect x="410" y="228" width="27" height="29" fill="#d4b880" stroke="#806030" stroke-width="1"/>
-<text x="423" y="245" font-size="5.5" fill="#604020" font-family="Arial" text-anchor="middle">WIW</text>
-<!-- BR2 bed -->
-<rect x="365" y="143" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<!-- FURNITURE HINTS F1 -->
+<!-- Master king bed -->
+<rect x="420" y="130" width="60" height="50" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<text x="450" y="158" font-size="6.5" fill="#604040" font-family="Arial" text-anchor="middle">KING BED</text>
 <!-- BR3 bed -->
-<rect x="210" y="147" width="27" height="36" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<!-- Lounge sofa -->
-<rect x="259" y="267" width="32" height="13" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
-<!-- Workshop tables -->
-<rect x="152" y="155" width="45" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
-<rect x="152" y="230" width="45" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
-<!-- Workshop sink -->
-<rect x="152" y="136" width="14" height="11" fill="#9ab8c8" stroke="#406070" stroke-width="1"/>
-<text x="159" y="144" font-size="5" fill="#406070" font-family="Arial" text-anchor="middle">SINK</text>
-<!-- Drying racks -->
-<line x1="152" y1="205" x2="196" y2="205" stroke="#808080" stroke-width="2"/>
-<line x1="152" y1="218" x2="196" y2="218" stroke="#808080" stroke-width="2"/>
+<rect x="200" y="114" width="50" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<!-- BR2 bed -->
+<rect x="200" y="234" width="50" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
 
 <!-- ROOM LABELS F1 -->
-<text x="400" y="248" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F1</text>
-<text x="400" y="257" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">MASTER+WIW</text>
-<text x="400" y="266" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">36 m² / 3.35m ceil</text>
-<text x="400" y="280" font-size="6" fill="#cc4444" font-family="Arial" text-anchor="middle">★ 3.35m clear</text>
+<text x="247" y="152" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR3</text>
+<text x="247" y="163" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
+<text x="247" y="270" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR2</text>
+<text x="247" y="281" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
+<text x="354" y="162" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">SITTING</text>
+<text x="354" y="173" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">AREA /</text>
+<text x="354" y="183" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">LANDING</text>
+<text x="354" y="270" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">STORAGE</text>
+<text x="450" y="120" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">MASTER (BR1)</text>
+<text x="445" y="250" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">ENSUITE</text>
+<text x="536" y="135" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">STORE</text>
 
-<text x="401" y="152" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F3</text>
-<text x="401" y="161" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">BR2+ENSUITE</text>
-<text x="401" y="170" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">22 m²</text>
+<!-- DIMENSION LINES F1 -->
+<line x1="190" y1="398" x2="590" y2="398" stroke="#888" stroke-width="1"/>
+<line x1="190" y1="393" x2="190" y2="403" stroke="#888" stroke-width="1"/>
+<line x1="590" y1="393" x2="590" y2="403" stroke="#888" stroke-width="1"/>
+<text x="390" y="413" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">15.24 m (50 ft) main block</text>
+<line x1="70" y1="398" x2="190" y2="398" stroke="#cc9040" stroke-width="1"/>
+<text x="130" y="413" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m workshop</text>
 
-<text x="249" y="155" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F4</text>
-<text x="249" y="164" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">BR3+ENSUITE</text>
-<text x="249" y="173" font-size="6" fill="#777" font-family="Arial" text-anchor="middle">22 m²</text>
-
-<text x="328" y="200" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F5</text>
-<text x="328" y="208" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">STAIR+LIFT</text>
-
-<text x="325" y="258" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F6</text>
-<text x="325" y="267" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">HALLWAY 9m²</text>
-<text x="325" y="275" font-size="6" fill="#888" font-family="Arial" text-anchor="middle">2.44m h/r</text>
-
-<text x="276" y="258" font-size="7" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F7</text>
-<text x="276" y="267" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">LOUNGE 8m²</text>
-
-<text x="173" y="222" font-size="7.5" font-weight="bold" fill="#885500" font-family="Arial" text-anchor="middle">F9</text>
-<text x="173" y="232" font-size="6.5" fill="#885500" font-family="Arial" text-anchor="middle">ART WORKSHOP</text>
-<text x="173" y="242" font-size="6" fill="#885500" font-family="Arial" text-anchor="middle">30 m²</text>
-<text x="173" y="252" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">↑ N-LIGHT</text>
-
-<!-- DIMENSION LINES -->
-<line x1="200" y1="360" x2="450" y2="360" stroke="#888" stroke-width="1"/>
-<line x1="200" y1="356" x2="200" y2="364" stroke="#888" stroke-width="1"/>
-<line x1="450" y1="356" x2="450" y2="364" stroke="#888" stroke-width="1"/>
-<text x="325" y="373" font-size="8" fill="#555" font-family="Arial" text-anchor="middle">13.9 m (main rect)</text>
-<line x1="146" y1="360" x2="200" y2="360" stroke="#cc8800" stroke-width="1"/>
-<line x1="146" y1="356" x2="146" y2="364" stroke="#cc8800" stroke-width="1"/>
-<text x="173" y="373" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">3.0 m</text>
-<text x="173" y="383" font-size="6" fill="#cc8800" font-family="Arial" text-anchor="middle">cantilever</text>
-
-<!-- Wrap balcony dim -->
-<line x1="450" y1="130" x2="477" y2="130" stroke="#448844" stroke-width="1"/>
-<text x="463" y="125" font-size="6.5" fill="#448844" font-family="Arial" text-anchor="middle">1.5m</text>
-
-<!-- North arrow -->
-<g transform="translate(670,100)">
+<!-- NORTH ARROW F1 -->
+<g transform="translate(820,100)">
   <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
   <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
   <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
-  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+  <text x="0" y="-24" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
 </g>
 
-<!-- Scale bar -->
-<g transform="translate(570,420)">
-  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
-  <rect x="0" y="0" width="18" height="7" fill="#555"/>
-  <rect x="36" y="0" width="18" height="7" fill="#555"/>
-  <rect x="72" y="0" width="18" height="7" fill="#555"/>
-  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
-  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
-  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+<!-- LEGEND F1 -->
+<g transform="translate(680,200)">
+  <rect x="0" y="0" width="160" height="120" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="80" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F1 KEY</text>
+  <rect x="6" y="22" width="16" height="8" fill="#fff8e8" stroke="#cc9040" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Workshop (F1 only, 15ft W)</text>
+  <rect x="6" y="36" width="16" height="8" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Balcony (E/N/S, 5ft)</text>
+  <rect x="6" y="50" width="16" height="8" fill="#c89040"/>
+  <text x="26" y="58" font-size="7" fill="#444" font-family="Arial">Sliding door (balcony)</text>
+  <rect x="6" y="64" width="16" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
+  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">L-Stair NE corner</text>
+  <rect x="6" y="78" width="16" height="8" fill="#8898a8"/>
+  <text x="26" y="86" font-size="7" fill="#444" font-family="Arial">Elevator (full height)</text>
+  <rect x="6" y="92" width="16" height="8" fill="#a8d8ea" opacity=".9"/>
+  <text x="26" y="100" font-size="7" fill="#444" font-family="Arial">Window / glazing</text>
 </g>
 </svg>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     TERRACE PLAN
+     TERRACE PLAN  (65ft EW × 30ft NS incl. workshop ext · 8px/ft)
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel" id="t">
-<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
-<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">TERRACE PLAN — FFL +6.950 m</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:100 · Parapet 0.9 m · Burjeel 4.0 m above terrace</text>
+<svg viewBox="0 0 980 500" width="1200" xmlns="http://www.w3.org/2000/svg">
+<text x="490" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">TERRACE PLAN — FFL +6.950 m</text>
+<text x="490" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Total 65ft (workshop 15ft + building 50ft) × 30ft · Parapet 42 in all perimeter</text>
 
-<!-- Terrace slab outline -->
-<rect x="200" y="130" width="250" height="180" fill="#f0ede8" stroke="#2c2c2c" stroke-width="2"/>
-<!-- Parapet (shown as thick line) -->
-<rect x="200" y="128" width="250" height="5" fill="#6a6a6a"/>
-<rect x="200" y="307" width="250" height="5" fill="#6a6a6a"/>
-<rect x="200" y="130" width="5" height="180" fill="#6a6a6a"/>
-<rect x="445" y="130" width="5" height="180" fill="#6a6a6a"/>
+<!-- COORDINATE: Workshop ext x=70..190 (120px=15ft), Building x=190..590 (400px=50ft), y=80..320 (240px=30ft) -->
 
-<!-- VIEWING ROOM X[7.8,13.9] Y[3.9,10] → (340,130) w=110 h=111 -->
-<rect x="340" y="130" width="110" height="111" fill="#d8eef8" stroke="#2288cc" stroke-width="2"/>
-<!-- N+E walls glazed (blue lines) -->
-<line x1="340" y1="130" x2="450" y2="130" stroke="#2288cc" stroke-width="4"/>
-<line x1="448" y1="130" x2="448" y2="241" stroke="#2288cc" stroke-width="4"/>
-<text x="450" y="127" font-size="6.5" fill="#2288cc" font-family="Arial">GLAZED N+E</text>
-<!-- S overhang (dashed) -->
-<rect x="340" y="241" width="110" height="27" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
-<text x="395" y="256" font-size="6.5" fill="#888" font-family="Arial" text-anchor="middle">S OVERHANG 1.5m</text>
-<text x="395" y="175" font-size="8" font-weight="bold" fill="#1155aa" font-family="Arial" text-anchor="middle">VIEWING</text>
-<text x="395" y="185" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">ROOM</text>
-<text x="395" y="195" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">6.1 × 6.1 m</text>
-<text x="395" y="206" font-size="6.5" fill="#1155aa" font-family="Arial" text-anchor="middle">3.35 m clear ★</text>
-<text x="395" y="218" font-size="6" fill="#4499cc" font-family="Arial" text-anchor="middle">37 m²</text>
+<!-- WORKSHOP EXTENSION TERRACE AREA -->
+<rect x="70" y="80" width="120" height="240" fill="#f0ede8" stroke="#cc9040" stroke-width="2"/>
+<!-- Parapet workshop west/south/north -->
+<rect x="70" y="80" width="5" height="240" fill="#6a6a6a"/>   <!-- W -->
+<rect x="70" y="80" width="120" height="5" fill="#6a6a6a"/>   <!-- N -->
+<rect x="70" y="315" width="120" height="5" fill="#6a6a6a"/>  <!-- S -->
+<text x="130" y="175" font-size="7.5" fill="#886600" font-family="Arial" text-anchor="middle">GARDEN</text>
+<text x="130" y="186" font-size="6.5" fill="#886600" font-family="Arial" text-anchor="middle">(workshop roof)</text>
+<text x="130" y="196" font-size="6.5" fill="#886600" font-family="Arial" text-anchor="middle">5ft strip</text>
 
-<!-- STAIR ENCLOSURE X[5.9,8.9] Y[3,6] → (306,220) w=54 h=54 -->
-<rect x="306" y="220" width="54" height="54" fill="#e0d8c8" stroke="#666" stroke-width="1.5"/>
-<text x="333" y="245" font-size="6.5" font-weight="bold" fill="#555" font-family="Arial" text-anchor="middle">STAIR</text>
-<text x="333" y="254" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">ENCL.</text>
-<text x="333" y="263" font-size="5.5" fill="#888" font-family="Arial" text-anchor="middle">3×3 / h=2.6m</text>
+<!-- VIEWING ROOM (SW corner, 25ft EW × 15ft NS = 200px × 120px) -->
+<!-- VR: x=70..270 (200px), y=200..320 (120px) -->
+<!-- Viewing area: x=70..190 (15ft over workshop), y=200..320 -->
+<!-- Secret room: x=190..270 (10ft into main terrace), y=200..320 -->
+<rect x="70" y="200" width="200" height="120" fill="#d8eef8" stroke="#2288cc" stroke-width="1.5"/>
 
-<!-- BURJEEL X[6.2,8.2] Y[3.8,5.8] → (312,220-5.8*18+180=... let me recalc -->
-<!-- svg_y = 310 - Y*18 (Y measured from house SW which is at svg_y=310) -->
-<!-- But house SW is at oy=310, so svg_y = 310-Y*18 -->
-<!-- Burjeel Y[3.8,5.8] → svg_y 310-5.8*18=206 to 310-3.8*18=242 -->
-<!-- Burjeel X[6.2,8.2] → svg_x 200+6.2*18=312 to 200+8.2*18=348 -->
-<rect x="312" y="206" width="36" height="36" fill="#c86030" stroke="#8a3010" stroke-width="2"/>
-<!-- Louver lines on burjeel -->
-<line x1="312" y1="213" x2="348" y2="213" stroke="#ddd" stroke-width="1.5"/>
-<line x1="312" y1="220" x2="348" y2="220" stroke="#ddd" stroke-width="1.5"/>
-<line x1="312" y1="227" x2="348" y2="227" stroke="#ddd" stroke-width="1.5"/>
-<line x1="312" y1="234" x2="348" y2="234" stroke="#ddd" stroke-width="1.5"/>
-<text x="330" y="224" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">BURJEEL</text>
-<text x="330" y="233" font-size="5.5" fill="#ffe0c0" font-family="Arial" text-anchor="middle">2×2×4m</text>
+<!-- VR walls: W=glass, N=glass(15ft portion only), S=normal, E=normal -->
+<line x1="70" y1="200" x2="70" y2="320" stroke="#2288cc" stroke-width="4"/>    <!-- W wall GLASS -->
+<line x1="70" y1="200" x2="190" y2="200" stroke="#2288cc" stroke-width="4"/>   <!-- N wall GLASS 15ft portion -->
+<rect x="190" y="198" width="80" height="5" fill="#4a4a4a"/>                    <!-- N wall NORMAL 10ft (secret room) -->
+<rect x="68" y="315" width="202" height="5" fill="#4a4a4a"/>                    <!-- S wall normal -->
+<rect x="267" y="200" width="5" height="120" fill="#4a4a4a"/>                   <!-- E wall normal -->
+<!-- Dividing wall viewing area / secret room at x=190 -->
+<rect x="188" y="200" width="3" height="120" fill="#4a4a4a" stroke-dasharray="4,2"/>
 
-<!-- PV PERGOLA X[0.4,6.4] Y[0.4,5.4] → (207,213) w=108 h=90 -->
-<!-- X:0.4→207.2, 6.4→315.2; Y:5.4→gy=310-5.4*18=213; 0.4→gy=310-0.4*18=303 -->
-<rect x="207" y="213" width="108" height="90" fill="#1a2a40" opacity=".7" stroke="#406080" stroke-width="1.5" rx="2"/>
-<!-- PV panel grid 3×5 -->
-<g fill="#1e3a5a" stroke="#4488cc" stroke-width=".8">
-  <rect x="212" y="218" width="18" height="36" rx="1"/>
-  <rect x="212" y="258" width="18" height="36" rx="1"/>
-  <rect x="234" y="218" width="18" height="36" rx="1"/>
-  <rect x="234" y="258" width="18" height="36" rx="1"/>
-  <rect x="256" y="218" width="18" height="36" rx="1"/>
-  <rect x="256" y="258" width="18" height="36" rx="1"/>
-  <rect x="278" y="218" width="18" height="36" rx="1"/>
-  <rect x="278" y="258" width="18" height="36" rx="1"/>
-  <rect x="300" y="218" width="18" height="36" rx="1"/>
-  <rect x="300" y="258" width="18" height="36" rx="1"/>
+<!-- Viewing area label -->
+<text x="130" y="255" font-size="8" font-weight="bold" fill="#1155aa" font-family="Arial" text-anchor="middle">VIEWING</text>
+<text x="130" y="266" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">ROOM</text>
+<text x="130" y="276" font-size="6.5" fill="#2288cc" font-family="Arial" text-anchor="middle">15×15ft</text>
+<text x="130" y="287" font-size="6" fill="#4499cc" font-family="Arial" text-anchor="middle">GLASS W+N(15ft)</text>
+
+<!-- Secret room -->
+<rect x="191" y="201" width="75" height="118" fill="#c8a870" opacity=".5"/>
+<text x="228" y="255" font-size="7" font-weight="bold" fill="#553300" font-family="Arial" text-anchor="middle">SECRET</text>
+<text x="228" y="266" font-size="6.5" fill="#553300" font-family="Arial" text-anchor="middle">ROOM</text>
+<text x="228" y="276" font-size="6" fill="#553300" font-family="Arial" text-anchor="middle">10×15ft</text>
+<text x="228" y="287" font-size="6" fill="#774400" font-family="Arial" text-anchor="middle">grow room</text>
+<!-- Hidden door marker on S wall of divider -->
+<rect x="218" y="315" width="30" height="5" fill="#2288cc" opacity=".7"/>
+<text x="233" y="335" font-size="5.5" fill="#2288cc" font-family="Arial" text-anchor="middle">hidden door</text>
+
+<!-- MAIN TERRACE AREA (building roof) -->
+<rect x="190" y="80" width="400" height="240" fill="#f0ede8" stroke="#2c2c2c" stroke-width="3"/>
+<!-- Parapets main terrace -->
+<rect x="190" y="78" width="400" height="5" fill="#6a6a6a"/>   <!-- N -->
+<rect x="190" y="315" width="400" height="5" fill="#6a6a6a"/>  <!-- S -->
+<rect x="587" y="80" width="5" height="240" fill="#6a6a6a"/>   <!-- E -->
+<!-- West parapet (building/workshop join, above VR garden strip only) -->
+<rect x="188" y="80" width="4" height="120" fill="#6a6a6a"/>
+
+<!-- PV PERGOLA (north area of main terrace, 30ft NS × 40ft EW) -->
+<rect x="200" y="88" width="320" height="128" fill="#1a2a40" opacity=".75" stroke="#406080" stroke-width="1.5" rx="2"/>
+<text x="360" y="130" font-size="9" font-weight="bold" fill="#88ccff" font-family="Arial" text-anchor="middle">PV PERGOLA</text>
+<text x="360" y="142" font-size="7.5" fill="#88bbee" font-family="Arial" text-anchor="middle">5 panels · 6 kWp · 25° S-tilt</text>
+<!-- PV panel grid (5 panels) -->
+<g fill="#1e3a5a" stroke="#4488cc" stroke-width="1">
+  <rect x="206" y="95" width="56" height="112" rx="2"/>
+  <rect x="267" y="95" width="56" height="112" rx="2"/>
+  <rect x="328" y="95" width="56" height="112" rx="2"/>
+  <rect x="389" y="95" width="56" height="112" rx="2"/>
+  <rect x="450" y="95" width="56" height="112" rx="2"/>
 </g>
-<!-- PV label -->
-<text x="261" y="246" font-size="8" font-weight="bold" fill="#88ccff" font-family="Arial" text-anchor="middle">PV PERGOLA</text>
-<text x="261" y="256" font-size="7" fill="#88bbee" font-family="Arial" text-anchor="middle">6 kWp / 15 panels</text>
-<text x="261" y="265" font-size="6.5" fill="#88bbee" font-family="Arial" text-anchor="middle">25° S tilt</text>
 
-<!-- GARDEN BEDS -->
-<rect x="207" y="148" width="22" height="54" fill="#44aa44" opacity=".6" stroke="#228822" stroke-width="1" rx="2"/>
-<rect x="207" y="138" width="22" height="8" fill="#886622" opacity=".5"/>
-<rect x="270" y="148" width="22" height="54" fill="#44aa44" opacity=".6" stroke="#228822" stroke-width="1" rx="2"/>
-<text x="261" y="165" font-size="6.5" fill="#226622" font-family="Arial" text-anchor="middle">GARDEN BEDS</text>
-<text x="261" y="174" font-size="6" fill="#226622" font-family="Arial" text-anchor="middle">4 × 1.2×3.0×0.5m</text>
+<!-- GARDEN (center-south of main terrace) -->
+<rect x="272" y="218" width="310" height="90" fill="#88bb88" opacity=".45" stroke="#448844" stroke-width="1" rx="4"/>
+<text x="427" y="268" font-size="9" font-weight="bold" fill="#226622" font-family="Arial" text-anchor="middle">GARDEN</text>
+<text x="427" y="279" font-size="7" fill="#226622" font-family="Arial" text-anchor="middle">open terrace garden</text>
 
-<!-- WORKSHOP CLERESTORY (dashed, below terrace level) -->
-<rect x="146" y="103" width="54" height="27" fill="#a8d8ea" opacity=".35" stroke="#2288aa" stroke-width="1" stroke-dasharray="3,2"/>
-<text x="173" y="114" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">CLERESTORY</text>
-<text x="173" y="124" font-size="6" fill="#2288aa" font-family="Arial" text-anchor="middle">+1.2m above</text>
+<!-- TERRACE LANDING ENCLOSURE (NE corner, stair/elevator exit) -->
+<rect x="496" y="88" width="88" height="120" fill="#e0d8c8" stroke="#666" stroke-width="2"/>
+<text x="540" y="143" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial" text-anchor="middle">STAIR</text>
+<text x="540" y="154" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">LANDING</text>
+<text x="540" y="164" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">ENCLOSURE</text>
+<!-- Door in east wall of LC -->
+<rect x="540" y="88" width="44" height="5" fill="#c89040"/>
+<text x="562" y="100" font-size="6" fill="#8a5000" font-family="Arial" text-anchor="middle">door →</text>
 
-<!-- OPEN TERRACE area label -->
-<text x="253" y="175" font-size="7" fill="#666" font-family="Arial" text-anchor="middle">OPEN</text>
-<text x="253" y="185" font-size="7" fill="#666" font-family="Arial" text-anchor="middle">TERRACE</text>
+<!-- STORE (adjacent to landing) -->
+<rect x="496" y="210" width="88" height="100" fill="#e0e8d0" stroke="#448844" stroke-width="1.5"/>
+<text x="540" y="265" font-size="7.5" font-weight="bold" fill="#335533" font-family="Arial" text-anchor="middle">STORE</text>
+
+<!-- ELEVATOR HATCH -->
+<rect x="556" y="88" width="32" height="32" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="572" y="107" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
+
+<!-- LABELS & ANNOTATIONS -->
+<text x="75" y="75" font-size="6.5" fill="#cc8800" font-family="Arial">← WEST (front/gate side)</text>
+<text x="75" y="60" font-size="6" fill="#2288cc" font-family="Arial">GLASS walls: W (full) + N (15ft viewing area only)</text>
 
 <!-- DIMENSION LINES -->
-<!-- Viewing room 6.1m -->
-<line x1="340" y1="120" x2="450" y2="120" stroke="#1155aa" stroke-width="1"/>
-<text x="395" y="116" font-size="7" fill="#1155aa" font-family="Arial" text-anchor="middle">6.1 m</text>
-<!-- PV pergola 6m -->
-<line x1="207" y1="388" x2="315" y2="388" stroke="#406080" stroke-width="1"/>
-<text x="261" y="398" font-size="7" fill="#406080" font-family="Arial" text-anchor="middle">6.0 m</text>
-<!-- Burjeel -->
-<text x="330" y="194" font-size="6.5" fill="#c86030" font-family="Arial" text-anchor="middle">2.0m × 2.0m</text>
-<text x="330" y="204" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">height = 4.0m ↑</text>
+<!-- Workshop extension: 15ft = 120px -->
+<line x1="70" y1="345" x2="190" y2="345" stroke="#cc9040" stroke-width="1"/>
+<text x="130" y="357" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">15ft (4.57m) WS ext</text>
+<!-- Main building: 50ft = 400px -->
+<line x1="190" y1="345" x2="590" y2="345" stroke="#888" stroke-width="1"/>
+<text x="390" y="357" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">50ft (15.24m) main</text>
+<!-- N-S: 30ft = 240px -->
+<line x1="620" y1="80" x2="620" y2="320" stroke="#888" stroke-width="1"/>
+<line x1="615" y1="80" x2="625" y2="80" stroke="#888" stroke-width="1"/>
+<line x1="615" y1="320" x2="625" y2="320" stroke="#888" stroke-width="1"/>
+<text x="640" y="202" font-size="7" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,640,202)">30ft (9.14m)</text>
+<!-- VR dims -->
+<line x1="70" y1="370" x2="270" y2="370" stroke="#2288cc" stroke-width="1"/>
+<text x="170" y="382" font-size="6.5" fill="#2288cc" font-family="Arial" text-anchor="middle">25ft VR total (15ft VA + 10ft SR)</text>
+<line x1="270" y1="370" x2="270" y2="200" stroke="#2288cc" stroke-width=".8" stroke-dasharray="3,3"/>
 
-<!-- Parapet note -->
-<text x="205" y="350" font-size="7" fill="#666" font-family="Arial">Parapet h = 0.9m (all perimeter)</text>
-
-<!-- North arrow -->
-<g transform="translate(670,100)">
+<!-- NORTH ARROW -->
+<g transform="translate(890,100)">
   <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
   <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
   <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
-  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+  <text x="0" y="-24" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
 </g>
-<!-- Scale bar -->
-<g transform="translate(570,420)">
-  <rect x="0" y="0" width="90" height="7" fill="none" stroke="#666" stroke-width="1"/>
-  <rect x="0" y="0" width="18" height="7" fill="#555"/>
-  <rect x="36" y="0" width="18" height="7" fill="#555"/>
-  <rect x="72" y="0" width="18" height="7" fill="#555"/>
-  <text x="0"  y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">0</text>
-  <text x="90" y="18" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">5m</text>
-  <text x="45" y="28" font-size="7" fill="#888" font-family="Arial" text-anchor="middle">Scale 1:100</text>
+
+<!-- LEGEND -->
+<g transform="translate(680,180)">
+  <rect x="0" y="0" width="185" height="170" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="92" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">TERRACE LEGEND</text>
+  <rect x="6" y="22" width="16" height="8" fill="#1a2a40" opacity=".75" stroke="#406080" stroke-width="1"/>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">PV Pergola (5 panels, 6kWp)</text>
+  <rect x="6" y="36" width="16" height="8" fill="#88bb88" opacity=".45" stroke="#448844" stroke-width="1"/>
+  <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Open garden area</text>
+  <rect x="6" y="50" width="16" height="8" fill="#d8eef8" stroke="#2288cc" stroke-width="1"/>
+  <text x="26" y="58" font-size="7" fill="#444" font-family="Arial">Viewing room (glass W+N)</text>
+  <rect x="6" y="64" width="16" height="8" fill="#c8a870" opacity=".5"/>
+  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">Secret grow room (opaque)</text>
+  <rect x="6" y="78" width="16" height="8" fill="#e0d8c8" stroke="#666" stroke-width="1"/>
+  <text x="26" y="86" font-size="7" fill="#444" font-family="Arial">Stair landing enclosure</text>
+  <rect x="6" y="92" width="16" height="8" fill="#e0e8d0" stroke="#448844" stroke-width="1"/>
+  <text x="26" y="100" font-size="7" fill="#444" font-family="Arial">Store room</text>
+  <rect x="6" y="106" width="16" height="8" fill="#8898a8"/>
+  <text x="26" y="114" font-size="7" fill="#444" font-family="Arial">Elevator hatch</text>
+  <rect x="6" y="120" width="16" height="4" fill="#6a6a6a"/>
+  <text x="26" y="128" font-size="7" fill="#444" font-family="Arial">Parapet (42in = 1.07m)</text>
+  <line x1="6" y1="140" x2="22" y2="140" stroke="#2288cc" stroke-width="4"/>
+  <text x="26" y="144" font-size="7" fill="#2288cc" font-family="Arial">Glass wall (VR)</text>
+  <line x1="6" y1="156" x2="22" y2="156" stroke="#4a4a4a" stroke-width="3"/>
+  <text x="26" y="160" font-size="7" fill="#444" font-family="Arial">Normal wall</text>
 </g>
 </svg>
 </div>
