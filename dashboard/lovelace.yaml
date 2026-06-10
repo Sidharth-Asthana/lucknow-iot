@@ -275,7 +275,7 @@ views:
               action: toggle
           - type: custom:button-card
             entity: switch.rwh_valve_beehive
-            name: "Beehive Valve"
+            name: "CT Drip Valve (SV-02)"
             icon: mdi:water-boiler
             tap_action:
               action: toggle
@@ -291,7 +291,7 @@ views:
             name: Domestic (L/min)
             color: "#3b82f6"
           - entity: sensor.rwh_beehive_flow_lpm
-            name: Beehive (L/min)
+            name: CT Drip (L/min)
             color: "#22c55e"
 
       # ── Daily totals ────────────────────────────────────────────────────────
@@ -302,7 +302,7 @@ views:
             name: "Domestic Today"
           - type: stat-card
             entity: sensor.daily_beehive_water
-            name: "Beehive Today"
+            name: "CT Water Today"
 
       # ── Automation threshold control ────────────────────────────────────────
       - type: entities
@@ -396,10 +396,10 @@ views:
         entities:
           - type: custom:slider-entity-row
             entity: fan.beehive_fan_e
-            name: "Fan East (%)"
+            name: "CT EC Fan (%)"
           - type: custom:slider-entity-row
             entity: fan.beehive_fan_s
-            name: "Fan South (%)"
+            name: "Exhaust Stack Fan (%)"
 
       # ── Damper status + manual override ────────────────────────────────────
       - type: horizontal-stack
@@ -668,7 +668,7 @@ views:
           - entity: input_number.rwh_low_level_threshold
             name: "Low Level Alert (%)"
           - entity: input_number.rwh_beehive_cut_threshold
-            name: "Beehive Supply Cut (%)"
+            name: "CT Drip Cut (%)"
 
       # ── Force cooling mode manually ─────────────────────────────────────────
       - type: entities
@@ -865,7 +865,7 @@ views:
           |-----|--------------|
           | 🏠 Overview | Single-screen status: PV yield, battery %, tank level, cooling mode, alarm state, elevator floor |
           | ⚡ Energy | Animated power-flow diagram (PV → battery ↔ grid), 48-hr history chart, daily kWh totals |
-          | 💧 Water | Tank gauge (out of 18,000 L), pump + valve on/off, domestic vs beehive daily flow |
+          | 💧 Water | Tank gauge (out of 18,000 L), pump + valve on/off, domestic vs cooling-tower daily flow |
           | 🌬️ Cooling | Mode badge, indoor/outdoor temp + RH gauges, ΔT readout, fan speed sliders, damper toggles |
           | 🔒 Security | Alarm panel (arm/disarm), 7-camera grid, PIR + IR beam zone status, siren + flood controls |
           | ⚙️ Systems | Server health, UPS status, fingerprint access log, elevator floor indicator + call buttons |
@@ -875,12 +875,14 @@ views:
 
           ---
 
-          ## 🌬️ System 1 — Beehive Passive Cooling
+          ## 🌬️ System 1 — Cooling Tower Passive Cooling
 
-          **How it works:** Two terracotta beehive panels (east + south faces) drip rainwater
-          over hollow cones. Evaporation cools incoming air by ~14°C. EC fans pull cooled air
-          through the living space; the central stair void acts as a stack, exhausting through
-          the burjeel wind catcher on the roof.
+          **How it works:** A terracotta-lined cooling tower (∅1.8 m × 5.5 m, SW corner) drips
+          rainwater over cone surfaces. Evaporation cools intake air by ~14°C. Inline EC fans
+          (PV-powered, auto-speed) push cooled air through workshop, garage and living space;
+          the stair void acts as a stack, exhausting through a slim fan-assisted exhaust stack
+          (∅0.6 m, solar EC fan + motorised damper) on the roof. Replaces the earlier
+          beehive-panel + burjeel design (entity IDs still carry legacy beehive names).
 
           **Four operating modes:**
 
@@ -900,8 +902,8 @@ views:
 
           ## ☀️ System 2 — PV + Battery
 
-          **Hardware:** 15 × 400W panels (6 kWp) on terrace pergola at 25° south tilt.
-          12 kWh LFP battery (2 × 6 kWh). 5 kW hybrid inverter with SunSpec Modbus TCP.
+          **Hardware:** 11 × 550W panels (6.05 kWp) on terrace pergola at 25° south tilt.
+          12 kWh LFP battery (2 × 6 kWh). 8 kW hybrid inverter (lift soft-start) with SunSpec Modbus TCP.
           Eastron SDM630 meters grid import/export.
 
           **Key entities:**
