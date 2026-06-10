@@ -129,9 +129,11 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Powder room: x=350 to x=414, y=219 to y=340 -->
 <rect x="350" y="279" width="80" height="3" fill="#4a4a4a"/>
 <rect x="430" y="219" width="3" height="63" fill="#4a4a4a"/>
-<!-- L-Stair NE: north arm y=100..132, x=430..590; east arm x=562..590, y=100..220 -->
-<rect x="429" y="131" width="3" height="89" fill="#4a4a4a"/>  <!-- stair south wall -->
-<rect x="561" y="100" width="3" height="120" fill="#4a4a4a"/>  <!-- stair west wall -->
+<!-- Stair/Lift core NE: N flight (up, eastbound) + E flight (cont., southbound) wrap lift -->
+<rect x="469" y="136" width="88" height="3" fill="#4a4a4a"/>   <!-- N-flight south wall -->
+<rect x="469" y="136" width="3" height="48" fill="#4a4a4a"/>   <!-- core west wall -->
+<rect x="551" y="180" width="3" height="53" fill="#4a4a4a"/>   <!-- E-flight west wall -->
+<rect x="554" y="230" width="36" height="3" fill="#4a4a4a"/>   <!-- E-flight south wall -->
 
 <!-- ── ROOM FILLS ── -->
 <rect x="191" y="101" width="158" height="104" fill="#ece8e0" opacity=".7"/>   <!-- Garage NW -->
@@ -145,18 +147,18 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <rect x="496" y="296" width="93" height="43" fill="#e8f0e0" opacity=".9"/>     <!-- Utility/Laundry -->
 <rect x="494" y="293" width="96" height="3" fill="#4a4a4a"/>                    <!-- utility north wall -->
 <rect x="191" y="254" width="106" height="85" fill="#f5e8ec" opacity=".8"/>   <!-- Guest Bed SW -->
-<rect x="430" y="101" width="130" height="30" fill="#dde8ee" opacity=".8"/>    <!-- Stair N arm top -->
-<rect x="562" y="101" width="27" height="118" fill="#dde8ee" opacity=".8"/>    <!-- Stair E arm -->
+<rect x="470" y="101" width="120" height="35" fill="#dde8ee" opacity=".8"/>    <!-- Stair N flight -->
+<rect x="554" y="136" width="36" height="94" fill="#dde8ee" opacity=".8"/>     <!-- Stair E flight -->
 
-<!-- ── STAIR L-SHAPE hatch ── -->
-<rect x="430" y="101" width="130" height="30" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
-<rect x="562" y="101" width="27" height="118" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
-<text x="500" y="118" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">STAIR (N arm →)</text>
-<text x="575" y="160" font-size="6" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,575,160)">STAIR E↑</text>
+<!-- ── STAIR HATCH (wraps lift) ── -->
+<rect x="470" y="101" width="120" height="35" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="520" y="122" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">STAIR UP →</text>
+<rect x="554" y="136" width="36" height="94" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="575" y="183" font-size="6" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,575,183)">→ F1 ↓</text>
 
-<!-- ELEVATOR BOX (NE, against north+east walls) -->
-<rect x="544" y="101" width="45" height="45" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
-<text x="566" y="122" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
+<!-- ELEVATOR (centre of stair wrap) -->
+<rect x="514" y="140" width="40" height="40" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="534" y="163" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
 
 <!-- ── WINDOWS / DOORS ── -->
 <!-- Garage door (north area of west wall) -->
@@ -205,8 +207,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <rect x="418" y="284" width="10" height="10" fill="#7a4aaa" opacity=".8"/>
 <text x="414" y="280" font-size="5.5" fill="#7a4aaa" font-family="Arial" text-anchor="end">WET STACK</text>
 <text x="456" y="265" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">PANTRY</text>
-<text x="540" y="176" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">KITCHEN</text>
-<text x="540" y="188" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">12×24 ft</text>
+<text x="540" y="245" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">KITCHEN</text>
+<text x="540" y="256" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">open plan · island</text>
 <text x="540" y="315" font-size="7" font-weight="bold" fill="#446644" font-family="Arial" text-anchor="middle">UTILITY / LAUNDRY</text>
 <text x="540" y="325" font-size="6" fill="#668866" font-family="Arial" text-anchor="middle">12×5 ft · E window · back gate</text>
 <text x="324" y="300" font-size="6" fill="#556677" font-family="Arial" text-anchor="middle" transform="rotate(-90,324,300)">ENSUITE</text>
@@ -248,7 +250,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <rect x="6" y="66" width="16" height="8" fill="#a0b8c0"/>
   <text x="26" y="74" font-size="7" fill="#444" font-family="Arial">Roller shutter</text>
   <rect x="6" y="80" width="16" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
-  <text x="26" y="88" font-size="7" fill="#444" font-family="Arial">L-Stair (NE corner)</text>
+  <text x="26" y="88" font-size="7" fill="#444" font-family="Arial">Stair wraps lift (NE core)</text>
   <rect x="6" y="94" width="16" height="8" fill="#8898a8"/>
   <text x="26" y="102" font-size="7" fill="#444" font-family="Arial">Elevator shaft</text>
   <line x1="6" y1="116" x2="22" y2="116" stroke="#4a4a4a" stroke-width="3"/>
@@ -265,7 +267,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <div class="panel" id="f1">
 <svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
 <text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">FIRST FLOOR PLAN — FFL +3.300 m</text>
-<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Workshop 15ft on portico columns · N-clerestory studio light · Balconies E/N/S 5ft · L-stair NE</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Workshop on portico columns (door via hallway only) · Central hallway BR2/BR3 · Stair wraps lift NE</text>
 
 <!-- F1: Building x=190..590 (50ft), y=100..340 (30ft). Workshop x=70..190 (15ft). Balconies 5ft=40px -->
 
@@ -298,81 +300,82 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- HOUSE OUTER WALLS -->
 <rect x="190" y="100" width="400" height="240" fill="#f4f0ea" stroke="#2c2c2c" stroke-width="3"/>
 
-<!-- INTERNAL WALLS F1 -->
-<!-- CX_mid at 26ft from west = x=190+208=398 (master / BR div) -->
-<rect x="397" y="100" width="3" height="240" fill="#4a4a4a"/>
-<!-- CX_stair west at 40ft = x=190+320=510 -->
-<rect x="509" y="100" width="3" height="120" fill="#4a4a4a"/>
-<!-- CY sitting/BR div at 15ft from N = y=220 -->
-<rect x="190" y="219" width="208" height="3" fill="#4a4a4a"/>
-<!-- BR3 ensuite south: x=190..310, y=219 -->
-<rect x="309" y="100" width="3" height="119" fill="#4a4a4a"/>
-<!-- BR2 ensuite north: x=190..310, y=220 -->
-<rect x="309" y="220" width="3" height="120" fill="#4a4a4a"/>
-<!-- Master ensuite: x=400..494 y=220 -->
-<rect x="400" y="219" width="94" height="3" fill="#4a4a4a"/>
-<rect x="493" y="220" width="3" height="120" fill="#4a4a4a"/>
-<!-- Store box: NE corner x=512..590, y=100..160 -->
-<rect x="511" y="159" width="79" height="3" fill="#4a4a4a"/>
-<!-- Sitting area south wall: x=400..510, y=219 already done -->
-<!-- L-stair NE -->
-<rect x="430" y="131" width="3" height="88" fill="#4a4a4a"/>
-<rect x="561" y="100" width="3" height="120" fill="#4a4a4a"/>
+<!-- INTERNAL WALLS F1 — hallway scheme: core landing → hallway → workshop door -->
+<!-- ROOM FILLS -->
+<rect x="191" y="101" width="153" height="99" fill="#eaf0f8" opacity=".8"/>   <!-- BR3 NW -->
+<rect x="191" y="236" width="153" height="103" fill="#f5ece8" opacity=".8"/>  <!-- BR2 SW -->
+<rect x="347" y="236" width="242" height="103" fill="#f5e8ec" opacity=".8"/>  <!-- Master suite SE -->
+<rect x="347" y="101" width="122" height="99" fill="#eeeae0" opacity=".8"/>   <!-- Sitting N-centre -->
+<rect x="191" y="204" width="360" height="28" fill="#f7f3ea" opacity=".95"/>  <!-- Hallway -->
+<rect x="469" y="136" width="45" height="48" fill="#e0e8d0" opacity=".8"/>    <!-- Storage (S) -->
+<rect x="350" y="240" width="80" height="96" fill="#ddeeff" opacity=".55"/>   <!-- open ensuite zone -->
+<rect x="470" y="101" width="120" height="35" fill="#dde8ee" opacity=".8"/>   <!-- Stair N flight -->
+<rect x="554" y="136" width="36" height="94" fill="#dde8ee" opacity=".8"/>    <!-- Stair E flight -->
 
-<!-- ROOM FILLS F1 -->
-<rect x="191" y="101" width="118" height="118" fill="#eaf0f8" opacity=".8"/>  <!-- BR3 NW -->
-<rect x="191" y="220" width="118" height="119" fill="#f5ece8" opacity=".8"/>  <!-- BR2 SW -->
-<rect x="312" y="101" width="85" height="118" fill="#eeeae0" opacity=".8"/>   <!-- Sitting/Landing N -->
-<rect x="312" y="220" width="85" height="119" fill="#eeeae0" opacity=".8"/>   <!-- Sitting S -->
-<rect x="400" y="101" width="109" height="118" fill="#f5e8ec" opacity=".8"/>  <!-- Master NE -->
-<rect x="400" y="222" width="93" height="117" fill="#ddeeff" opacity=".8"/>   <!-- Master Ensuite -->
-<rect x="496" y="220" width="93" height="119" fill="#f5ece8" opacity=".8"/>   <!-- Master bed S -->
-<rect x="512" y="101" width="77" height="58" fill="#e0e8d0" opacity=".8"/>    <!-- Store -->
-<rect x="430" y="101" width="130" height="30" fill="#dde8ee" opacity=".7"/>   <!-- Stair N arm -->
-<rect x="562" y="101" width="27" height="118" fill="#dde8ee" opacity=".7"/>   <!-- Stair E arm -->
+<!-- WALLS -->
+<rect x="344" y="100" width="3" height="104" fill="#4a4a4a"/>  <!-- BR3 east -->
+<rect x="344" y="232" width="3" height="108" fill="#4a4a4a"/>  <!-- BR2/Master divide -->
+<rect x="190" y="200" width="60" height="3" fill="#4a4a4a"/>   <!-- hall N wall a -->
+<rect x="292" y="200" width="55" height="3" fill="#4a4a4a"/>   <!-- hall N wall b -->
+<rect x="250" y="199" width="42" height="5" fill="#c89040"/>   <!-- BR3 door -->
+<rect x="190" y="232" width="60" height="3" fill="#4a4a4a"/>   <!-- hall S wall a -->
+<rect x="292" y="232" width="188" height="3" fill="#4a4a4a"/>  <!-- hall S wall b -->
+<rect x="522" y="232" width="32" height="3" fill="#4a4a4a"/>   <!-- hall S wall c -->
+<rect x="250" y="231" width="42" height="5" fill="#c89040"/>   <!-- BR2 door -->
+<rect x="480" y="231" width="42" height="5" fill="#c89040"/>   <!-- Master door -->
+<rect x="280" y="100" width="3" height="48" fill="#4a4a4a"/>   <!-- BR3 ens W -->
+<rect x="280" y="148" width="67" height="3" fill="#4a4a4a"/>   <!-- BR3 ens S -->
+<rect x="280" y="292" width="3" height="48" fill="#4a4a4a"/>   <!-- BR2 ens W -->
+<rect x="280" y="289" width="67" height="3" fill="#4a4a4a"/>   <!-- BR2 ens N -->
+<!-- Core walls + storage -->
+<rect x="469" y="136" width="88" height="3" fill="#4a4a4a"/>
+<rect x="469" y="136" width="3" height="48" fill="#4a4a4a"/>
+<rect x="510" y="136" width="3" height="48" fill="#4a4a4a"/>
+<rect x="469" y="181" width="45" height="3" fill="#4a4a4a"/>
+<rect x="551" y="180" width="3" height="53" fill="#4a4a4a"/>
+<rect x="554" y="230" width="36" height="3" fill="#4a4a4a"/>
 
-<!-- STAIR HATCH -->
-<rect x="430" y="101" width="130" height="30" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
-<rect x="562" y="101" width="27" height="118" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<!-- STAIR HATCH + LIFT -->
+<rect x="470" y="101" width="120" height="35" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="520" y="122" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">UP → TERRACE</text>
+<rect x="554" y="136" width="36" height="94" fill="url(#hatch)" stroke="#888" stroke-width="1"/>
+<text x="575" y="183" font-size="6" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,575,183)">→ T ↓</text>
+<rect x="514" y="140" width="40" height="40" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="534" y="163" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
 
-<!-- ELEVATOR -->
-<rect x="544" y="101" width="45" height="45" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
-<text x="566" y="127" font-size="7" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
+<!-- WINDOWS / DOORS F1 -->
+<rect x="187" y="204" width="4" height="28" fill="#c89040"/>   <!-- workshop door — ONLY access, via hallway -->
+<rect x="587" y="245" width="4" height="40" fill="#c89040"/>   <!-- E balcony door (master) -->
+<rect x="587" y="300" width="4" height="30" fill="#a8d8ea" opacity=".9"/>  <!-- master E window -->
+<rect x="350" y="97" width="40" height="4" fill="#c89040"/>    <!-- N balcony door (sitting) -->
+<rect x="215" y="97" width="50" height="4" fill="#a8d8ea" opacity=".9"/>   <!-- BR3 N window -->
+<rect x="400" y="337" width="40" height="4" fill="#c89040"/>   <!-- S balcony door (master) -->
+<rect x="230" y="337" width="40" height="4" fill="#a8d8ea" opacity=".9"/>  <!-- BR2 S window -->
 
-<!-- WINDOWS F1 -->
-<rect x="187" y="150" width="4" height="40" fill="#a8d8ea" opacity=".9"/>   <!-- west -->
-<rect x="187" y="240" width="4" height="40" fill="#a8d8ea" opacity=".9"/>
-<rect x="587" y="120" width="4" height="40" fill="#a8d8ea" opacity=".9"/>   <!-- east -->
-<rect x="587" y="200" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
-<rect x="587" y="280" width="4" height="35" fill="#a8d8ea" opacity=".9"/>
-<!-- Sliding doors onto balconies -->
-<rect x="587" y="155" width="4" height="40" fill="#c89040"/>  <!-- E balcony door -->
-<rect x="350" y="97" width="40" height="4" fill="#c89040"/>   <!-- N balcony door -->
-<rect x="350" y="337" width="40" height="4" fill="#c89040"/>  <!-- S balcony door -->
+<!-- FURNITURE HINTS -->
+<rect x="200" y="108" width="50" height="62" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<rect x="200" y="244" width="50" height="62" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<rect x="470" y="250" width="62" height="52" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<text x="501" y="279" font-size="6" fill="#604040" font-family="Arial" text-anchor="middle">KING BED</text>
+<rect x="356" y="246" width="28" height="14" fill="#aaccdd" stroke="#5588aa" stroke-width=".8" rx="2"/>
+<rect x="356" y="310" width="40" height="20" fill="#aaccdd" stroke="#5588aa" stroke-width=".8" rx="2"/>
+<text x="376" y="305" font-size="5" fill="#5588aa" font-family="Arial" text-anchor="middle">TUB / WC</text>
 
-<!-- FURNITURE HINTS F1 -->
-<!-- Master king bed -->
-<rect x="420" y="130" width="60" height="50" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<text x="450" y="158" font-size="6.5" fill="#604040" font-family="Arial" text-anchor="middle">KING BED</text>
-<!-- BR3 bed -->
-<rect x="200" y="114" width="50" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<!-- BR2 bed -->
-<rect x="200" y="234" width="50" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-
-<!-- ROOM LABELS F1 -->
-<text x="247" y="152" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR3</text>
-<text x="247" y="163" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
-<text x="247" y="270" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR2</text>
-<text x="247" y="281" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
-<text x="354" y="162" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">SITTING</text>
-<text x="354" y="173" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">AREA /</text>
-<text x="354" y="183" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">LANDING</text>
-<text x="354" y="270" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">STORAGE</text>
-<text x="450" y="120" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">MASTER (BR1)</text>
-<text x="445" y="250" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">ENSUITE</text>
+<!-- WET STACK (over GF powder room) -->
 <rect x="418" y="284" width="10" height="10" fill="#7a4aaa" opacity=".8"/>
 <text x="414" y="280" font-size="5.5" fill="#7a4aaa" font-family="Arial" text-anchor="end">WET STACK (over GF powder)</text>
-<text x="536" y="135" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">STORE</text>
+
+<!-- ROOM LABELS F1 -->
+<text x="248" y="180" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR3</text>
+<text x="313" y="120" font-size="5.5" fill="#556677" font-family="Arial" text-anchor="middle">ENS</text>
+<text x="248" y="320" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">BR2</text>
+<text x="313" y="320" font-size="5.5" fill="#556677" font-family="Arial" text-anchor="middle">ENS</text>
+<text x="300" y="221" font-size="6.5" font-weight="bold" fill="#8a6a30" font-family="Arial" text-anchor="middle">HALLWAY → WKSP</text>
+<text x="500" y="318" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">MASTER SUITE</text>
+<text x="500" y="329" font-size="6" fill="#555" font-family="Arial" text-anchor="middle">30×13 ft · open ensuite (W)</text>
+<text x="408" y="155" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">SITTING</text>
+<text x="491" y="164" font-size="6.5" font-weight="bold" fill="#335533" font-family="Arial" text-anchor="middle">S</text>
+<text x="183" y="198" font-size="5" fill="#8a5000" font-family="Arial" text-anchor="end">WKSP DOOR (only access)</text>
 
 <!-- DIMENSION LINES F1 -->
 <line x1="190" y1="398" x2="590" y2="398" stroke="#888" stroke-width="1"/>
@@ -401,7 +404,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <rect x="6" y="50" width="16" height="8" fill="#c89040"/>
   <text x="26" y="58" font-size="7" fill="#444" font-family="Arial">Sliding door (balcony)</text>
   <rect x="6" y="64" width="16" height="8" fill="url(#hatch)" stroke="#888" stroke-width=".5"/>
-  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">L-Stair NE corner</text>
+  <text x="26" y="72" font-size="7" fill="#444" font-family="Arial">Stair wraps lift (NE core)</text>
   <rect x="6" y="78" width="16" height="8" fill="#8898a8"/>
   <text x="26" y="86" font-size="7" fill="#444" font-family="Arial">Elevator (full height)</text>
   <rect x="6" y="92" width="16" height="8" fill="#a8d8ea" opacity=".9"/>
@@ -507,8 +510,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="540" y="265" font-size="7.5" font-weight="bold" fill="#335533" font-family="Arial" text-anchor="middle">STORE</text>
 
 <!-- ELEVATOR HATCH -->
-<rect x="556" y="88" width="32" height="32" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
-<text x="572" y="107" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
+<rect x="514" y="120" width="40" height="40" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
+<text x="534" y="143" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
 <!-- Exhaust stack (∅0.6m, solar EC fan) over stair void -->
 <circle cx="530" cy="185" r="8" fill="#8a8a92" stroke="#55555f" stroke-width="1.5"/>
 <circle cx="530" cy="185" r="3" fill="#445566"/>
