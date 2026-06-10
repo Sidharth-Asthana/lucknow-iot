@@ -90,14 +90,21 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <line x1="746" y1="200" x2="746" y2="248" stroke="#886600" stroke-width="1.5" stroke-dasharray="3,2"/>
 <text x="756" y="226" font-size="6" fill="#886600" font-family="Arial" text-anchor="middle" transform="rotate(-90,756,226)">BACK GATE</text>
 
-<!-- ── CT (plan view, NW exterior of building) ── -->
-<circle cx="155" cy="102" r="24" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="2"/>
-<circle cx="155" cy="102" r="12" fill="#b84a18" opacity=".7"/>
-<circle cx="155" cy="102" r="4" fill="#445566"/>
-<text x="155" y="100" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">CT</text>
-<text x="155" y="109" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">∅1.8m</text>
-<text x="155" y="140" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">COOLING</text>
-<text x="155" y="148" font-size="6" fill="#c86030" font-family="Arial" text-anchor="middle">TOWER</text>
+<!-- ── CT (plan view, SW exterior, near gate) ── -->
+<circle cx="130" cy="372" r="24" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="2"/>
+<circle cx="130" cy="372" r="12" fill="#b84a18" opacity=".7"/>
+<circle cx="130" cy="372" r="4" fill="#445566"/>
+<text x="130" y="370" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">CT</text>
+<text x="130" y="379" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">∅1.8m</text>
+<text x="162" y="368" font-size="6" fill="#c86030" font-family="Arial">COOLING TOWER h=5.5m</text>
+<!-- Portico columns (support F1 workshop · 3 nos 300×300) -->
+<g fill="#4a4a4a">
+  <rect x="70" y="106" width="8" height="8"/>
+  <rect x="70" y="216" width="8" height="8"/>
+  <rect x="70" y="326" width="8" height="8"/>
+</g>
+<rect x="70" y="100" width="120" height="240" fill="none" stroke="#cc9040" stroke-width="1" stroke-dasharray="5,3" opacity=".6"/>
+<text x="132" y="96" font-size="6" fill="#aa7820" font-family="Arial" text-anchor="middle">COVERED PORTICO (workshop over, 3 columns)</text>
 
 <!-- ── HOUSE OUTER WALLS ── -->
 <!-- Building: x=190 to x=590, y=100 to y=340 -->
@@ -105,15 +112,20 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 
 <!-- ── INTERNAL WALLS ── -->
 <!-- CX1: west 20ft = x=190+160=350 (garage/living div) -->
-<rect x="349" y="100" width="3" height="240" fill="#4a4a4a"/>
+<rect x="349" y="100" width="3" height="108" fill="#4a4a4a"/>
+<rect x="349" y="248" width="3" height="92" fill="#4a4a4a"/>
+<rect x="347" y="210" width="7" height="36" fill="#c89040"/>  <!-- gallery → living door -->
 <!-- CX2: east 12ft from east = x=590-96=494 (kitchen west wall) -->
 <rect x="493" y="100" width="3" height="240" fill="#4a4a4a"/>
 <!-- CY_mid: N-S midpoint 15ft from north = y=100+120=220 -->
-<rect x="190" y="219" width="300" height="3" fill="#4a4a4a"/>
+<rect x="352" y="219" width="138" height="3" fill="#4a4a4a"/>
+<!-- Entry gallery walls (foyer 20×6 ft) -->
+<rect x="190" y="205" width="160" height="3" fill="#4a4a4a"/>
+<rect x="190" y="251" width="160" height="3" fill="#4a4a4a"/>
 <!-- South partition living/pantry: x=350 to x=494, y=260 -->
 <rect x="350" y="259" width="146" height="3" fill="#4a4a4a"/>
 <!-- Guest ensuite: x=190 to x=298, y=276 -->
-<rect x="298" y="219" width="3" height="121" fill="#4a4a4a"/>  <!-- ensuite east wall -->
+<rect x="298" y="254" width="3" height="86" fill="#4a4a4a"/>  <!-- guest ensuite east wall -->
 <!-- Powder room: x=350 to x=414, y=219 to y=340 -->
 <rect x="350" y="279" width="80" height="3" fill="#4a4a4a"/>
 <rect x="430" y="219" width="3" height="63" fill="#4a4a4a"/>
@@ -122,13 +134,17 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <rect x="561" y="100" width="3" height="120" fill="#4a4a4a"/>  <!-- stair west wall -->
 
 <!-- ── ROOM FILLS ── -->
-<rect x="191" y="101" width="158" height="237" fill="#ece8e0" opacity=".7"/>   <!-- Garage NW -->
+<rect x="191" y="101" width="158" height="104" fill="#ece8e0" opacity=".7"/>   <!-- Garage NW -->
+<rect x="191" y="208" width="158" height="43" fill="#f7f3ea" opacity=".9"/>    <!-- Entry gallery -->
+<rect x="301" y="254" width="48" height="85" fill="#ddeeff" opacity=".8"/>     <!-- Guest ensuite -->
 <rect x="352" y="101" width="140" height="118" fill="#f0ece6" opacity=".8"/>   <!-- Living -->
 <rect x="352" y="220" width="78" height="39" fill="#fdf5e0" opacity=".8"/>     <!-- Dining -->
 <rect x="352" y="262" width="78" height="77" fill="#ddeeff" opacity=".8"/>     <!-- Powder Rm + Guest ensuite strip -->
 <rect x="432" y="220" width="60" height="119" fill="#fdf5e0" opacity=".8"/>    <!-- Pantry -->
-<rect x="496" y="101" width="93" height="238" fill="#fff8e8" opacity=".8"/>    <!-- Kitchen E strip -->
-<rect x="191" y="220" width="106" height="119" fill="#f5e8ec" opacity=".8"/>   <!-- Guest Bed SW -->
+<rect x="496" y="101" width="93" height="192" fill="#fff8e8" opacity=".8"/>    <!-- Kitchen E strip -->
+<rect x="496" y="296" width="93" height="43" fill="#e8f0e0" opacity=".9"/>     <!-- Utility/Laundry -->
+<rect x="494" y="293" width="96" height="3" fill="#4a4a4a"/>                    <!-- utility north wall -->
+<rect x="191" y="254" width="106" height="85" fill="#f5e8ec" opacity=".8"/>   <!-- Guest Bed SW -->
 <rect x="430" y="101" width="130" height="30" fill="#dde8ee" opacity=".8"/>    <!-- Stair N arm top -->
 <rect x="562" y="101" width="27" height="118" fill="#dde8ee" opacity=".8"/>    <!-- Stair E arm -->
 
@@ -172,22 +188,28 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <rect x="360" y="140" width="80" height="16" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
 <rect x="360" y="140" width="16" height="50" fill="#b09878" stroke="#806040" stroke-width="1" rx="2"/>
 <!-- Guest bed -->
-<rect x="204" y="240" width="55" height="70" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
-<text x="231" y="278" font-size="6.5" fill="#604040" font-family="Arial" text-anchor="middle">GUEST BED</text>
+<rect x="204" y="262" width="55" height="62" fill="#c8b0b0" stroke="#806060" stroke-width="1" rx="2"/>
+<text x="231" y="297" font-size="6.5" fill="#604040" font-family="Arial" text-anchor="middle">GUEST BED</text>
 
 <!-- ── ROOM LABELS ── -->
-<text x="265" y="210" font-size="9" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">GARAGE</text>
-<text x="265" y="222" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">20×30ft</text>
+<text x="265" y="150" font-size="9" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">GARAGE</text>
+<text x="265" y="162" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">20×13 ft</text>
+<text x="268" y="226" font-size="7" font-weight="bold" fill="#8a6a30" font-family="Arial" text-anchor="middle">ENTRY GALLERY</text>
+<text x="268" y="236" font-size="6" fill="#a08040" font-family="Arial" text-anchor="middle">foyer · 20×6 ft</text>
 <text x="412" y="145" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LIVING</text>
 <text x="412" y="156" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">18×15ft open</text>
 <text x="383" y="245" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">DINING</text>
 <text x="383" y="256" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">open plan</text>
 <text x="383" y="297" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">POWDER</text>
 <text x="383" y="308" font-size="6.5" fill="#777" font-family="Arial" text-anchor="middle">ROOM</text>
+<rect x="418" y="284" width="10" height="10" fill="#7a4aaa" opacity=".8"/>
+<text x="414" y="280" font-size="5.5" fill="#7a4aaa" font-family="Arial" text-anchor="end">WET STACK</text>
 <text x="456" y="265" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">PANTRY</text>
-<text x="540" y="200" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">KITCHEN</text>
-<text x="540" y="212" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">12×30ft</text>
-<text x="228" y="305" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">+ ENSUITE</text>
+<text x="540" y="176" font-size="8.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">KITCHEN</text>
+<text x="540" y="188" font-size="6.5" fill="#555" font-family="Arial" text-anchor="middle">12×24 ft</text>
+<text x="540" y="315" font-size="7" font-weight="bold" fill="#446644" font-family="Arial" text-anchor="middle">UTILITY / LAUNDRY</text>
+<text x="540" y="325" font-size="6" fill="#668866" font-family="Arial" text-anchor="middle">12×5 ft · E window · back gate</text>
+<text x="324" y="300" font-size="6" fill="#556677" font-family="Arial" text-anchor="middle" transform="rotate(-90,324,300)">ENSUITE</text>
 
 <!-- ── DIMENSION LINES ── -->
 <line x1="190" y1="360" x2="590" y2="360" stroke="#888" stroke-width="1"/>
@@ -199,8 +221,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <line x1="615" y1="340" x2="625" y2="340" stroke="#888" stroke-width="1"/>
 <text x="640" y="222" font-size="8" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,640,222)">9.14 m (30 ft)</text>
 <!-- Workshop dim (F1, shown as context) -->
-<line x1="30" y1="380" x2="190" y2="380" stroke="#cc9040" stroke-width="1"/>
-<text x="110" y="392" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m (15ft) WS ext ↑F1</text>
+<line x1="30" y1="412" x2="190" y2="412" stroke="#cc9040" stroke-width="1"/>
+<text x="110" y="423" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m (15ft) WS ext ↑F1</text>
 
 <!-- ── NORTH ARROW ── -->
 <g transform="translate(820,100)">
@@ -218,7 +240,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <rect x="0" y="0" width="165" height="145" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
   <text x="82" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">LEGEND</text>
   <circle cx="14" cy="26" r="8" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="1"/>
-  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Cooling Tower (GF, NW ext.)</text>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Cooling Tower (GF, SW ext.)</text>
   <rect x="6" y="38" width="16" height="8" fill="#a8d8ea" opacity=".9"/>
   <text x="26" y="46" font-size="7" fill="#444" font-family="Arial">Window / glazing</text>
   <rect x="6" y="52" width="16" height="8" fill="#c89040"/>
@@ -243,20 +265,24 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <div class="panel" id="f1">
 <svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
 <text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">FIRST FLOOR PLAN — FFL +3.300 m</text>
-<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Workshop 15ft cantilever west · Balconies E/N/S 5ft · L-stair NE corner</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">8 px/ft · Workshop 15ft on portico columns · N-clerestory studio light · Balconies E/N/S 5ft · L-stair NE</text>
 
 <!-- F1: Building x=190..590 (50ft), y=100..340 (30ft). Workshop x=70..190 (15ft). Balconies 5ft=40px -->
 
 <!-- WORKSHOP CANTILEVER (full west face 30ft NS × 15ft EW) -->
-<rect x="70" y="100" width="120" height="240" fill="#fff8e8" stroke="#cc9040" stroke-width="2" stroke-dasharray="6,3"/>
+<rect x="70" y="100" width="120" height="240" fill="#fff8e8" stroke="#cc9040" stroke-width="2"/>
+<g fill="#2c2c2c"><rect x="68" y="106" width="8" height="8"/><rect x="68" y="216" width="8" height="8"/><rect x="68" y="326" width="8" height="8"/></g>
 <rect x="70" y="100" width="4" height="240" fill="#cc9040"/>  <!-- west wall -->
 <rect x="70" y="100" width="120" height="4" fill="#cc9040"/>  <!-- north wall -->
 <rect x="70" y="336" width="120" height="4" fill="#cc9040"/>  <!-- south wall -->
 <text x="130" y="220" font-size="8.5" font-weight="bold" fill="#885500" font-family="Arial" text-anchor="middle">WKSP</text>
 <text x="130" y="232" font-size="7" fill="#885500" font-family="Arial" text-anchor="middle">15×30 ft</text>
+<text x="130" y="243" font-size="5.5" fill="#885500" font-family="Arial" text-anchor="middle">silk studio · UV-filter glazing</text>
 <!-- Workshop window (west wall, large) -->
-<rect x="67" y="148" width="4" height="140" fill="#a8d8ea" opacity=".9"/>
-<text x="56" y="220" font-size="6" fill="#4070a0" font-family="Arial" text-anchor="middle" transform="rotate(-90,56,220)">LARGE WINDOW W</text>
+<rect x="67" y="200" width="4" height="40" fill="#a8d8ea" opacity=".9"/>
+<text x="56" y="220" font-size="6" fill="#4070a0" font-family="Arial" text-anchor="middle" transform="rotate(-90,56,220)">VIEW SLIT W (shaded)</text>
+<rect x="80" y="97" width="100" height="4" fill="#a8d8ea" opacity=".9"/>
+<text x="130" y="93" font-size="5.5" fill="#2288aa" font-family="Arial" text-anchor="middle">N CLERESTORY — primary studio light</text>
 <!-- Workshop benches -->
 <rect x="76" y="112" width="110" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
 <rect x="76" y="314" width="110" height="14" fill="#c8a870" stroke="#806030" stroke-width="1"/>
@@ -344,6 +370,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="354" y="270" font-size="7" fill="#555" font-family="Arial" text-anchor="middle">STORAGE</text>
 <text x="450" y="120" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">MASTER (BR1)</text>
 <text x="445" y="250" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">ENSUITE</text>
+<rect x="418" y="284" width="10" height="10" fill="#7a4aaa" opacity=".8"/>
+<text x="414" y="280" font-size="5.5" fill="#7a4aaa" font-family="Arial" text-anchor="end">WET STACK (over GF powder)</text>
 <text x="536" y="135" font-size="7.5" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">STORE</text>
 
 <!-- DIMENSION LINES F1 -->
@@ -367,7 +395,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <rect x="0" y="0" width="160" height="120" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
   <text x="80" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">F1 KEY</text>
   <rect x="6" y="22" width="16" height="8" fill="#fff8e8" stroke="#cc9040" stroke-width="1" stroke-dasharray="4,2"/>
-  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Workshop (F1 only, 15ft W)</text>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">Workshop on portico columns</text>
   <rect x="6" y="36" width="16" height="8" fill="#e8f5e8" stroke="#88aa88" stroke-width="1" stroke-dasharray="3,2"/>
   <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Balcony (E/N/S, 5ft)</text>
   <rect x="6" y="50" width="16" height="8" fill="#c89040"/>
@@ -444,15 +472,20 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 
 <!-- PV PERGOLA (north area of main terrace, 30ft NS × 40ft EW) -->
 <rect x="200" y="88" width="320" height="128" fill="#1a2a40" opacity=".75" stroke="#406080" stroke-width="1.5" rx="2"/>
-<text x="360" y="130" font-size="9" font-weight="bold" fill="#88ccff" font-family="Arial" text-anchor="middle">PV PERGOLA</text>
-<text x="360" y="142" font-size="7.5" fill="#88bbee" font-family="Arial" text-anchor="middle">5 panels · 6 kWp · 25° S-tilt</text>
+<text x="360" y="85" font-size="8" font-weight="bold" fill="#3a6a9a" font-family="Arial" text-anchor="middle">PV PERGOLA — 11 × 550 W · 6.05 kWp · 25° S-tilt</text>
 <!-- PV panel grid (5 panels) -->
 <g fill="#1e3a5a" stroke="#4488cc" stroke-width="1">
-  <rect x="206" y="95" width="56" height="112" rx="2"/>
-  <rect x="267" y="95" width="56" height="112" rx="2"/>
-  <rect x="328" y="95" width="56" height="112" rx="2"/>
-  <rect x="389" y="95" width="56" height="112" rx="2"/>
-  <rect x="450" y="95" width="56" height="112" rx="2"/>
+  <rect x="206" y="95" width="24" height="112" rx="2"/>
+  <rect x="234" y="95" width="24" height="112" rx="2"/>
+  <rect x="262" y="95" width="24" height="112" rx="2"/>
+  <rect x="290" y="95" width="24" height="112" rx="2"/>
+  <rect x="318" y="95" width="24" height="112" rx="2"/>
+  <rect x="346" y="95" width="24" height="112" rx="2"/>
+  <rect x="374" y="95" width="24" height="112" rx="2"/>
+  <rect x="402" y="95" width="24" height="112" rx="2"/>
+  <rect x="430" y="95" width="24" height="112" rx="2"/>
+  <rect x="458" y="95" width="24" height="112" rx="2"/>
+  <rect x="486" y="95" width="24" height="112" rx="2"/>
 </g>
 
 <!-- GARDEN (center-south of main terrace) -->
@@ -476,6 +509,10 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- ELEVATOR HATCH -->
 <rect x="556" y="88" width="32" height="32" fill="#8898a8" stroke="#506070" stroke-width="1.5"/>
 <text x="572" y="107" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">LIFT</text>
+<!-- Exhaust stack (∅0.6m, solar EC fan) over stair void -->
+<circle cx="530" cy="185" r="8" fill="#8a8a92" stroke="#55555f" stroke-width="1.5"/>
+<circle cx="530" cy="185" r="3" fill="#445566"/>
+<text x="530" y="201" font-size="5.5" fill="#55555f" font-family="Arial" text-anchor="middle">EXH STACK + fan</text>
 
 <!-- LABELS & ANNOTATIONS -->
 <text x="75" y="75" font-size="6.5" fill="#cc8800" font-family="Arial">← WEST (front/gate side)</text>
@@ -511,7 +548,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <rect x="0" y="0" width="185" height="170" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
   <text x="92" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">TERRACE LEGEND</text>
   <rect x="6" y="22" width="16" height="8" fill="#1a2a40" opacity=".75" stroke="#406080" stroke-width="1"/>
-  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">PV Pergola (5 panels, 6kWp)</text>
+  <text x="26" y="30" font-size="7" fill="#444" font-family="Arial">PV Pergola (11×550W, 6.05kWp)</text>
   <rect x="6" y="36" width="16" height="8" fill="#88bb88" opacity=".45" stroke="#448844" stroke-width="1"/>
   <text x="26" y="44" font-size="7" fill="#444" font-family="Arial">Open garden area</text>
   <rect x="6" y="50" width="16" height="8" fill="#d8eef8" stroke="#2288cc" stroke-width="1"/>
@@ -538,104 +575,113 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
      UNDERGROUND LAYER
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel" id="ug">
-<svg viewBox="0 0 760 480" width="1100" xmlns="http://www.w3.org/2000/svg">
-<text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">UNDERGROUND LAYER — Z = −1.5 m to 0</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#4488cc" font-family="Arial">RWH tank · Foundations · Recharge pit · Substructure drainage</text>
+<svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
+<text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">UNDERGROUND LAYER — Z = −1.5 m to 0</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#4488cc" font-family="Arial">8 px/ft · RWH tank under W driveway · Foundations · Portico pads · Lift pit · Recharge pit</text>
 
-<!-- Ground plane context (faint) -->
-<rect x="65" y="97" width="493" height="234" fill="#f5f5ee" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
-<rect x="200" y="130" width="250" height="180" fill="#e8e4d8" stroke="#bbb" stroke-width="1" opacity=".5"/>
-<text x="325" y="222" font-size="9" fill="#bbb" font-family="Arial" text-anchor="middle">HOUSE FOOTPRINT (above)</text>
+<!-- Plot + above-ground context (faint) -->
+<rect x="30" y="60" width="720" height="344" fill="none" stroke="#bbb" stroke-width="1" stroke-dasharray="6,4"/>
+<rect x="30" y="60" width="160" height="344" fill="#f0ede8"/>
+<text x="44" y="242" font-size="7" fill="#aaa" font-family="Arial" text-anchor="middle" transform="rotate(-90,44,242)">DRIVEWAY (above)</text>
+<rect x="190" y="100" width="400" height="240" fill="#f5f2ea" stroke="#ccc" stroke-width="1" opacity=".7"/>
+<text x="390" y="160" font-size="9" fill="#ccc" font-family="Arial" text-anchor="middle">HOUSE FOOTPRINT (above)</text>
+<rect x="70" y="100" width="120" height="240" fill="none" stroke="#ddc8a0" stroke-width="1" stroke-dasharray="5,3"/>
+<text x="130" y="120" font-size="6" fill="#ccb080" font-family="Arial" text-anchor="middle">workshop F1 (above)</text>
 
-<!-- RWH TANK X[-6.5,-2.5] Y[3.5,6.5] Z[-1.5,0]
-     svg: X=-6.5→ ox-6.5*18=200-117=83; X=-2.5→ ox-2.5*18=155
-     Y=3.5→ oy-3.5*18=310-63=247; Y=6.5→ oy-6.5*18=310-117=193 -->
-<rect x="83" y="193" width="72" height="54" fill="#4488cc" opacity=".25" stroke="#2266aa" stroke-width="2" stroke-dasharray="5,2"/>
-<!-- Tank walls (wireframe thick) -->
-<rect x="83" y="193" width="72" height="54" fill="none" stroke="#2266aa" stroke-width="2.5" stroke-dasharray="5,3"/>
-<!-- Tank label -->
-<text x="119" y="215" font-size="8" font-weight="bold" fill="#1144aa" font-family="Arial" text-anchor="middle">RWH TANK</text>
-<text x="119" y="225" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">18,000 L RCC</text>
-<text x="119" y="235" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">4.0 × 3.0 × 1.5 m</text>
-<text x="119" y="244" font-size="6.5" fill="#2266aa" font-family="Arial" text-anchor="middle">Z = −1.5 to 0 m</text>
+<!-- RWH TANK: 4.0 × 3.0 × 1.5 m under west driveway near SW gate -->
+<rect x="55" y="125" width="105" height="79" fill="#4488cc" opacity=".22" stroke="#2266aa" stroke-width="2.5" stroke-dasharray="5,3"/>
+<text x="107" y="151" font-size="8" font-weight="bold" fill="#1144aa" font-family="Arial" text-anchor="middle">RWH TANK</text>
+<text x="107" y="162" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">18,000 L RCC</text>
+<text x="107" y="172" font-size="7" fill="#1144aa" font-family="Arial" text-anchor="middle">4.0 × 3.0 × 1.5 m</text>
+<text x="107" y="182" font-size="6.5" fill="#2266aa" font-family="Arial" text-anchor="middle">Z = −1.5 to 0 m</text>
+<line x1="55" y1="213" x2="160" y2="213" stroke="#2266aa" stroke-width="1"/>
+<text x="107" y="224" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle">4.0 m</text>
+<line x1="46" y1="125" x2="46" y2="204" stroke="#2266aa" stroke-width="1"/>
+<text x="38" y="167" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle" transform="rotate(-90,38,167)">3.0 m</text>
 
-<!-- Tank dimensions -->
-<line x1="83" y1="256" x2="155" y2="256" stroke="#2266aa" stroke-width="1"/>
-<text x="119" y="268" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle">4.0 m</text>
-<line x1="72" y1="193" x2="72" y2="247" stroke="#2266aa" stroke-width="1"/>
-<text x="60" y="222" font-size="7" fill="#2266aa" font-family="Arial" text-anchor="middle" transform="rotate(-90,60,222)">3.0m</text>
+<!-- Inlet: roof runoff via W downpipes → first-flush + leaf filter -->
+<path d="M260 200 C215 205 170 175 135 130" stroke="#2266aa" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+<rect x="123" y="108" width="24" height="13" fill="#88aacc" stroke="#2266aa" stroke-width="1" rx="2"/>
+<text x="135" y="117" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">FF+LF</text>
+<text x="152" y="114" font-size="6.5" fill="#2266aa" font-family="Arial">first-flush + leaf filter</text>
+<text x="235" y="196" font-size="6.5" fill="#2266aa" font-family="Arial">roof runoff ↓</text>
 
-<!-- Inlet pipe (first-flush + leaf filter) -->
-<line x1="119" y1="193" x2="119" y2="160" stroke="#2266aa" stroke-width="2"/>
-<rect x="109" y="150" width="20" height="14" fill="#88aacc" stroke="#2266aa" stroke-width="1" rx="2"/>
-<text x="119" y="160" font-size="5.5" fill="#fff" font-family="Arial" text-anchor="middle">FF+LF</text>
-<text x="145" y="158" font-size="6.5" fill="#2266aa" font-family="Arial">First-flush +</text>
-<text x="145" y="168" font-size="6.5" fill="#2266aa" font-family="Arial">leaf filter</text>
+<!-- Domestic supply: UV + sediment → house W wall -->
+<line x1="160" y1="165" x2="240" y2="165" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
+<circle cx="196" cy="165" r="5" fill="#aaddee" stroke="#22aacc" stroke-width="1"/>
+<text x="196" y="157" font-size="5.5" fill="#22aacc" font-family="Arial" text-anchor="middle">UV</text>
+<text x="244" y="168" font-size="6.5" fill="#22aacc" font-family="Arial">domestic supply (UV + sediment)</text>
 
-<!-- Domestic supply pipe (UV+sediment) -->
-<line x1="155" y1="210" x2="200" y2="210" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
-<circle cx="168" cy="210" r="5" fill="#aaddee" stroke="#22aacc" stroke-width="1"/>
-<text x="161" y="207" font-size="5.5" fill="#22aacc" font-family="Arial">UV</text>
-<text x="175" y="225" font-size="6.5" fill="#22aacc" font-family="Arial">Domestic supply</text>
-<text x="175" y="234" font-size="6" fill="#22aacc" font-family="Arial">(UV + sediment)</text>
+<!-- CT drip supply (SV-02) to SW cooling tower -->
+<path d="M100 204 C95 280 105 340 126 366" stroke="#c85a20" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
+<circle cx="132" cy="374" r="9" fill="none" stroke="#c85a20" stroke-width="1.5" stroke-dasharray="2,2"/>
+<text x="148" y="378" font-size="6.5" fill="#c85a20" font-family="Arial">CT drip (SV-02)</text>
 
-<!-- Beehive drip line -->
-<line x1="155" y1="225" x2="200" y2="225" stroke="#e06030" stroke-width="2" stroke-dasharray="3,2"/>
-<text x="175" y="244" font-size="6.5" fill="#e06030" font-family="Arial">Beehive drip</text>
-<text x="175" y="253" font-size="6" fill="#e06030" font-family="Arial">(unfiltered)</text>
+<!-- Mains backup (NC valve SV-01), W boundary -->
+<line x1="30" y1="256" x2="190" y2="256" stroke="#2244aa" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
+<circle cx="80" cy="256" r="5" fill="#e8f0ff" stroke="#2244aa" stroke-width="1"/>
+<text x="96" y="250" font-size="6" fill="#2244aa" font-family="Arial">mains backup (NC valve SV-01)</text>
 
-<!-- Overflow to recharge pit -->
-<line x1="155" y1="200" x2="530" y2="102" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
-<!-- Recharge pit NE corner (18.5,11) → svg: x=200+18.5*18=533, y=310-11*18=112 -->
-<circle cx="533" cy="112" r="10" fill="#44aa44" opacity=".3" stroke="#228844" stroke-width="1.5"/>
-<text x="545" y="110" font-size="6.5" fill="#228844" font-family="Arial">RECHARGE PIT</text>
-<text x="545" y="120" font-size="6" fill="#228844" font-family="Arial">Ø1.2m gravel</text>
-<text x="545" y="129" font-size="6" fill="#228844" font-family="Arial">NE corner</text>
+<!-- Overflow → recharge pit (NE corner) -->
+<line x1="160" y1="135" x2="712" y2="88" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
+<circle cx="722" cy="86" r="10" fill="#44aa44" opacity=".3" stroke="#228844" stroke-width="1.5"/>
+<text x="706" y="76" font-size="6.5" fill="#228844" font-family="Arial" text-anchor="end">RECHARGE PIT Ø1.2m gravel · NE</text>
+<text x="420" y="106" font-size="6" fill="#228844" font-family="Arial">overflow →</text>
 
-<!-- Roof drainage → tank (collection arrows) -->
-<!-- From house roof center → tank -->
-<path d="M325 180 C270 180 200 190 155 220" stroke="#2266aa" stroke-width="1.5" fill="none" stroke-dasharray="3,3" marker-end="url(#farr)"/>
-<text x="240" y="175" font-size="6.5" fill="#2266aa" font-family="Arial">Roof runoff →</text>
-
-<!-- Foundation strip (simplified) -->
-<rect x="196" y="126" width="8" height="188" fill="#9a8870" opacity=".4"/>
-<rect x="446" y="126" width="8" height="188" fill="#9a8870" opacity=".4"/>
-<rect x="196" y="126" width="258" height="8" fill="#9a8870" opacity=".4"/>
-<rect x="196" y="306" width="258" height="8" fill="#9a8870" opacity=".4"/>
-<!-- Column footings at CX grid -->
-<circle cx="302" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-<circle cx="302" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-<circle cx="349" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-<circle cx="349" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-<circle cx="450" cy="134" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-<circle cx="450" cy="314" r="7" fill="#9a8870" opacity=".5" stroke="#7a6850" stroke-width="1"/>
-
-<!-- LEGEND UG -->
-<g transform="translate(580,150)">
-  <rect x="0" y="0" width="155" height="155" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
-  <text x="77" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">UNDERGROUND LEGEND</text>
-  <rect x="8" y="22" width="18" height="10" fill="none" stroke="#2266aa" stroke-width="2" stroke-dasharray="5,3"/>
-  <text x="30" y="31" font-size="7" fill="#444" font-family="Arial">RWH tank (RCC underground)</text>
-  <circle cx="17" cy="48" r="5" fill="#9a8870" opacity=".5"/>
-  <text x="30" y="52" font-size="7" fill="#444" font-family="Arial">Column footing</text>
-  <rect x="8" y="62" width="18" height="5" fill="#9a8870" opacity=".4"/>
-  <text x="30" y="69" font-size="7" fill="#444" font-family="Arial">Foundation strip wall</text>
-  <line x1="8" y1="84" x2="26" y2="84" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
-  <text x="30" y="88" font-size="7" fill="#444" font-family="Arial">Domestic supply (UV)</text>
-  <line x1="8" y1="100" x2="26" y2="100" stroke="#c85a20" stroke-width="2" stroke-dasharray="3,2"/>
-  <text x="30" y="104" font-size="7" fill="#444" font-family="Arial">CT water supply (SV-02)</text>
-  <line x1="8" y1="116" x2="26" y2="116" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <text x="30" y="120" font-size="7" fill="#444" font-family="Arial">Overflow → recharge pit</text>
-  <circle cx="17" cy="136" r="5" fill="#44aa44" opacity=".4" stroke="#228844" stroke-width="1"/>
-  <text x="30" y="140" font-size="7" fill="#444" font-family="Arial">Recharge pit (gravel)</text>
+<!-- Foundation strips under main walls -->
+<g fill="#9a8870" opacity=".4">
+  <rect x="186" y="96" width="8" height="248"/>
+  <rect x="586" y="96" width="8" height="248"/>
+  <rect x="186" y="96" width="408" height="8"/>
+  <rect x="186" y="336" width="408" height="8"/>
 </g>
+<!-- Column footings at internal grid -->
+<g fill="#9a8870" opacity=".55" stroke="#7a6850" stroke-width="1">
+  <circle cx="350" cy="104" r="7"/><circle cx="350" cy="220" r="7"/><circle cx="350" cy="336" r="7"/>
+  <circle cx="494" cy="104" r="7"/><circle cx="494" cy="220" r="7"/><circle cx="494" cy="336" r="7"/>
+</g>
+<!-- Portico column pad footings (3 nos, isolated) -->
+<g fill="none" stroke="#aa7820" stroke-width="1.5">
+  <rect x="64" y="102" width="16" height="16"/>
+  <rect x="64" y="212" width="16" height="16"/>
+  <rect x="64" y="322" width="16" height="16"/>
+</g>
+<text x="58" y="278" font-size="6" fill="#aa7820" font-family="Arial" text-anchor="middle" transform="rotate(-90,58,278)">PORTICO PADS ×3</text>
+
+<!-- Lift pit (NE core) -->
+<rect x="544" y="101" width="45" height="45" fill="#8898a8" opacity=".4" stroke="#506070" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="566" y="126" font-size="5.5" fill="#506070" font-family="Arial" text-anchor="middle">LIFT PIT −1.5m</text>
 
 <!-- North arrow -->
-<g transform="translate(670,100)">
+<g transform="translate(820,100)">
   <circle cx="0" cy="0" r="22" fill="none" stroke="#666" stroke-width="1.2"/>
   <polygon points="0,-18 -6,6 0,2 6,6" fill="#2c2c2c"/>
   <polygon points="0,18 -6,-6 0,-2 6,-6" fill="#aaa"/>
-  <text x="0" y="-22" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+  <text x="0" y="-24" font-size="9" font-weight="bold" fill="#222" font-family="Arial" text-anchor="middle">N</text>
+</g>
+
+<!-- Legend -->
+<g transform="translate(625,170)">
+  <rect x="0" y="0" width="170" height="172" fill="#f5f0e8" stroke="#ccc" stroke-width=".8" rx="3"/>
+  <text x="85" y="14" font-size="8" font-weight="bold" fill="#333" font-family="Arial" text-anchor="middle">UNDERGROUND LEGEND</text>
+  <rect x="8" y="22" width="18" height="10" fill="none" stroke="#2266aa" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="30" y="31" font-size="7" fill="#444" font-family="Arial">RWH tank (RCC, under driveway)</text>
+  <rect x="8" y="38" width="12" height="12" fill="none" stroke="#aa7820" stroke-width="1.5"/>
+  <text x="30" y="47" font-size="7" fill="#444" font-family="Arial">Portico pad footing (×3)</text>
+  <circle cx="14" cy="62" r="5" fill="#9a8870" opacity=".55"/>
+  <text x="30" y="65" font-size="7" fill="#444" font-family="Arial">Column footing (grid)</text>
+  <rect x="8" y="74" width="18" height="5" fill="#9a8870" opacity=".4"/>
+  <text x="30" y="81" font-size="7" fill="#444" font-family="Arial">Foundation strip wall</text>
+  <line x1="8" y1="94" x2="26" y2="94" stroke="#22aacc" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="30" y="97" font-size="7" fill="#444" font-family="Arial">Domestic supply (UV)</text>
+  <line x1="8" y1="110" x2="26" y2="110" stroke="#c85a20" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="30" y="113" font-size="7" fill="#444" font-family="Arial">CT drip supply (SV-02)</text>
+  <line x1="8" y1="126" x2="26" y2="126" stroke="#2244aa" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="30" y="129" font-size="7" fill="#444" font-family="Arial">Mains backup (SV-01, NC)</text>
+  <line x1="8" y1="142" x2="26" y2="142" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="30" y="145" font-size="7" fill="#444" font-family="Arial">Overflow → recharge pit</text>
+  <rect x="8" y="152" width="14" height="10" fill="#8898a8" opacity=".4" stroke="#506070" stroke-width="1"/>
+  <text x="30" y="160" font-size="7" fill="#444" font-family="Arial">Lift pit (−1.5 m)</text>
 </g>
 </svg>
 </div>
@@ -658,7 +704,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </defs>
 
 <text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">PASSIVE COOLING — E–W SCHEMATIC SECTION</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#00aabb" font-family="Arial">Cooling tower west intake → workshop / garage cross-flow → stair void → burjeel exhaust  ·  ΔT ≈ 14°C</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#00aabb" font-family="Arial">Cooling tower west intake → workshop / garage cross-flow → stair void → fan-assisted exhaust stack · inline EC fans (PV) · ΔT ≈ 14°C</text>
 
 <!-- ── GROUND + LEVEL LINES ── -->
 <rect x="42" y="322" width="358" height="8" fill="#9a8870"/>
@@ -678,7 +724,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="44" y="272" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">GF</text>
 <text x="44" y="173" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">F1</text>
 <text x="44" y="108" font-size="7.5" font-weight="bold" fill="#555" font-family="Arial">T</text>
-<text x="44" y="50"  font-size="7.5" font-weight="bold" fill="#c86030" font-family="Arial">BJ</text>
+<text x="44" y="50"  font-size="7.5" font-weight="bold" fill="#666670" font-family="Arial">EX</text>
 
 <!-- ── WORKSHOP CANTILEVER (F1 level, x=[-3,0]) ──
      x=-3m → svg_x=100-54=46 ; x=0 → svg_x=100 ; F1 y=202–134 -->
@@ -710,16 +756,15 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- ── STAIR ENCLOSURE (above terrace) ── -->
 <rect x="210" y="82" width="40" height="32" fill="#e0d8c8" stroke="#888" stroke-width="1"/>
 
-<!-- ── BURJEEL WIND-CATCHER ── -->
-<rect x="210" y="20" width="36" height="62" fill="#c86030" opacity=".55" stroke="#8a3010" stroke-width="1.5"/>
-<line x1="210" y1="32" x2="246" y2="32" stroke="#fff" stroke-width="1.2"/>
-<line x1="210" y1="44" x2="246" y2="44" stroke="#fff" stroke-width="1.2"/>
-<line x1="210" y1="56" x2="246" y2="56" stroke="#fff" stroke-width="1.2"/>
-<line x1="210" y1="68" x2="246" y2="68" stroke="#fff" stroke-width="1.2"/>
-<text x="228" y="50" font-size="6.5" font-weight="bold" fill="#fff" font-family="Arial" text-anchor="middle">BURJEEL</text>
-<text x="228" y="60" font-size="5.5" fill="#ffe0c0" font-family="Arial" text-anchor="middle">2×2×4m</text>
+<!-- ── FAN-ASSISTED EXHAUST STACK (replaces exh stack) ── -->
+<rect x="222" y="26" width="12" height="56" fill="#8a8a92" stroke="#55555f" stroke-width="1.2"/>
+<ellipse cx="228" cy="26" rx="8" ry="3.5" fill="#445566" stroke="#334455" stroke-width="1.2"/>
+<rect x="221" y="15" width="14" height="7" fill="#1a2a40" stroke="#4488cc" stroke-width=".8" rx="1"/>
+<text x="246" y="26" font-size="5" fill="#88aacc" font-family="Arial">☀ PV+EC fan</text>
+<text x="252" y="46" font-size="6" font-weight="bold" fill="#666670" font-family="Arial">EXHAUST STACK</text>
+<text x="252" y="55" font-size="5.5" fill="#888890" font-family="Arial">∅0.6m · motor damper</text>
 <!-- Exhaust arrow (up) -->
-<path d="M228,20 L228,6" stroke="#ee8800" stroke-width="2.5" fill="none" marker-end="url(#afArrW)"/>
+<path d="M228,15 L228,8" stroke="#ee8800" stroke-width="2.5" fill="none" marker-end="url(#afArrW)"/>
 <text x="252" y="14" font-size="7" fill="#ee8800" font-family="Arial">EXHAUST ~40°C</text>
 
 <!-- ══════════════════════════════════════════════
@@ -786,6 +831,15 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <path d="M73,175 Q87,165 100,168" stroke="#00ccee" stroke-width="1.5" fill="none" marker-end="url(#afArr)" stroke-dasharray="4,2" opacity=".7"/>
 <text x="68" y="162" font-size="5.5" fill="#00aabb" font-family="Arial" text-anchor="middle">↑ N-light</text>
 
+<!-- ── INLINE EC FANS (PV-powered, auto-speed) ── -->
+<g stroke="#0088aa" stroke-width="1" fill="#e0f8ff">
+  <circle cx="98" cy="262" r="5"/><circle cx="216" cy="216" r="5"/><circle cx="228" cy="150" r="5"/>
+</g>
+<g fill="#0088aa" font-family="Arial" font-size="7" text-anchor="middle">
+  <text x="98" y="264.5">x</text><text x="216" y="218.5">x</text><text x="228" y="152.5">x</text>
+</g>
+<text x="262" y="316" font-size="6.5" fill="#0088aa" font-family="Arial">x = inline EC fan (PV, auto-speed)</text>
+
 <!-- ── INFO PANELS (right) ── -->
 <!-- CT Specification -->
 <rect x="415" y="48" width="330" height="100" fill="#f0f8f0" stroke="#448844" stroke-width="1" rx="4"/>
@@ -806,7 +860,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="428" y="226" font-size="7" fill="#664400" font-family="Arial">→ Portable dehumidifier if RH &gt; 75%</text>
 <text x="428" y="238" font-size="7" fill="#664400" font-family="Arial">→ Humidity sensor (SHT31-D) triggers auto switch</text>
 <text x="428" y="250" font-size="7" fill="#664400" font-family="Arial">Jun–Sep: natural cross-ventilation primary mode</text>
-<text x="428" y="262" font-size="7" fill="#664400" font-family="Arial">→ Burjeel + balcony doors provide stack effect</text>
+<text x="428" y="262" font-size="7" fill="#664400" font-family="Arial">→ Exhaust stack + balcony doors provide stack effect</text>
 
 <!-- Winter Bypass -->
 <rect x="415" y="285" width="330" height="95" fill="#e8f0f8" stroke="#4466aa" stroke-width="1" rx="4"/>
@@ -815,7 +869,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="428" y="330" font-size="7" fill="#224488" font-family="Arial">→ E+S passive solar gain through low-e glazing</text>
 <text x="428" y="342" font-size="7" fill="#224488" font-family="Arial">→ Thermal mass (brick/RCC) stores daytime heat</text>
 <text x="428" y="354" font-size="7" fill="#224488" font-family="Arial">→ Radiant heat panels in bathrooms only</text>
-<text x="428" y="366" font-size="7" fill="#224488" font-family="Arial">→ Burjeel louvers closed — no stack loss</text>
+<text x="428" y="366" font-size="7" fill="#224488" font-family="Arial">→ Exhaust stack damper closed — no stack loss</text>
 <text x="428" y="378" font-size="7" fill="#224488" font-family="Arial">→ Low-e glass reduces night radiation loss</text>
 </svg>
 </div>
@@ -835,20 +889,20 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </defs>
 
 <text x="380" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">ELECTRICAL &amp; SOLAR LAYER</text>
-<text x="380" y="36" text-anchor="middle" font-size="9" fill="#ffcc00" font-family="Arial">6 kWp PV · 12 kWh LFP · 5 kW hybrid inverter · Solar microgrid</text>
+<text x="380" y="36" text-anchor="middle" font-size="9" fill="#ffcc00" font-family="Arial">6.05 kWp PV · 12 kWh LFP · 8 kW hybrid inverter · Solar microgrid</text>
 
 <!-- House footprint (faint) -->
-<rect x="200" y="130" width="250" height="180" fill="#f5f0e0" stroke="#ddd" stroke-width="1" opacity=".5"/>
+<rect x="180" y="130" width="300" height="180" fill="#f5f0e0" stroke="#ddd" stroke-width="1" opacity=".5"/>
 
 <!-- TERRACE level (PV) -->
-<rect x="200" y="97" width="250" height="33" fill="#f8f0d0" stroke="#ccaa00" stroke-width="1" rx="2"/>
+<rect x="180" y="97" width="300" height="33" fill="#f8f0d0" stroke="#ccaa00" stroke-width="1" rx="2"/>
 <text x="325" y="115" font-size="8" fill="#886600" font-family="Arial" text-anchor="middle">TERRACE FFL +6.95m</text>
 
 <!-- PV PANELS (terrace) -->
 <g transform="translate(200,60)">
   <rect x="5" y="5" width="80" height="24" fill="#1a2a40" stroke="#4488cc" stroke-width="1" rx="2"/>
   <text x="45" y="17" font-size="6.5" fill="#88ccff" font-family="Arial" text-anchor="middle">☀ PV PERGOLA</text>
-  <text x="45" y="26" font-size="6" fill="#88bbee" font-family="Arial" text-anchor="middle">15×400W = 6kWp</text>
+  <text x="45" y="26" font-size="6" fill="#88bbee" font-family="Arial" text-anchor="middle">11×550W = 6.05kWp</text>
   <!-- Solar rays -->
   <line x1="45" y1="5" x2="45" y2="-8" stroke="#ffcc00" stroke-width="1.5"/>
   <line x1="55" y1="2" x2="62" y2="-7" stroke="#ffcc00" stroke-width="1.5"/>
@@ -862,8 +916,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Garage: X[0.4,1.0] Y[8.5,9.1] but let's place it schematically -->
 <rect x="127" y="270" width="54" height="40" fill="#4a4a6a" stroke="#8888cc" stroke-width="1.5" rx="3"/>
 <text x="154" y="286" font-size="7.5" font-weight="bold" fill="#ccccff" font-family="Arial" text-anchor="middle">INVERTER</text>
-<text x="154" y="296" font-size="6.5" fill="#aaaaee" font-family="Arial" text-anchor="middle">5 kW Hybrid</text>
-<text x="154" y="305" font-size="6" fill="#aaaaee" font-family="Arial" text-anchor="middle">Islanding mode</text>
+<text x="154" y="296" font-size="6.5" fill="#aaaaee" font-family="Arial" text-anchor="middle">8 kW Hybrid</text>
+<text x="154" y="305" font-size="6" fill="#aaaaee" font-family="Arial" text-anchor="middle">Islanding · lift soft-start</text>
 
 <!-- DC → Inverter -->
 <line x1="245" y1="117" x2="200" y2="117" stroke="#ffcc00" stroke-width="2"/>
@@ -892,13 +946,13 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Critical loads -->
 <rect x="200" y="340" width="120" height="28" fill="#4a2a2a" stroke="#ff6666" stroke-width="1.5" rx="3"/>
 <text x="260" y="354" font-size="7" font-weight="bold" fill="#ff9999" font-family="Arial" text-anchor="middle">CRITICAL MICROGRID</text>
-<text x="260" y="363" font-size="6.5" fill="#ee8888" font-family="Arial" text-anchor="middle">Security · NVR · Fans · Comms (~600W)</text>
+<text x="260" y="363" font-size="6.5" fill="#ee8888" font-family="Arial" text-anchor="middle">Security · NVR · Vent fans · Comms (~650W)</text>
 <line x1="200" y1="354" x2="181" y2="354" stroke="#ff6600" stroke-width="1.5" marker-end="url(#elArrR)"/>
 
 <!-- Non-critical loads -->
 <rect x="200" y="380" width="120" height="28" fill="#3a3a4a" stroke="#8888ff" stroke-width="1" rx="3"/>
 <text x="260" y="394" font-size="7" fill="#aaaaff" font-family="Arial" text-anchor="middle">GENERAL LOADS</text>
-<text x="260" y="403" font-size="6.5" fill="#9999ee" font-family="Arial" text-anchor="middle">Kitchen · Lighting · EV · HVAC</text>
+<text x="260" y="403" font-size="6.5" fill="#9999ee" font-family="Arial" text-anchor="middle">Kitchen · Lighting · EV · Lift · HVAC</text>
 <line x1="200" y1="394" x2="181" y2="370" stroke="#8888ff" stroke-width="1.5" marker-end="url(#elArrR)"/>
 
 <!-- KNX/Smart home bus -->
@@ -915,7 +969,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Solar yield stats -->
 <rect x="380" y="60" width="200" height="120" fill="#f8f4e0" stroke="#cc9900" stroke-width="1" rx="4"/>
 <text x="480" y="78" font-size="8.5" font-weight="bold" fill="#664400" font-family="Arial" text-anchor="middle">SOLAR SUMMARY</text>
-<text x="393" y="94" font-size="7" fill="#664400" font-family="Arial">Array:   15 × 400 W = 6 kWp</text>
+<text x="393" y="94" font-size="7" fill="#664400" font-family="Arial">Array:   11 × 550 W = 6.05 kWp</text>
 <text x="393" y="107" font-size="7" fill="#664400" font-family="Arial">Tilt:    25° south (optimised Lucknow)</text>
 <text x="393" y="120" font-size="7" fill="#664400" font-family="Arial">Yield:   ~25 kWh/day avg</text>
 <text x="393" y="133" font-size="7" fill="#664400" font-family="Arial">Battery: 12 kWh LFP (≈20 hr critical)</text>
@@ -940,9 +994,9 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Plot boundary -->
 <rect x="65" y="97" width="493" height="234" fill="#f8f5f0" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
 <!-- House footprint -->
-<rect x="200" y="130" width="250" height="180" fill="#eee8d8" stroke="#aaa" stroke-width="1"/>
+<rect x="175" y="124" width="274" height="164" fill="#eee8d8" stroke="#aaa" stroke-width="1"/>
 <!-- Driveway -->
-<rect x="65" y="97" width="135" height="234" fill="#e8e6e0"/>
+<rect x="65" y="97" width="110" height="234" fill="#e8e6e0"/>
 <!-- East lawn -->
 <rect x="450" y="97" width="108" height="234" fill="#d4e8c4"/>
 
@@ -964,31 +1018,31 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <text x="0" y="-8" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM2:Drive</text>
 </g>
 <!-- 3. Front door cam -->
-<g transform="translate(450,202)">
+<g transform="translate(175,206)">
   <polygon points="0,0 -12,-8 -12,8" fill="#ff4444" opacity=".8"/>
   <path d="M-12,-8 L-60,-20 L-60,20 L-12,8 Z" fill="#ff4444" opacity=".12" stroke="#ff4444" stroke-width=".5"/>
   <text x="8" y="4" font-size="6" fill="#cc0000" font-family="Arial">CAM3:Front</text>
 </g>
 <!-- 4. NE perimeter -->
-<g transform="translate(450,130)">
+<g transform="translate(449,124)">
   <polygon points="0,0 -8,-12 8,-12" fill="#ff4444" opacity=".8"/>
   <path d="M-8,-12 L-25,-55 L25,-55 Z" fill="#ff4444" opacity=".12"/>
   <text x="10" y="0" font-size="6" fill="#cc0000" font-family="Arial">CAM4:NE</text>
 </g>
 <!-- 5. SW perimeter -->
-<g transform="translate(200,310)">
+<g transform="translate(180,288)">
   <polygon points="0,0 -8,12 8,12" fill="#ff4444" opacity=".8"/>
   <path d="M-8,12 L-25,55 L25,55 Z" fill="#ff4444" opacity=".12"/>
   <text x="10" y="15" font-size="6" fill="#cc0000" font-family="Arial">CAM5:SW</text>
 </g>
 <!-- 6. Terrace cam -->
-<g transform="translate(325,160)">
+<g transform="translate(312,170)">
   <circle cx="0" cy="0" r="5" fill="#ff4444" opacity=".9"/>
   <path d="M0,5 L-25,45 L25,45 Z" fill="#ff4444" opacity=".1"/>
   <text x="0" y="-9" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM6:Terrace</text>
 </g>
 <!-- 7. Garage cam -->
-<g transform="translate(220,220)">
+<g transform="translate(200,150)">
   <polygon points="0,0 8,-8 8,8" fill="#ff4444" opacity=".8"/>
   <path d="M8,-8 L45,-20 L45,20 L8,8 Z" fill="#ff4444" opacity=".12"/>
   <text x="-2" y="-10" font-size="6" fill="#cc0000" font-family="Arial">CAM7:Garage</text>
@@ -1023,11 +1077,11 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <g stroke="#ff4444" stroke-width=".8" stroke-dasharray="3,3" opacity=".5">
   <line x1="84" y1="220" x2="310" y2="210"/>
   <line x1="130" y1="145" x2="310" y2="205"/>
-  <line x1="438" y1="202" x2="360" y2="210"/>
-  <line x1="442" y1="130" x2="358" y2="196"/>
-  <line x1="200" y1="322" x2="315" y2="225"/>
-  <line x1="325" y1="160" x2="335" y2="193"/>
-  <line x1="228" y1="212" x2="312" y2="208"/>
+  <line x1="170" y1="206" x2="310" y2="212"/>
+  <line x1="441" y1="126" x2="358" y2="196"/>
+  <line x1="185" y1="300" x2="315" y2="225"/>
+  <line x1="312" y1="170" x2="333" y2="193"/>
+  <line x1="208" y1="158" x2="310" y2="200"/>
 </g>
 
 <!-- AI / LOCAL SERVER block -->
@@ -1137,9 +1191,9 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
       <text x="128" y="22" font-size="6" fill="#2a3a6a" font-family="Arial" text-anchor="middle">PV ARRAY</text>
       <text x="128" y="37" font-size="9" font-weight="bold" fill="#4466bb" font-family="Arial" text-anchor="middle" id="m-pv">4200W</text>
 
-      <!-- BURJEEL (terrace, above stair core) -->
+      <!-- EXHAUST STACK FAN (terrace, above stair core) -->
       <rect x="188" y="8" width="34" height="40" fill="#0e0808" stroke="#553322" stroke-width="1" rx="2" id="m-burj-bg"/>
-      <text x="205" y="24" font-size="6" fill="#885533" font-family="Arial" text-anchor="middle">BURJ</text>
+      <text x="205" y="24" font-size="6" fill="#885533" font-family="Arial" text-anchor="middle">EXH</text>
       <text x="205" y="37" font-size="8" font-weight="bold" fill="#664422" font-family="Arial" text-anchor="middle" id="m-burj">100%</text>
 
       <!-- BATTERY (garage) -->
@@ -1222,7 +1276,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </div>
 
 <p class="legend">
-  SketchUp model: <strong>lucknow_smart_home_skp.skp</strong> · 174 geometry groups · 5 material layers · Lucknow, UP · 26.85°N 80.95°E
+  SketchUp model: <strong>lucknow_smart_home_v5.skp</strong> (v6 in progress) · Lucknow, UP · 26.85°N 80.95°E
 </p>
 
 <script>
@@ -1251,7 +1305,7 @@ const HA_SENSORS = [
   {id:'tout',   name:'Temp Out',    unit:'°C',  lo:-1, loWarn:-1, hiAlarm:true, hiWarn:40, hiCrit:46},
   {id:'tin',    name:'Temp In',     unit:'°C',  lo:-1, loWarn:-1, hiAlarm:true, hiWarn:30, hiCrit:33},
   {id:'ct_pct', name:'CT Duty',     unit:'%',   lo:20, loWarn:50},
-  {id:'burj',   name:'Burjeel',     unit:'%',   lo:20, loWarn:50},
+  {id:'burj',   name:'Exh Fan',     unit:'%',   lo:20, loWarn:50},
   {id:'pir',    name:'PIR Status',  unit:'',    lo:-1, loWarn:-1},
 ];
 
@@ -1282,17 +1336,17 @@ storm:{
   name:'⛈ Storm Warning — Multi-System', color:'#224455',
   init:{rwh:72,flow:12.5,mains:0,pv:4200,bat:68,grid:230,wind:22,tout:30,tin:26,ct_pct:100,burj:100,pir:'normal',cams:[1,1,1,1,1,1,1],mainsOpen:false,pvTilt:25},
   steps:[
-    {t:0,  d:{},                                                        ph:'SENSE',   th:'Weather API: storm in ~30min · wind 22→90km/h', act:'Threat assessment: PV, Burjeel, CT, grid all at risk',           pred:'Wind >60km/h in ~10min · action window closing'},
-    {t:1,  d:{wind:38,pv:3500},                                        ph:'PREDICT', th:'Wind 38km/h · PV safe for now',               act:'Sequence plan: PV tilt→0° · close burjeel → shelter CT',          pred:'At 60km/h structural risk to PV at 25° tilt'},
-    {t:2,  d:{wind:55,pv:2500,pvTilt:10,burj:40},                     ph:'ACT',     th:'Wind 55km/h · PV 25°→10° · Burjeel 40%',      act:'CMD: PV actuator → 10° · Burjeel → 40% · pre-charge bat',         pred:'At 70km/h go flat + close burjeel fully'},
-    {t:3,  d:{wind:72,pv:800,pvTilt:0,burj:0,ct_pct:20},              ph:'ACT',     th:'Wind 72km/h · Shelter all passive systems',    act:'CMD: PV → 0° flat · Burjeel CLOSE · CT dampers → 20%',           pred:'Grid instability likely next tick'},
+    {t:0,  d:{},                                                        ph:'SENSE',   th:'Weather API: storm in ~30min · wind 22→90km/h', act:'Threat assessment: PV, Exh stack, CT, grid all at risk',           pred:'Wind >60km/h in ~10min · action window closing'},
+    {t:1,  d:{wind:38,pv:3500},                                        ph:'PREDICT', th:'Wind 38km/h · PV safe for now',               act:'Sequence plan: PV tilt→0° · close exh stack → shelter CT',          pred:'At 60km/h structural risk to PV at 25° tilt'},
+    {t:2,  d:{wind:55,pv:2500,pvTilt:10,burj:40},                     ph:'ACT',     th:'Wind 55km/h · PV 25°→10° · Exh stack 40%',      act:'CMD: PV actuator → 10° · Exh stack → 40% · pre-charge bat',         pred:'At 70km/h go flat + close exh stack fully'},
+    {t:3,  d:{wind:72,pv:800,pvTilt:0,burj:0,ct_pct:20},              ph:'ACT',     th:'Wind 72km/h · Shelter all passive systems',    act:'CMD: PV → 0° flat · Exh stack CLOSE · CT dampers → 20%',           pred:'Grid instability likely next tick'},
     {t:4,  d:{wind:87,pv:100,ct_pct:0,grid:190},                      ph:'ACT',     th:'Wind 87km/h · Grid brownout 190V',             act:'CMD: CT dampers CLOSE · Inverter → UPS standby · shed EV+HVAC',   pred:'Grid cut imminent — full battery switch next tick'},
     {t:5,  d:{wind:93,pv:0,grid:0,bat:86},                            ph:'ACT',     th:'PEAK · Grid cut · Inverter → battery <30ms',   act:'CMD: Battery ONLINE · Shed 3.2kW (EV+HVAC) · Security UPS ✓',    pred:'Battery 86% · 9.4hrs runtime at shed load'},
     {t:6,  d:{wind:90,bat:83},                                        ph:'VERIFY',  th:'Battery 83% · Load 1.4kW shed · Runtime ~9h',  act:'Verify: all cams on UPS · passive systems sheltered ✓',           pred:'Hold posture until wind <60km/h'},
     {t:7,  d:{wind:78,bat:81},                                        ph:'MONITOR', th:'Storm passing · Wind 78km/h — still dangerous', act:'Hold shelter — no premature re-opening',                          pred:'Safe to begin restore at <60km/h'},
-    {t:8,  d:{wind:58,pv:350,burj:15},                                ph:'ADAPT',   th:'Wind 58km/h · Cautious burjeel test 15%',     act:'CMD: Burjeel → 15% (test) · Monitor vibration sensor',            pred:'If vibration OK → stepwise restore'},
+    {t:8,  d:{wind:58,pv:350,burj:15},                                ph:'ADAPT',   th:'Wind 58km/h · Cautious exh stack test 15%',     act:'CMD: Exh stack → 15% (test) · Monitor vibration sensor',            pred:'If vibration OK → stepwise restore'},
     {t:9,  d:{wind:38,pv:2100,pvTilt:10,ct_pct:50,grid:226,bat:82},  ph:'ACT',     th:'Grid restored 226V · Wind safe · Restore begin', act:'CMD: Grid reconnect · PV → 10° · CT → 50% · EV resume',          pred:'Full restore over next 2 ticks'},
-    {t:10, d:{wind:22,pv:3700,pvTilt:20,burj:70,ct_pct:80},          ph:'ACT',     th:'Near-normal · Stepwise restoration',           act:'CMD: PV → 20° · Burjeel → 70% · CT → 80%',                       pred:'Final restore next tick'},
+    {t:10, d:{wind:22,pv:3700,pvTilt:20,burj:70,ct_pct:80},          ph:'ACT',     th:'Near-normal · Stepwise restoration',           act:'CMD: PV → 20° · Exh stack → 70% · CT → 80%',                       pred:'Final restore next tick'},
     {t:11, d:{wind:14,pv:4100,pvTilt:25,burj:100,ct_pct:100},        ph:'STABLE',  th:'✓ All systems restored · Zero damage',         act:'SCENARIO COMPLETE — full normal operation',                       pred:'—'},
   ]
 },
@@ -1344,7 +1398,7 @@ pump_fault:{
     {t:2,  d:{flow:0.1,ct_pct:0},                   ph:'PREDICT', th:'Flow near zero despite max pump cmd',          act:'Diagnose: pressure OK + flow 0 = pump not rotating',             pred:'Pump fault confirmed — valve close next'},
     {t:3,  d:{ct_pct:0},                            ph:'ACT',     th:'Pump fault confirmed · Close supply valve',    act:'CMD: CT supply valve CLOSE · Log fault · Maintenance alert',      pred:'Indoor temp will rise ~0.5°C/tick without CT'},
     {t:4,  d:{tin:28},                              ph:'ACT',     th:'Indoor 27→28°C · Activate passive cooling',   act:'CMD: Balcony doors OPEN · Ceiling fans MAX · S-blinds CLOSE',    pred:'Passive cooling targets 29°C max at 40°C outside'},
-    {t:5,  d:{tin:28.5,burj:100},                   ph:'ACT',     th:'28.5°C · Burjeel 100% for stack ventilation', act:'CMD: Burjeel → 100% · Cross-ventilation path confirmed',          pred:'Thermal model: 29°C plateau achievable'},
+    {t:5,  d:{tin:28.5,burj:100},                   ph:'ACT',     th:'28.5°C · Exh stack 100% for stack ventilation', act:'CMD: Exh stack → 100% · Cross-ventilation path confirmed',          pred:'Thermal model: 29°C plateau achievable'},
     {t:6,  d:{tin:29},                              ph:'VERIFY',  th:'29°C · Passive target reached · Trending flat', act:'Calc: passive holds ~29°C at 40°C outside — acceptable ✓',       pred:'Stable for next 5 ticks without CT'},
     {t:7,  d:{},                                    ph:'MONITOR', th:'Temp stable 29°C · PV+bat nominal',           act:'Monitoring every tick · Occupant alert: cooling reduced',         pred:'Nightfall: temp drops — 29°C will be easy'},
     {t:8,  d:{tin:29.2},                            ph:'ADAPT',   th:'Slight rise 29.2°C · Fine-tune fan balance',  act:'CMD: Redistribute fans — bedrooms max, garage reduce',            pred:'Fan rebalance should hold 29°C'},
@@ -1447,7 +1501,7 @@ function haRenderAll(){
   haSetText('m-ct',ct+'%');
   const ctR=document.getElementById('m-ct-ring');
   if(ctR) ctR.style.stroke = ct>60?'#aa6622':ct>20?'#aa8833':'#224422';
-  // Burjeel
+  // Exhaust stack fan
   const bj=s.burj||0;
   haSetText('m-burj',bj+'%');
   const bjb=document.getElementById('m-burj-bg');
