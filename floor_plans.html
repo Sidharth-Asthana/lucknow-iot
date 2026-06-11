@@ -37,10 +37,10 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     GROUND FLOOR PLAN  (50ft E-W × 30ft N-S · 8px/ft)
+     GROUND FLOOR PLAN  (50ft E-W × 30ft N-S · 8px/ft · driveway 30ft W · backyard 10ft E)
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel active" id="gf">
-<svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="-90 0 990 500" width="1210" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
     <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="1"/>
@@ -55,40 +55,40 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="450" y="36" text-anchor="middle" font-size="9" fill="#666" font-family="Arial">Scale 1:80 · 8 px/ft · North ↑ · West-facing front</text>
 
 <!-- SCALE 8px/ft · BX0=190(W) BX1=590(E) BY1=100(N) BY0=340(S) · Building 50×30ft = 400×240px -->
-<!-- PLOT BOUNDARY: 90ft E-W = 720px, 43ft N-S = 344px; left margin=30 -->
-<rect x="30" y="60" width="720" height="344" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="6,4"/>
+<!-- PLOT BOUNDARY: 90ft E-W = 720px, 43ft N-S = 344px; W margin 30ft, E 10ft -->
+<rect x="-50" y="60" width="720" height="344" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="6,4"/>
 
 <!-- WEST GARDEN/DRIVEWAY AREA (between boundary and building west face) -->
-<rect x="30" y="60" width="160" height="344" fill="#ede9e0"/>
+<rect x="-50" y="60" width="240" height="344" fill="#ede9e0"/>
 <text x="88" y="242" font-size="7" fill="#888" font-family="Arial" text-anchor="middle" transform="rotate(-90,88,242)">DRIVEWAY (curved)</text>
 
 <!-- EAST GARDEN: 25ft = 200px east of building -->
-<rect x="590" y="60" width="160" height="344" fill="#d4e8c8"/>
-<text x="660" y="242" font-size="7" fill="#558844" font-family="Arial" text-anchor="middle" transform="rotate(-90,660,242)">EAST GARDEN</text>
+<rect x="590" y="60" width="80" height="344" fill="#d4e8c8"/>
+<text x="630" y="242" font-size="7" fill="#558844" font-family="Arial" text-anchor="middle" transform="rotate(-90,630,242)">EAST GARDEN 10ft</text>
 
 <!-- BOUNDARY WALLS -->
-<rect x="30" y="60" width="4" height="344" fill="#555"/>   <!-- west -->
-<rect x="746" y="60" width="4" height="344" fill="#555"/>  <!-- east -->
-<rect x="30" y="60" width="720" height="4" fill="#555"/>   <!-- north -->
-<rect x="30" y="400" width="720" height="4" fill="#555"/>  <!-- south -->
+<rect x="-50" y="60" width="4" height="344" fill="#555"/>   <!-- west -->
+<rect x="666" y="60" width="4" height="344" fill="#555"/>  <!-- east -->
+<rect x="-50" y="60" width="720" height="4" fill="#555"/>   <!-- north -->
+<rect x="-50" y="400" width="720" height="4" fill="#555"/>  <!-- south -->
 
 <!-- MAIN GATE (SW corner, 3m gap, Y≈60-148 = north portion of west wall = the south part since plot is 344px tall -->
 <!-- Gate at bottom-left of west wall: y=330-60=270px from top = SW in N-up plan (south=bottom) -->
 <!-- SW gate: y=332 to y=404 = off screen. Let me place gate at bottom of west boundary -->
 <!-- In our SVG: top=N, bottom=S. SW corner = bottom-left. Gate gap in west boundary near bottom: -->
-<line x1="30" y1="340" x2="30" y2="404" stroke="#faf8f4" stroke-width="6"/>
-<line x1="30" y1="340" x2="30" y2="404" stroke="#cc8800" stroke-width="2" stroke-dasharray="4,2"/>
-<text x="14" y="374" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,14,374)">MAIN GATE</text>
+<line x1="-50" y1="340" x2="-50" y2="404" stroke="#faf8f4" stroke-width="6"/>
+<line x1="-50" y1="340" x2="-50" y2="404" stroke="#cc8800" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="-66" y="374" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,-66,374)">MAIN GATE</text>
 
 <!-- MAID GATE (just north of main) -->
-<line x1="30" y1="300" x2="30" y2="336" stroke="#faf8f4" stroke-width="6"/>
-<line x1="30" y1="300" x2="30" y2="336" stroke="#cc8800" stroke-width="1.5" stroke-dasharray="3,2"/>
-<text x="7" y="320" font-size="6" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,7,320)">MAID GATE</text>
+<line x1="-50" y1="300" x2="-50" y2="336" stroke="#faf8f4" stroke-width="6"/>
+<line x1="-50" y1="300" x2="-50" y2="336" stroke="#cc8800" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="-73" y="320" font-size="6" fill="#cc8800" font-family="Arial" text-anchor="middle" transform="rotate(-90,-73,320)">MAID GATE</text>
 
 <!-- BACK GATE (east boundary, center) -->
-<line x1="746" y1="200" x2="746" y2="248" stroke="#faf8f4" stroke-width="6"/>
-<line x1="746" y1="200" x2="746" y2="248" stroke="#886600" stroke-width="1.5" stroke-dasharray="3,2"/>
-<text x="756" y="226" font-size="6" fill="#886600" font-family="Arial" text-anchor="middle" transform="rotate(-90,756,226)">BACK GATE</text>
+<line x1="666" y1="200" x2="666" y2="248" stroke="#faf8f4" stroke-width="6"/>
+<line x1="666" y1="200" x2="666" y2="248" stroke="#886600" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="676" y="226" font-size="6" fill="#886600" font-family="Arial" text-anchor="middle" transform="rotate(-90,676,226)">BACK GATE</text>
 
 <!-- ── CT (plan view, SW exterior, near gate) ── -->
 <circle cx="130" cy="372" r="24" fill="#d4622a" opacity=".8" stroke="#8a3010" stroke-width="2"/>
@@ -223,8 +223,8 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <line x1="615" y1="340" x2="625" y2="340" stroke="#888" stroke-width="1"/>
 <text x="640" y="222" font-size="8" fill="#555" font-family="Arial" text-anchor="middle" transform="rotate(-90,640,222)">9.14 m (30 ft)</text>
 <!-- Workshop dim (F1, shown as context) -->
-<line x1="30" y1="412" x2="190" y2="412" stroke="#cc9040" stroke-width="1"/>
-<text x="110" y="423" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m (15ft) WS ext ↑F1</text>
+<line x1="70" y1="412" x2="190" y2="412" stroke="#cc9040" stroke-width="1"/>
+<text x="130" y="423" font-size="7" fill="#cc8800" font-family="Arial" text-anchor="middle">4.57m (15ft) WS ext ↑F1</text>
 
 <!-- ── NORTH ARROW ── -->
 <g transform="translate(820,100)">
@@ -578,13 +578,13 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
      UNDERGROUND LAYER
 ═══════════════════════════════════════════════════════════════ -->
 <div class="panel" id="ug">
-<svg viewBox="0 0 900 500" width="1100" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="-90 0 990 500" width="1210" xmlns="http://www.w3.org/2000/svg">
 <text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-family="Arial">UNDERGROUND LAYER — Z = −1.5 m to 0</text>
-<text x="450" y="36" text-anchor="middle" font-size="9" fill="#4488cc" font-family="Arial">8 px/ft · RWH tank under W driveway · Foundations · Portico pads · Lift pit · Recharge pit</text>
+<text x="450" y="36" text-anchor="middle" font-size="9" fill="#4488cc" font-family="Arial">8 px/ft · RWH tank under 30ft W driveway · Foundations · Portico pads · Lift pit · Recharge pit</text>
 
 <!-- Plot + above-ground context (faint) -->
-<rect x="30" y="60" width="720" height="344" fill="none" stroke="#bbb" stroke-width="1" stroke-dasharray="6,4"/>
-<rect x="30" y="60" width="160" height="344" fill="#f0ede8"/>
+<rect x="-50" y="60" width="720" height="344" fill="none" stroke="#bbb" stroke-width="1" stroke-dasharray="6,4"/>
+<rect x="-50" y="60" width="240" height="344" fill="#f0ede8"/>
 <text x="44" y="242" font-size="7" fill="#aaa" font-family="Arial" text-anchor="middle" transform="rotate(-90,44,242)">DRIVEWAY (above)</text>
 <rect x="190" y="100" width="400" height="240" fill="#f5f2ea" stroke="#ccc" stroke-width="1" opacity=".7"/>
 <text x="390" y="160" font-size="9" fill="#ccc" font-family="Arial" text-anchor="middle">HOUSE FOOTPRINT (above)</text>
@@ -621,14 +621,14 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="148" y="378" font-size="6.5" fill="#c85a20" font-family="Arial">CT drip (SV-02)</text>
 
 <!-- Mains backup (NC valve SV-01), W boundary -->
-<line x1="30" y1="256" x2="190" y2="256" stroke="#2244aa" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
+<line x1="-50" y1="256" x2="190" y2="256" stroke="#2244aa" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
 <circle cx="80" cy="256" r="5" fill="#e8f0ff" stroke="#2244aa" stroke-width="1"/>
 <text x="96" y="250" font-size="6" fill="#2244aa" font-family="Arial">mains backup (NC valve SV-01)</text>
 
 <!-- Overflow → recharge pit (NE corner) -->
-<line x1="160" y1="135" x2="712" y2="88" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
-<circle cx="722" cy="86" r="10" fill="#44aa44" opacity=".3" stroke="#228844" stroke-width="1.5"/>
-<text x="706" y="76" font-size="6.5" fill="#228844" font-family="Arial" text-anchor="end">RECHARGE PIT Ø1.2m gravel · NE</text>
+<line x1="160" y1="135" x2="632" y2="88" stroke="#228844" stroke-width="1.5" stroke-dasharray="4,3"/>
+<circle cx="642" cy="86" r="10" fill="#44aa44" opacity=".3" stroke="#228844" stroke-width="1.5"/>
+<text x="626" y="76" font-size="6.5" fill="#228844" font-family="Arial" text-anchor="end">RECHARGE PIT Ø1.2m gravel · NE</text>
 <text x="420" y="106" font-size="6" fill="#228844" font-family="Arial">overflow →</text>
 
 <!-- Foundation strips under main walls -->
@@ -997,11 +997,11 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <!-- Plot boundary -->
 <rect x="65" y="97" width="493" height="234" fill="#f8f5f0" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
 <!-- House footprint -->
-<rect x="175" y="124" width="274" height="164" fill="#eee8d8" stroke="#aaa" stroke-width="1"/>
+<rect x="229" y="124" width="274" height="164" fill="#eee8d8" stroke="#aaa" stroke-width="1"/>
 <!-- Driveway -->
-<rect x="65" y="97" width="110" height="234" fill="#e8e6e0"/>
+<rect x="65" y="97" width="164" height="234" fill="#e8e6e0"/>
 <!-- East lawn -->
-<rect x="450" y="97" width="108" height="234" fill="#d4e8c4"/>
+<rect x="503" y="97" width="55" height="234" fill="#d4e8c4"/>
 
 <!-- GATE area -->
 <line x1="65" y1="184" x2="65" y2="256" stroke="#cc8800" stroke-width="2"/>
@@ -1021,31 +1021,31 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
   <text x="0" y="-8" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM2:Drive</text>
 </g>
 <!-- 3. Front door cam -->
-<g transform="translate(175,206)">
+<g transform="translate(229,206)">
   <polygon points="0,0 -12,-8 -12,8" fill="#ff4444" opacity=".8"/>
   <path d="M-12,-8 L-60,-20 L-60,20 L-12,8 Z" fill="#ff4444" opacity=".12" stroke="#ff4444" stroke-width=".5"/>
   <text x="8" y="4" font-size="6" fill="#cc0000" font-family="Arial">CAM3:Front</text>
 </g>
 <!-- 4. NE perimeter -->
-<g transform="translate(449,124)">
+<g transform="translate(503,124)">
   <polygon points="0,0 -8,-12 8,-12" fill="#ff4444" opacity=".8"/>
   <path d="M-8,-12 L-25,-55 L25,-55 Z" fill="#ff4444" opacity=".12"/>
   <text x="10" y="0" font-size="6" fill="#cc0000" font-family="Arial">CAM4:NE</text>
 </g>
 <!-- 5. SW perimeter -->
-<g transform="translate(180,288)">
+<g transform="translate(234,288)">
   <polygon points="0,0 -8,12 8,12" fill="#ff4444" opacity=".8"/>
   <path d="M-8,12 L-25,55 L25,55 Z" fill="#ff4444" opacity=".12"/>
   <text x="10" y="15" font-size="6" fill="#cc0000" font-family="Arial">CAM5:SW</text>
 </g>
 <!-- 6. Terrace cam -->
-<g transform="translate(312,170)">
+<g transform="translate(366,170)">
   <circle cx="0" cy="0" r="5" fill="#ff4444" opacity=".9"/>
   <path d="M0,5 L-25,45 L25,45 Z" fill="#ff4444" opacity=".1"/>
   <text x="0" y="-9" font-size="6" fill="#cc0000" font-family="Arial" text-anchor="middle">CAM6:Terrace</text>
 </g>
 <!-- 7. Garage cam -->
-<g transform="translate(200,150)">
+<g transform="translate(254,150)">
   <polygon points="0,0 8,-8 8,8" fill="#ff4444" opacity=".8"/>
   <path d="M8,-8 L45,-20 L45,20 L8,8 Z" fill="#ff4444" opacity=".12"/>
   <text x="-2" y="-10" font-size="6" fill="#cc0000" font-family="Arial">CAM7:Garage</text>
@@ -1067,24 +1067,24 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="68" y="108" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
 <text x="60" y="104" font-size="5.5" fill="#cc9900" font-family="Arial">FLOOD</text>
 <text x="96" y="102" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
-<text x="455" y="120" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
-<text x="328" y="122" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+<text x="509" y="120" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
+<text x="382" y="122" font-size="12" fill="#ffcc00" font-family="Arial">★</text>
 
 <!-- NVR box -->
-<rect x="310" y="193" width="50" height="35" fill="#2a2a4a" stroke="#6666cc" stroke-width="1.5" rx="3"/>
-<text x="335" y="207" font-size="6.5" font-weight="bold" fill="#aaaaff" font-family="Arial" text-anchor="middle">NVR</text>
-<text x="335" y="216" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">30-day enc.</text>
-<text x="335" y="224" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">+KNX server</text>
+<rect x="364" y="193" width="50" height="35" fill="#2a2a4a" stroke="#6666cc" stroke-width="1.5" rx="3"/>
+<text x="389" y="207" font-size="6.5" font-weight="bold" fill="#aaaaff" font-family="Arial" text-anchor="middle">NVR</text>
+<text x="389" y="216" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">30-day enc.</text>
+<text x="389" y="224" font-size="5.5" fill="#9999ee" font-family="Arial" text-anchor="middle">+KNX server</text>
 
 <!-- Connection lines from cameras to NVR -->
 <g stroke="#ff4444" stroke-width=".8" stroke-dasharray="3,3" opacity=".5">
-  <line x1="84" y1="220" x2="310" y2="210"/>
-  <line x1="130" y1="145" x2="310" y2="205"/>
-  <line x1="170" y1="206" x2="310" y2="212"/>
-  <line x1="441" y1="126" x2="358" y2="196"/>
-  <line x1="185" y1="300" x2="315" y2="225"/>
-  <line x1="312" y1="170" x2="333" y2="193"/>
-  <line x1="208" y1="158" x2="310" y2="200"/>
+  <line x1="84" y1="220" x2="364" y2="210"/>
+  <line x1="130" y1="145" x2="364" y2="205"/>
+  <line x1="224" y1="206" x2="364" y2="212"/>
+  <line x1="495" y1="126" x2="412" y2="196"/>
+  <line x1="239" y1="300" x2="369" y2="225"/>
+  <line x1="366" y1="170" x2="387" y2="193"/>
+  <line x1="262" y1="158" x2="364" y2="200"/>
 </g>
 
 <!-- AI / LOCAL SERVER block -->
@@ -1102,7 +1102,7 @@ svg{background:#faf8f4;border:1px solid #555;border-radius:4px;max-width:100%;he
 <text x="510" y="301" font-size="6.5" fill="#888" font-family="Arial">Runs on local edge hardware (NUC/RPi5)</text>
 
 <!-- KNX bus line -->
-<line x1="360" y1="210" x2="500" y2="210" stroke="#4466cc" stroke-width="2" stroke-dasharray="6,3"/>
+<line x1="414" y1="210" x2="500" y2="210" stroke="#4466cc" stroke-width="2" stroke-dasharray="6,3"/>
 <text x="430" y="205" font-size="6.5" fill="#4466cc" font-family="Arial" text-anchor="middle">KNX bus</text>
 
 <!-- Privacy note -->
