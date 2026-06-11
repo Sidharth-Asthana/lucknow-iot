@@ -902,7 +902,7 @@ views:
 
           ## ☀️ System 2 — PV + Battery
 
-          **Hardware:** 11 × 550W panels (6.05 kWp) on terrace pergola at 25° south tilt.
+          **Hardware:** 11 × 550W panels (6.05 kWp) atop the vine-clad terrace trellis at 25° south tilt.
           12 kWh LFP battery (2 × 6 kWh). 8 kW hybrid inverter (lift soft-start) with SunSpec Modbus TCP.
           Eastron SDM630 meters grid import/export.
 
