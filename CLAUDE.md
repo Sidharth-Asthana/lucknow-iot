@@ -1,4 +1,4 @@
-# Lucknow Smart Residence — IoT Stack
+# Smart Residence — IoT Stack
 
 > **Auto-implementation spec for Claude Code.**  
 > When you open this repo, read this file fully, then execute
